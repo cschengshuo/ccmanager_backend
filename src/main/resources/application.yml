@@ -1,0 +1,28 @@
+server:
+  port: 8080
+  address: 127.0.0.1
+spring:
+  application:
+    name: 分销系统
+  profiles:
+    active: dev
+---
+spring:
+  profiles: product
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://118.89.34.17:3306/distribution
+    username: shuo
+    password: Cs!MySQL321368
+  session:
+      store-type: redis
+---
+spring:
+  profiles: dev
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://118.89.34.17:3306/distribution
+    username: shuo
+    password: Cs!MySQL321368
+  session:
+    store-type: redis
