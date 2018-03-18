@@ -6,6 +6,16 @@ spring:
     name: 分销系统
   profiles:
     active: dev
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+security:
+  user:
+    name: admin
+    password: admin
+
 ---
 spring:
   profiles: product
@@ -14,8 +24,6 @@ spring:
     url: jdbc:mysql://118.89.34.17:3306/distribution
     username: shuo
     password: Cs!MySQL321368
-  session:
-      store-type: redis
 ---
 spring:
   profiles: dev
@@ -24,5 +32,3 @@ spring:
     url: jdbc:mysql://118.89.34.17:3306/distribution
     username: shuo
     password: Cs!MySQL321368
-  session:
-    store-type: redis
