@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.winsyo</groupId>
-	<artifactId>distribution</artifactId>
+	<artifactId>ccmanager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>distribution</name>
-	<description>distribution system</description>
+	<name>ccmanager</name>
+	<description>卡管家平台管理系统</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -88,7 +88,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

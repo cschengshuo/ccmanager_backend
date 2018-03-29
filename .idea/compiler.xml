@@ -6,10 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="ccmanager" />
         <module name="distribution" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="ccmanager" target="1.8" />
       <module name="distribution" target="1.8" />
     </bytecodeTargetLevel>
   </component>

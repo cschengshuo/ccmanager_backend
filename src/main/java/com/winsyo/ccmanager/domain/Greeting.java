@@ -1,4 +1,4 @@
-package com.winsyo.distribution.domain;
+package com.winsyo.ccmanager.domain;
 
 public class Greeting {
     private final long id;

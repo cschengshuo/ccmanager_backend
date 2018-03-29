@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/distribution.iml" filepath="$PROJECT_DIR$/distribution.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ccmanager.iml" filepath="$PROJECT_DIR$/ccmanager.iml" />
     </modules>
   </component>
 </project>

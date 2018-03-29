@@ -1,6 +1,6 @@
-package com.winsyo.distribution.controller;
+package com.winsyo.ccmanager.controller;
 
-import com.winsyo.distribution.domain.Greeting;
+import com.winsyo.ccmanager.domain.Greeting;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

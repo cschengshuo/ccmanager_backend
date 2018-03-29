@@ -1,9 +1,12 @@
 server:
   port: 8080
   address: 127.0.0.1
+logging:
+  level:
+    root: DEBUG
 spring:
   application:
-    name: 分销系统
+    name: 卡管家平台管理系统
   profiles:
     active: dev
   jpa:
@@ -11,17 +14,12 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
-security:
-  user:
-    name: admin
-    password: admin
-
 ---
 spring:
   profiles: product
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://118.89.34.17:3306/distribution
+    url: jdbc:mysql://118.89.34.17:3306/ccmanager?useUnicode=true&characterEncoding=utf-8
     username: shuo
     password: Cs!MySQL321368
 ---
@@ -29,6 +27,6 @@ spring:
   profiles: dev
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://118.89.34.17:3306/distribution
+    url: jdbc:mysql://118.89.34.17:3306/ccmanager?useUnicode=true&characterEncoding=utf-8
     username: shuo
     password: Cs!MySQL321368
