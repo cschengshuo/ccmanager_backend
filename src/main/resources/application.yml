@@ -3,7 +3,9 @@ server:
   address: 127.0.0.1
 logging:
   level:
-    root: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: DEBUG
+    com.winsyo: DEBUG
 spring:
   application:
     name: 卡管家平台管理系统
@@ -14,6 +16,8 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
+#      naming:
+#        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
 ---
 spring:
   profiles: product

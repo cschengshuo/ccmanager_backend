@@ -1,78 +1,97 @@
 package com.winsyo.ccmanager.domain;
 
-import lombok.AllArgsConstructor;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@Table(name = "sys_user")
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private String id;
 
-    /**
-     * 姓名
-     */
-    @Column
-    private String name;
+  /**
+   * 姓名
+   */
+  @Column
+  private String name;
 
-    /**
-     * 登录名
-     */
-    @Column
-    private String loginName;
+  /**
+   * 登录名
+   */
+  @Column
+  private String loginName;
 
-    /**
-     * 手机号
-     */
-    @Column
-    private String mobile;
+  /**
+   * 密码
+   */
+  @Column
+  private String password;
 
-    /**
-     * 邀请码
-     */
-    @Column
-    private String inviteCode;
+  /**
+   * 手机号
+   */
+  @Column
+  private String mobile;
 
-    /**
-     * 身份证号
-     */
-    @Column
-    private String identityCard;
+  /**
+   * 邀请码
+   */
+  @Column
+  private String inviteCode;
 
-    /**
-     * 代理层级 TODO 改名
-     */
-    @Column
-    private Integer userType;
+  /**
+   * 身份证号
+   */
+  @Column
+  private String identityCard;
 
-    /**
-     * 上级用户ID
-     */
-    @Column
-    private String parentId;
+  /**
+   * 代理层级 TODO 改名
+   */
+  @Column
+  private Integer userType;
 
-    /**
-     * 顶级用户ID
-     */
-    @Column
-    private String topUserId;
+  /**
+   * 上级用户ID
+   */
+  @Column
+  private String parentId;
 
-    /**
-     * 证书
-     */
-    @Column
-    private String licence;
+  /**
+   * 顶级用户ID
+   */
+  @Column
+  private String topUserId;
 
-    /**
-     * 紧急联系人
-     */
-    @Column
-    private String emergencyContact;
+  /**
+   * 证书
+   */
+  @Column
+  private String licence;
+
+  /**
+   * 紧急联系人
+   */
+  @Column
+  private String emergencyContact;
+
+  @ManyToMany(cascade = CascadeType.ALL)
+  @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+  private List<Role> roles;
+
 }
