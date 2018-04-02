@@ -2,6 +2,7 @@ package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.Role;
 import com.winsyo.ccmanager.domain.User;
+import com.winsyo.ccmanager.exception.UserNotFoundException;
 import com.winsyo.ccmanager.repository.RoleRepository;
 import com.winsyo.ccmanager.repository.UserRepository;
 import java.util.Arrays;
@@ -31,6 +32,24 @@ public class UserService {
 
   public Optional<User> findById(String id) {
     return userRepository.findById(id);
+  }
+
+  @Transactional
+  public void testJob() {
+    User thinkgem = userRepository.findByLoginName("thinkgem").orElseThrow(() -> {
+      return new UserNotFoundException("123");
+    });
+    thinkgem.setCurrentTime(System.currentTimeMillis());
+    userRepository.save(thinkgem);
+  }
+
+  @Transactional
+  public void testJob2() {
+    User thinkgem = userRepository.findByLoginName("admin666").orElseThrow(() -> {
+      return new UserNotFoundException("123");
+    });
+    thinkgem.setCurrentTime(System.currentTimeMillis());
+    userRepository.save(thinkgem);
   }
 
   @Transactional
