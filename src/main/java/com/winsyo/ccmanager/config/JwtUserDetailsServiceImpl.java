@@ -22,13 +22,11 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = userRepository.findByLoginName(username);
-    if (user == null) {
-      throw new UsernameNotFoundException("未找到用户" + username);
-    } else {
-      return new JwtUser(user.getLoginName(), user.getPassword(),
-          user.getRoles().stream().map((role) -> role.getRole()).map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
-    }
+    User user = userRepository.findByLoginName(username).orElseThrow(() -> {
+      return new UsernameNotFoundException("未找到用户" + username);
+    });
+    return new JwtUser(user.getLoginName(), user.getPassword(),
+        user.getRoles().stream().map((role) -> role.getRole()).map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
   }
 
 }

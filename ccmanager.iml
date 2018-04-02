@@ -7,6 +7,10 @@
           <file>file://$MODULE_DIR$/src/main/java/com/winsyo/ccmanager/CcmanagerApplication.java</file>
           <file>file://$MODULE_DIR$/src/main/java/com/winsyo/ccmanager/config/SecurityConfig.java</file>
         </fileset>
+        <fileset id="fileset2" name="Spring Application Context (2)" removed="false">
+          <dependency>fileset</dependency>
+          <file>file://$MODULE_DIR$/src/main/java/com/winsyo/ccmanager/controller/UserExeceptionHandler.java</file>
+        </fileset>
       </configuration>
     </facet>
   </component>

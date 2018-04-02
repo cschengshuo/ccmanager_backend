@@ -1,5 +1,6 @@
 package com.winsyo.ccmanager.config;
 
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.AccessDeniedException;
@@ -14,7 +15,11 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
   @Override
   public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) {
-    response.setStatus(403);
+    try {
+      response.sendError(401, "你没有执行该操作的权限");
+    } catch (IOException e1) {
+      e1.printStackTrace();
+    }
   }
 
 }

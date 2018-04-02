@@ -4,8 +4,9 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -21,7 +22,6 @@ import lombok.NoArgsConstructor;
 public class User {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
   private String id;
 
   /**
@@ -33,7 +33,7 @@ public class User {
   /**
    * 登录名
    */
-  @Column
+  @Column(name = "login_name")
   private String loginName;
 
   /**
@@ -54,22 +54,26 @@ public class User {
   @Column
   private String inviteCode;
 
+  @Column
+  @Enumerated(EnumType.ORDINAL)
+  private UserType type;
+
   /**
    * 身份证号
    */
-  @Column
+  @Column(name = "identity_card")
   private String identityCard;
 
   /**
    * 代理层级 TODO 改名
    */
-  @Column
+  @Column(name = "user_type")
   private Integer userType;
 
   /**
    * 上级用户ID
    */
-  @Column
+  @Column(name = "parent_id")
   private String parentId;
 
   /**
@@ -90,7 +94,7 @@ public class User {
   @Column
   private String emergencyContact;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
   private List<Role> roles;
 

@@ -2,6 +2,7 @@ package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.config.JwtTokenUtil;
 import com.winsyo.ccmanager.domain.User;
+import com.winsyo.ccmanager.exception.UserNotFoundException;
 import com.winsyo.ccmanager.repository.UserRepository;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,18 +44,21 @@ public class AuthenticationService {
 
   @Transactional
   public void setPassword(String username, String password) {
-    User user = userRepository.findByLoginName(username);
+    User user = userRepository.findByLoginName(username).orElseThrow(() -> {
+      return new UserNotFoundException(username);
+    });
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     user.setPassword(encoder.encode(password));
     userRepository.save(user);
   }
 
-  public String refreshToken(String oldToken) {
+  public String refreshToken(String oldToken) throws Exception {
     String token = oldToken.substring("Bearer ".length());
     if (!jwtTokenUtil.isTokenExpired(token)) {
       return jwtTokenUtil.refreshToken(token);
+    } else {
+      throw new Exception();
     }
-    return "error";
   }
 
 }

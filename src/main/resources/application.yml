@@ -16,8 +16,30 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
-#      naming:
-#        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: always
+      schema: classpath:quartz.sql
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: MyScheduler
+            instanceId: AUTO
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+          jobStore:
+            class : org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass : org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            useProperties : false
+            tablePrefix : A_QRTZ_
+            isClustered : false
 ---
 spring:
   profiles: product
