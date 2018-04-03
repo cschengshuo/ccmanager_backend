@@ -10,7 +10,7 @@ spring:
   application:
     name: 卡管家平台管理系统
   profiles:
-    active: dev
+    active: product
   jpa:
     show-sql: true
     generate-ddl: true
