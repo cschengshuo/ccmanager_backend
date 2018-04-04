@@ -11,6 +11,8 @@ spring:
     name: 卡管家平台管理系统
   profiles:
     active: product
+  jmx:
+    default-domain: ccmanager666
   jpa:
     show-sql: true
     generate-ddl: true
