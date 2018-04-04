@@ -151,13 +151,7 @@
         <configuration>
           <fork>true</fork>
           <addResources>true</addResources>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-            <warName>${project.artifactId}</warName>
+          <finalName>${project.artifactId}</finalName>
         </configuration>
       </plugin>
     </plugins>
