@@ -50,6 +50,10 @@ spring:
     url: jdbc:mysql://www.winsyo.com:3306/shiro?useUnicode=true&characterEncoding=utf-8
     username: root
     password: wzy@2017.remote
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
 ---
 spring:
   profiles: dev
@@ -58,3 +62,7 @@ spring:
     url: jdbc:mysql://118.89.34.17:3306/ccmanager?useUnicode=true&characterEncoding=utf-8
     username: shuo
     password: Cs!MySQL321368
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
