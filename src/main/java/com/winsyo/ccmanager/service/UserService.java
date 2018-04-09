@@ -26,6 +26,10 @@ public class UserService {
     this.roleRepository = roleRepository;
   }
 
+  public List<User> findAll(){
+    return userRepository.findAll();
+  }
+
   public Optional<User> findByLoginName(String loginName) {
     return userRepository.findByLoginName(loginName);
   }

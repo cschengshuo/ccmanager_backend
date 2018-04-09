@@ -7,6 +7,7 @@ import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.exception.UserNotFoundException;
 import com.winsyo.ccmanager.service.RoleService;
 import com.winsyo.ccmanager.service.UserService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -37,6 +38,12 @@ public class UserController {
       return new UserNotFoundException("未找到该用户");
     });
     return ok(user);
+  }
+
+  @GetMapping(value = "findAll")
+  public ResponseEntity findAll() {
+    List<User> all = userService.findAll();
+    return ok(all);
   }
 
   @PostMapping(value = "initRole")
