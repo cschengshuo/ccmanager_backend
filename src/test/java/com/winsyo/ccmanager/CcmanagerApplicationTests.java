@@ -11,6 +11,7 @@ public class CcmanagerApplicationTests {
 
   @Test
   public void contextLoads() {
+    System.out.println("开始测试");
   }
 
 }
