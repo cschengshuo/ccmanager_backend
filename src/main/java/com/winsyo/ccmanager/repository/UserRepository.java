@@ -1,6 +1,7 @@
 package com.winsyo.ccmanager.repository;
 
 import com.winsyo.ccmanager.domain.User;
+import com.winsyo.ccmanager.domain.UserType;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +14,9 @@ public interface UserRepository extends JpaRepository<User, String>, JpaSpecific
   Optional<User> findByLoginName(String loginName);
 
   List<User> findUsersByParentId(String parentId);
+
+  long countByParentId(String parentId);
+
+  Optional<User> findByType(UserType type);
 
 }

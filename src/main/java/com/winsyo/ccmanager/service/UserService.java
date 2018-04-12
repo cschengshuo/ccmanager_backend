@@ -1,10 +1,15 @@
 package com.winsyo.ccmanager.service;
 
+import com.winsyo.ccmanager.config.JwtUser;
 import com.winsyo.ccmanager.domain.Role;
 import com.winsyo.ccmanager.domain.User;
+import com.winsyo.ccmanager.domain.UserType;
+import com.winsyo.ccmanager.dto.TreeDto;
+import com.winsyo.ccmanager.dto.TreeNodeDto;
 import com.winsyo.ccmanager.exception.UserNotFoundException;
 import com.winsyo.ccmanager.repository.RoleRepository;
 import com.winsyo.ccmanager.repository.UserRepository;
+import com.winsyo.ccmanager.util.SecurityUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -47,6 +52,29 @@ public class UserService {
 
   public List<User> findUsersByParentId(String parentId) {
     return userRepository.findUsersByParentId(parentId);
+  }
+
+  public User getCurrentUserInfo(){
+    JwtUser jwtUser = SecurityUtils.getCurrentUser();
+    User user = userRepository.findByLoginName(jwtUser.getUsername()).orElseThrow(() -> {
+      return new UserNotFoundException("未找到该用户");
+    });
+    return user;
+  }
+
+  public User getUserTreeRoot() {
+    User user = userRepository.findByType(UserType.PLATFORM).orElseThrow(() -> {
+      return new UserNotFoundException("未找到该用户");
+    });
+    return user;
+  }
+
+  public TreeDto map (User user) {
+    long count = userRepository.countByParentId(user.getId());
+    if (count > 0){
+      return new TreeNodeDto(user);
+    }
+    return new TreeDto(user);
   }
 
   /**
