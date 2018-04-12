@@ -2,7 +2,7 @@ package com.winsyo.ccmanager.controller;
 
 import static org.springframework.http.ResponseEntity.status;
 
-import com.winsyo.ccmanager.exception.UserNotFoundException;
+import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ import org.springframework.web.context.request.WebRequest;
 @RestControllerAdvice
 public class UserExeceptionHandler {
 
-  @ExceptionHandler(value = {UserNotFoundException.class})
+  @ExceptionHandler(value = {EntityNotFoundException.class})
   public ResponseEntity signupFailed(Exception ex, WebRequest req) {
     Map<String, String> errorMsg = new HashMap<>();
     errorMsg.put("code", "conflict");

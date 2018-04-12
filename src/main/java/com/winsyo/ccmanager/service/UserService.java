@@ -6,7 +6,7 @@ import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.domain.UserType;
 import com.winsyo.ccmanager.dto.TreeDto;
 import com.winsyo.ccmanager.dto.TreeNodeDto;
-import com.winsyo.ccmanager.exception.UserNotFoundException;
+import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.RoleRepository;
 import com.winsyo.ccmanager.repository.UserRepository;
 import com.winsyo.ccmanager.util.SecurityUtils;
@@ -45,33 +45,31 @@ public class UserService {
   }
 
   public User findById(String id) {
-    return userRepository.findById(id).orElseThrow(() -> {
-      return new UserNotFoundException(id);
-    });
+    return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id));
   }
 
   public List<User> findUsersByParentId(String parentId) {
     return userRepository.findUsersByParentId(parentId);
   }
 
-  public User getCurrentUserInfo(){
+  public User getSystemAdministrator() {
+    return userRepository.findByType(UserType.ADMIN).orElseThrow(() -> new EntityNotFoundException("未找到该用户"));
+  }
+
+  public User getCurrentUserInfo() {
     JwtUser jwtUser = SecurityUtils.getCurrentUser();
-    User user = userRepository.findByLoginName(jwtUser.getUsername()).orElseThrow(() -> {
-      return new UserNotFoundException("未找到该用户");
-    });
+    User user = userRepository.findByLoginName(jwtUser.getUsername()).orElseThrow(() -> new EntityNotFoundException("未找到该用户"));
     return user;
   }
 
-  public User getUserTreeRoot() {
-    User user = userRepository.findByType(UserType.PLATFORM).orElseThrow(() -> {
-      return new UserNotFoundException("未找到该用户");
-    });
+  public User getPlatformAdministrator() {
+    User user = userRepository.findByType(UserType.PLATFORM).orElseThrow(() -> new EntityNotFoundException("未找到该用户"));
     return user;
   }
 
-  public TreeDto map (User user) {
+  public TreeDto map(User user) {
     long count = userRepository.countByParentId(user.getId());
-    if (count > 0){
+    if (count > 0) {
       return new TreeNodeDto(user);
     }
     return new TreeDto(user);
@@ -79,8 +77,6 @@ public class UserService {
 
   /**
    * 获取父级用户队列
-   * @param id
-   * @return
    */
   public List<User> getParentQueue(String id) {
     List<User> users = new ArrayList<>();
@@ -90,7 +86,7 @@ public class UserService {
     while (!StringUtils.equals(node.getId(), node.getTopUserId())) {
       try {
         node = findById(node.getParentId());
-      } catch (UserNotFoundException e) {
+      } catch (EntityNotFoundException e) {
         break;
       }
       users.add(node);
@@ -102,7 +98,7 @@ public class UserService {
   @Transactional
   public void testJob() {
     User thinkgem = userRepository.findByLoginName("thinkgem").orElseThrow(() -> {
-      return new UserNotFoundException("123");
+      return new EntityNotFoundException("123");
     });
     thinkgem.setCurrentTime(System.currentTimeMillis());
     userRepository.save(thinkgem);
@@ -111,7 +107,7 @@ public class UserService {
   @Transactional
   public void testJob2() {
     User thinkgem = userRepository.findByLoginName("admin666").orElseThrow(() -> {
-      return new UserNotFoundException("123");
+      return new EntityNotFoundException("123");
     });
     thinkgem.setCurrentTime(System.currentTimeMillis());
     userRepository.save(thinkgem);

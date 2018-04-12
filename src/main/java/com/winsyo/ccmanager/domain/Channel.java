@@ -3,6 +3,8 @@ package com.winsyo.ccmanager.domain;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
@@ -24,54 +26,55 @@ public class Channel {
    * 通道类型
    */
   @Column(name = "channel_type")
+  @Enumerated(EnumType.ORDINAL)
   private ChannelType channelType;
 
   /**
    * 通道费率
    */
-  @Column(name = "fee_rate")
+  @Column(name = "fee_rate", precision = 6, scale = 5)
   private BigDecimal feeRate;
 
   /**
    * 通道代收费
    */
-  @Column
+  @Column(precision = 6, scale = 2)
   private BigDecimal fee;
 
   /**
    * 高级用户通道费率
    */
-  @Column(name = "senior_fee_rate")
+  @Column(name = "senior_fee_rate", precision = 6, scale = 5)
   private BigDecimal seniorFeeRate;
 
   /**
    * 高级用户通道代收费
    */
-  @Column(name = "senior_fee")
+  @Column(name = "senior_fee", precision = 6, scale = 2)
   private BigDecimal seniorFee;
 
   /**
    * 成本费率
    */
-  @Column(name = "platform_fee_rate")
+  @Column(name = "platform_fee_rate", precision = 6, scale = 5)
   private BigDecimal platformFeeRate;
 
   /**
    * 成本代收费
    */
-  @Column(name = "platform_fee")
+  @Column(name = "platform_fee", precision = 6, scale = 2)
   private BigDecimal platformFee;
 
   /**
    * 成本费率
    */
-  @Column(name = "cost_fee_rate")
+  @Column(name = "cost_fee_rate", precision = 6, scale = 5)
   private BigDecimal costFeeRate;
 
   /**
    * 成本代收费
    */
-  @Column(name = "cost_fee")
+  @Column(name = "cost_fee", precision = 6, scale = 2)
   private BigDecimal costFee;
 
   /**

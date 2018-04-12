@@ -2,7 +2,7 @@ package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.config.JwtTokenUtil;
 import com.winsyo.ccmanager.domain.User;
-import com.winsyo.ccmanager.exception.UserNotFoundException;
+import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.UserRepository;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +44,7 @@ public class AuthenticationService {
 
   @Transactional
   public void setPassword(String username, String password) {
-    User user = userRepository.findByLoginName(username).orElseThrow(() -> {
-      return new UserNotFoundException(username);
-    });
+    User user = userRepository.findByLoginName(username).orElseThrow(() -> new EntityNotFoundException(username));
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     user.setPassword(encoder.encode(password));
     userRepository.save(user);

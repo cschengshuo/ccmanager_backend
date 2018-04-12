@@ -4,16 +4,15 @@ public enum ChannelType {
 
   PLAN,
 
-
   A,
 
-
   B,
-
 
   C,
 
   D,
 
-  E;
+  E,
+
+  F;
 }

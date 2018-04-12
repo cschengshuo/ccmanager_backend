@@ -4,7 +4,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.dto.LoginDto;
-import com.winsyo.ccmanager.exception.UserNotFoundException;
+import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.service.AuthenticationService;
 import com.winsyo.ccmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +30,7 @@ public class AuthenticationController {
   @PostMapping(value = "login")
   public ResponseEntity login(String username, String password) throws AuthenticationException {
     String jwt = authenticationService.login(username, password);
-    User user = userService.findByLoginName(username).orElseThrow(() -> {
-      return new UserNotFoundException(username);
-    });
+    User user = userService.findByLoginName(username).orElseThrow(() -> new EntityNotFoundException(username));
     return ok(new LoginDto(user, jwt));
   }
 

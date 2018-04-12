@@ -20,10 +20,10 @@ public class UserAccount {
   @Column(name = "user_id")
   private String userId;
 
-  @Column
+  @Column(precision = 13, scale = 2)
   private BigDecimal balance;
 
-  @Column(name = "pre_settlement")
+  @Column(name = "pre_settlement", precision = 13, scale = 2)
   private BigDecimal preSettlement;
 
 }

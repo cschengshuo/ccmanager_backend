@@ -2,10 +2,8 @@ package com.winsyo.ccmanager.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-import com.winsyo.ccmanager.config.JwtUser;
 import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.dto.TreeDto;
-import com.winsyo.ccmanager.exception.UserNotFoundException;
 import com.winsyo.ccmanager.service.RoleService;
 import com.winsyo.ccmanager.service.UserService;
 import java.util.List;
@@ -13,7 +11,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,7 +45,7 @@ public class UserController {
 
   @GetMapping(value = "getUserTreeRoot")
   public ResponseEntity getUserTreeRoot() {
-    User user = userService.getUserTreeRoot();
+    User user = userService.getPlatformAdministrator();
     TreeDto dto = userService.map(user);
     return ok(dto);
   }

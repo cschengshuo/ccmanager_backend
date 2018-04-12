@@ -3,6 +3,8 @@ package com.winsyo.ccmanager.domain;
 import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
@@ -86,13 +88,14 @@ public class TradingRecord {
   /**
    * 是否成功
    */
-  @Column
-  private boolean isOk;
+  @Column(name = "isOK")
+  private boolean ok;
 
   /**
    * 通道标识
    */
   @Column
-  private String payWayTAG;
+  @Enumerated(EnumType.ORDINAL)
+  private ChannelType payWayTAG;
 
 }

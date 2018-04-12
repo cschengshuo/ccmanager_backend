@@ -15,8 +15,8 @@ public class SchedledConfiguration {
   public MethodInvokingJobDetailFactoryBean generateDailyReportJob() {
     MethodInvokingJobDetailFactoryBean bean = new MethodInvokingJobDetailFactoryBean();
     bean.setConcurrent(false);
-    bean.setTargetBeanName("userService");
-    bean.setTargetMethod("testJob");
+    bean.setTargetBeanName("incomeService");
+    bean.setTargetMethod("calcIncome");
     return bean;
   }
 

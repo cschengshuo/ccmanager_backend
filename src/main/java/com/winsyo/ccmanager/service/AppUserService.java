@@ -1,17 +1,14 @@
 package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.AppUser;
-import com.winsyo.ccmanager.exception.UserNotFoundException;
+import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.AppUserRepository;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -28,9 +25,7 @@ public class AppUserService {
   }
 
   public AppUser findById(String id) {
-    AppUser appUser = appUserRepository.findById(id).orElseThrow(() -> {
-      return new UserNotFoundException("未找到用户");
-    });
+    AppUser appUser = appUserRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("未找到用户"));
     return appUser;
   }
 
