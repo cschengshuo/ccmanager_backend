@@ -1,7 +1,7 @@
 package com.winsyo.ccmanager.repository;
 
 import com.winsyo.ccmanager.domain.Channel;
-import com.winsyo.ccmanager.domain.ChannelType;
+import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

@@ -1,4 +1,4 @@
-package com.winsyo.ccmanager.domain;
+package com.winsyo.ccmanager.domain.enumerate;
 
 public enum UserType {
 

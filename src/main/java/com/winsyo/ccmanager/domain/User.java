@@ -1,5 +1,6 @@
 package com.winsyo.ccmanager.domain;
 
+import com.winsyo.ccmanager.domain.enumerate.UserType;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,7 +26,7 @@ public class User {
 
   @Id
   @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid")
+  @GenericGenerator(name = "uuid", strategy = "uuid2")
   private String id;
 
   /**
@@ -101,8 +102,5 @@ public class User {
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
   private List<Role> roles;
-
-  @Column
-  private Long currentTime;
 
 }

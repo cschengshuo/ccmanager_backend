@@ -2,11 +2,12 @@ package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.AppUser;
 import com.winsyo.ccmanager.domain.Channel;
-import com.winsyo.ccmanager.domain.ChannelType;
+import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import com.winsyo.ccmanager.domain.UserFee;
 import com.winsyo.ccmanager.domain.TradingRecord;
 import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.domain.UserAccount;
+import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -64,19 +65,25 @@ public class IncomeService {
 
       BigDecimal income = this.calculatePlatformIncome(money, type);
       for (User user : parents) {
-        UserAccount userAccount = userAccountService.findByUserId(user.getId());
-        if (userAccount != null) {
+        try {
+          UserAccount userAccount = userAccountService.findByUserId(user.getId());
           userAccount.setPreSettlement(userAccount.getPreSettlement().add(income));
           userAccountService.save(userAccount);
-        } else { // 如果该用户还不存在账户则进行创建
+        } catch (EntityNotFoundException e) {
           UserAccount newAccount = new UserAccount();
           newAccount.setId(UUID.randomUUID().toString());
           newAccount.setBalance(new BigDecimal("0.00"));
           newAccount.setPreSettlement(income);
           newAccount.setUserId(user.getId());
           userAccountService.save(newAccount);
+
         }
-        UserFee fee = userFeeService.findByUserIdAndChannelType(user.getId(), type);
+        UserFee fee = null;
+        try {
+          fee = userFeeService.findByUserIdAndChannelType(user.getId(), type);
+        } catch (EntityNotFoundException e) {
+          fee = userFeeService.createUserFee(user.getId(), type);
+        }
         income = income.multiply(fee.getValue()).setScale(2, RoundingMode.UP);
       }
       record.setSettlementStatus(true);

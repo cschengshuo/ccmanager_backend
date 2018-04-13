@@ -1,5 +1,6 @@
 package com.winsyo.ccmanager.domain;
 
+import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,7 +27,6 @@ public class Channel {
    * 通道类型
    */
   @Column(name = "channel_type")
-  @Enumerated(EnumType.ORDINAL)
   private ChannelType channelType;
 
   /**

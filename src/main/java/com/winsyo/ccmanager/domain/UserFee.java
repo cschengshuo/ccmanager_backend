@@ -1,5 +1,6 @@
 package com.winsyo.ccmanager.domain;
 
+import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +9,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.DecimalMin;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -19,14 +19,13 @@ public class UserFee {
 
   @Id
   @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid")
+  @GenericGenerator(name = "uuid", strategy = "uuid2")
   private String id;
 
   @Column(precision = 19, scale = 5)
   private BigDecimal value;
 
   @Column
-  @Enumerated(EnumType.ORDINAL)
   private ChannelType channelType;
 
   @Column

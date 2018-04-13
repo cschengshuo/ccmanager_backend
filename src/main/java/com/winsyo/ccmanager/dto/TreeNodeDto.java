@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 public class TreeNodeDto extends TreeDto {
 
-  private List<TreeDto> children = new ArrayList<>();
+  private List<TreeDto> children ;
 
   private boolean expand;
 
@@ -17,6 +17,7 @@ public class TreeNodeDto extends TreeDto {
 
   public TreeNodeDto(User user) {
     super(user);
+    this.children = new ArrayList<>();
   }
 
   public TreeNodeDto (TreeDto dto) {

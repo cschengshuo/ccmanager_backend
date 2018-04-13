@@ -16,8 +16,6 @@ public class TreeDto {
 
   private String value;
 
-
-
   public TreeDto(User user) {
     this.value = user.getId();
     this.title = user.getName();

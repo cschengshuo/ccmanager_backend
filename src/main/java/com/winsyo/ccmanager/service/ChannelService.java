@@ -1,7 +1,7 @@
 package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.Channel;
-import com.winsyo.ccmanager.domain.ChannelType;
+import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.ChannelRepository;
 import java.util.List;

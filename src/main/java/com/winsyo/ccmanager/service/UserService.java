@@ -3,7 +3,7 @@ package com.winsyo.ccmanager.service;
 import com.winsyo.ccmanager.config.JwtUser;
 import com.winsyo.ccmanager.domain.Role;
 import com.winsyo.ccmanager.domain.User;
-import com.winsyo.ccmanager.domain.UserType;
+import com.winsyo.ccmanager.domain.enumerate.UserType;
 import com.winsyo.ccmanager.dto.TreeDto;
 import com.winsyo.ccmanager.dto.TreeNodeDto;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
@@ -93,24 +93,6 @@ public class UserService {
     }
     Collections.reverse(users);
     return users;
-  }
-
-  @Transactional
-  public void testJob() {
-    User thinkgem = userRepository.findByLoginName("thinkgem").orElseThrow(() -> {
-      return new EntityNotFoundException("123");
-    });
-    thinkgem.setCurrentTime(System.currentTimeMillis());
-    userRepository.save(thinkgem);
-  }
-
-  @Transactional
-  public void testJob2() {
-    User thinkgem = userRepository.findByLoginName("admin666").orElseThrow(() -> {
-      return new EntityNotFoundException("123");
-    });
-    thinkgem.setCurrentTime(System.currentTimeMillis());
-    userRepository.save(thinkgem);
   }
 
   @Transactional

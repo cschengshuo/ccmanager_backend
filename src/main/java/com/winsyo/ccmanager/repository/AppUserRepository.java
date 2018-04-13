@@ -4,7 +4,9 @@ import com.winsyo.ccmanager.domain.AppUser;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface AppUserRepository extends JpaRepository<AppUser, String>, JpaSpecificationExecutor<AppUser> {
 
   List<AppUser> findAppUsersByAgentId(String agentId);

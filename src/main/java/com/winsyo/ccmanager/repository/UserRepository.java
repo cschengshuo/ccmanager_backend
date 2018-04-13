@@ -1,7 +1,7 @@
 package com.winsyo.ccmanager.repository;
 
 import com.winsyo.ccmanager.domain.User;
-import com.winsyo.ccmanager.domain.UserType;
+import com.winsyo.ccmanager.domain.enumerate.UserType;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

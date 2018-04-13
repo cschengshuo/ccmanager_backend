@@ -1,6 +1,7 @@
 package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.TradingRecord;
+import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import com.winsyo.ccmanager.repository.TradingRecordRepository;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +28,7 @@ public class TradingRecordService {
 
   public List<TradingRecord> listUnsettleTradingRecords() {
     List<TradingRecord> records = tradingRecordRepository
-        .findAllBySettlementStatusAndOkAndPayWayTAGIn(false, true, Arrays.asList("0", "1", "2", "3", "4", "5", "6"));
+        .findAllBySettlementStatusAndOkAndPayWayTAGIn(false, true, Arrays.asList(ChannelType.PLAN, ChannelType.C, ChannelType.E, ChannelType.F));
     return records;
   }
 
