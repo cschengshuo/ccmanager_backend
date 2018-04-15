@@ -3,13 +3,12 @@ package com.winsyo.ccmanager.dto;
 import com.winsyo.ccmanager.domain.User;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+@Data
 public class TreeNodeDto extends TreeDto {
 
-  private List<TreeDto> children ;
+  private List<TreeDto> children;
 
   private boolean expand;
 
@@ -20,8 +19,9 @@ public class TreeNodeDto extends TreeDto {
     this.children = new ArrayList<>();
   }
 
-  public TreeNodeDto (TreeDto dto) {
-    super(dto.getTitle(),dto.getValue());
+  public TreeNodeDto(TreeDto dto) {
+    super(dto.getTitle(), dto.getValue());
+    this.children = new ArrayList<>();
   }
 
 }

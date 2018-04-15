@@ -4,6 +4,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.dto.TreeDto;
+import com.winsyo.ccmanager.dto.TreeNodeDto;
 import com.winsyo.ccmanager.service.RoleService;
 import com.winsyo.ccmanager.service.UserService;
 import java.util.List;
@@ -29,7 +30,6 @@ public class UserController {
     this.roleService = roleService;
   }
 
-
   @GetMapping(value = "getCurrentUserInfo")
   public ResponseEntity getCurrentUserInfo() throws AuthenticationException {
     User user = userService.getCurrentUserInfo();
@@ -46,8 +46,18 @@ public class UserController {
   @GetMapping(value = "getUserTreeRoot")
   public ResponseEntity getUserTreeRoot() {
     User user = userService.getPlatformAdministrator();
-    TreeDto dto = userService.map(user);
+    TreeNodeDto dto = new TreeNodeDto(user);
+    List<User> users = userService.findUsersByParentId(user.getId());
+    List<TreeDto> dtos = users.stream().map(userService::map).collect(Collectors.toList());
+    dto.setChildren(dtos);
+    dto.setExpand(true);
     return ok(dto);
+  }
+
+  @PostMapping(value = "createUser")
+  public ResponseEntity createUser() {
+
+    return null;
   }
 
   @GetMapping(value = "findAll")

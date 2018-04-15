@@ -1,0 +1,7 @@
+{
+  "timestamp": "2018-04-10T12:04:43.660+0000",
+  "status": 401,
+  "error": "Unauthorized",
+  "message": "Full authentication is required to access this resource",
+  "path": "/user/initUserRole"
+}

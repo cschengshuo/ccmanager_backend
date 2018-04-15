@@ -5,7 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class SecurityUtils {
 
-  public static JwtUser getCurrentUser(){
+  public static JwtUser getCurrentUser() {
     JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     return jwtUser;
   }

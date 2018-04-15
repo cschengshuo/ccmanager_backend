@@ -51,4 +51,7 @@ public class AppUser {
   @Column
   private Instant upgradeTime;
 
+  @Column
+  private boolean isSeniorUser;
+
 }

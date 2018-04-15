@@ -5,9 +5,9 @@ import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import com.winsyo.ccmanager.repository.TradingRecordRepository;
 import java.util.Arrays;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +32,7 @@ public class TradingRecordService {
     return records;
   }
 
+  @Transactional
   public TradingRecord save(TradingRecord record) {
     return tradingRecordRepository.save(record);
   }

@@ -1,12 +1,9 @@
 package com.winsyo.ccmanager.domain;
 
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
-import com.winsyo.ccmanager.domain.enumerate.OK;
 import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;

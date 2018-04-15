@@ -4,8 +4,6 @@ import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -30,5 +28,8 @@ public class UserFee {
 
   @Column
   private String userId;
+
+  @Column
+  private boolean feeRate;
 
 }

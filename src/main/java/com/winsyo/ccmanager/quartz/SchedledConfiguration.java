@@ -28,23 +28,6 @@ public class SchedledConfiguration {
     return trigger;
   }
 
-//  @Bean
-//  public MethodInvokingJobDetailFactoryBean settleJob() {
-//    MethodInvokingJobDetailFactoryBean bean = new MethodInvokingJobDetailFactoryBean();
-//    bean.setConcurrent(false);
-//    bean.setTargetBeanName("userService");
-//    bean.setTargetMethod("testJob2");
-//    return bean;
-//  }
-//
-//  @Bean
-//  public CronTriggerFactoryBean settleTrigger(@Qualifier("settleJob") MethodInvokingJobDetailFactoryBean bean) {
-//    CronTriggerFactoryBean trigger = new CronTriggerFactoryBean();
-//    trigger.setJobDetail(bean.getObject());
-//    trigger.setCronExpression("0 0 2 * * ? ");
-//    return trigger;
-//  }
-
   @Bean
   public SchedulerFactoryBean schedulerFactoryBean(Trigger... triggers) {
     SchedulerFactoryBean bean = new SchedulerFactoryBean();

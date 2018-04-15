@@ -23,7 +23,7 @@ public class UserAccountService {
   }
 
   @Transactional
-  public UserAccount save(UserAccount userAccount){
+  public UserAccount save(UserAccount userAccount) {
     UserAccount save = userAccountRepository.save(userAccount);
     return save;
   }

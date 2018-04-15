@@ -16,7 +16,7 @@ public class ChannelTypeConverter implements AttributeConverter<ChannelType, Int
 
   @Override
   public ChannelType convertToEntityAttribute(Integer dbData) {
-    if (dbData == null){
+    if (dbData == null) {
       return null;
     }
     return ChannelType.indexOf(dbData);
