@@ -30,17 +30,14 @@ public class AppUserService {
   }
 
   public List<AppUser> findAppUsers(String agentId) {
-    Specification<AppUser> appUserSpecification = new Specification<AppUser>() {
-      public Predicate toPredicate(Root<AppUser> root, CriteriaQuery<?> query,
-          CriteriaBuilder builder) {
-        List<Predicate> list = new ArrayList<Predicate>();
+    Specification<AppUser> appUserSpecification = (Specification<AppUser>) (root, query, builder) -> {
+      List<Predicate> list = new ArrayList<Predicate>();
 
-        if (StringUtils.isNotEmpty(agentId)) {
-          list.add(builder.equal(root.get("agentId").as(String.class), agentId));
-        }
-        Predicate[] p = new Predicate[list.size()];
-        return builder.and(list.toArray(p));
+      if (StringUtils.isNotEmpty(agentId)) {
+        list.add(builder.equal(root.get("agentId").as(String.class), agentId));
       }
+      Predicate[] p = new Predicate[list.size()];
+      return builder.and(list.toArray(p));
     };
     List<AppUser> appUsers = appUserRepository.findAll(appUserSpecification);
     return appUsers;

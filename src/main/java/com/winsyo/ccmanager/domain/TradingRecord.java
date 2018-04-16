@@ -1,6 +1,7 @@
 package com.winsyo.ccmanager.domain;
 
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
+import java.math.BigDecimal;
 import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,11 +9,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Data
 @NoArgsConstructor
 @Entity
 @Table(name = "trading_record")
+@DynamicUpdate
 public class TradingRecord {
 
   @Id
@@ -22,7 +25,7 @@ public class TradingRecord {
    * 金额
    */
   @Column
-  private Double money;
+  private BigDecimal money;
 
   /**
    * 时间

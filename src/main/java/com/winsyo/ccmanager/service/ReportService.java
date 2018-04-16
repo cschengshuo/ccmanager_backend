@@ -129,7 +129,7 @@ public class ReportService {
     List<ReportDto> reports = new ArrayList<>();
     records.forEach((record) -> {
       ReportDto dto = new ReportDto();
-      BigDecimal money = new BigDecimal(Double.toString(record.getMoney()));
+      BigDecimal money = record.getMoney();
       // 获取该笔交易归属的手机用户
       String appUserId = record.getUserId();
       AppUser appUser = appUserService.findById(appUserId);

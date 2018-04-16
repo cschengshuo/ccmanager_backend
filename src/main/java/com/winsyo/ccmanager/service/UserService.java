@@ -3,22 +3,27 @@ package com.winsyo.ccmanager.service;
 import com.winsyo.ccmanager.config.JwtUser;
 import com.winsyo.ccmanager.domain.Role;
 import com.winsyo.ccmanager.domain.User;
+import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import com.winsyo.ccmanager.domain.enumerate.UserType;
+import com.winsyo.ccmanager.dto.CreateUserDto;
 import com.winsyo.ccmanager.dto.TreeDto;
 import com.winsyo.ccmanager.dto.TreeNodeDto;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.RoleRepository;
 import com.winsyo.ccmanager.repository.UserRepository;
-import com.winsyo.ccmanager.util.SecurityUtils;
+import com.winsyo.ccmanager.util.Utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -57,7 +62,7 @@ public class UserService {
   }
 
   public User getCurrentUserInfo() {
-    JwtUser jwtUser = SecurityUtils.getCurrentUser();
+    JwtUser jwtUser = Utils.getCurrentUser();
     User user = userRepository.findByLoginName(jwtUser.getUsername()).orElseThrow(() -> new EntityNotFoundException("未找到该用户"));
     return user;
   }
@@ -95,34 +100,64 @@ public class UserService {
     return users;
   }
 
+  public boolean checkLoginNameExist(String username) {
+    return findByLoginName(username).isPresent();
+  }
+
   @Transactional
-  public void initUserRole() {
-    Role admin = roleRepository.findByRole("ADMIN");
-    LinkedList<Role> adminList = new LinkedList<>(Arrays.asList(admin));
-
-    Role platform = roleRepository.findByRole("PLATFORM");
-    LinkedList<Role> platformList = new LinkedList<>(Arrays.asList(platform));
-
+  public void createUser(CreateUserDto dto) {
+    User user = new User();
     Role agent = roleRepository.findByRole("AGENT");
-    LinkedList<Role> agentList = new LinkedList<>(Arrays.asList(agent));
+    user.setRoles(new LinkedList<>(Arrays.asList(agent)));
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    user.setPassword(encoder.encode(dto.getPassword()));
+    user.setIdentityCard(dto.getIdCard());
+    user.setInviteCode(Utils.getInviteCode(dto.getPhone().substring(dto.getPhone().length() - 4, dto.getPhone().length())));
+    user.setLoginName(dto.getLoginName());
+    user.setName(dto.getName());
+    user.setType(UserType.AGENT);
+    user.setPhone(dto.getPhone());
+    try {
+      User parent = findById(dto.getParentId());
 
-    List<User> all = userRepository.findAll();
-    all.forEach((user) -> {
-      switch (user.getType()) {
-        case ADMIN:
-          user.setRoles(adminList);
-          break;
-
-        case PLATFORM:
-          user.setRoles(platformList);
-          break;
-
-        case VIRTUAL:
-        case AGENT:
-          user.setRoles(agentList);
-          break;
+      user.setParentId(parent.getId());
+      user.setTopUserId(parent.getTopUserId());
+      user.setUserType(parent.getUserType() + 1);
+    } catch (EntityNotFoundException e) {
+      User currentUser = getCurrentUserInfo();
+      User parent;
+      if (currentUser.getType() != UserType.ADMIN) {
+        parent = currentUser;
+      } else {
+        parent = getPlatformAdministrator();
       }
-      userRepository.save(user);
-    });
+
+      user.setParentId(parent.getId());
+      user.setTopUserId(parent.getTopUserId());
+      user.setUserType(parent.getUserType() + 1);
+      user.setParentIds("");
+    }
+    userRepository.save(user);
+
+  }
+
+  @Transactional
+  public void modifyUser(CreateUserDto dto) {
+
+  }
+
+  public List<User> findUsers(String name) {
+
+    Specification<User> appUserSpecification = (Specification<User>) (root, query, builder) -> {
+      List<Predicate> list = new ArrayList<Predicate>();
+      list.add(builder.equal(root.get("type").as(UserType.class), UserType.AGENT));
+      if (StringUtils.isNotEmpty(name)) {
+        list.add(builder.like(root.get("name").as(String.class), name + '%'));
+      }
+      Predicate[] p = new Predicate[list.size()];
+      return builder.and(list.toArray(p));
+    };
+    List<User> users = userRepository.findAll(appUserSpecification);
+    return users;
   }
 }

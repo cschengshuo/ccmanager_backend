@@ -31,7 +31,7 @@ public class SchedledConfiguration {
   @Bean
   public SchedulerFactoryBean schedulerFactoryBean(Trigger... triggers) {
     SchedulerFactoryBean bean = new SchedulerFactoryBean();
-    bean.setStartupDelay(5);
+    bean.setStartupDelay(120);
     bean.setTriggers(triggers);
     return bean;
   }

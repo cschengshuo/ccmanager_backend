@@ -48,14 +48,13 @@ public class IncomeService {
     }
 
     for (TradingRecord record : records) {
-      BigDecimal money = new BigDecimal(Double.toString(record.getMoney()));
+      BigDecimal money = record.getMoney();
       AppUser appUser;
+      List<User> parents;
       try {
         appUser = appUserService.findById(record.getUserId());
+        parents = this.userService.getParentQueue(appUser.getAgentId());
       } catch (EntityNotFoundException e) {
-        continue;
-      }
-      if (StringUtils.isEmpty(appUser.getAgentId())) {
         continue;
       }
       ChannelType type = record.getPayWayTAG();
@@ -69,7 +68,6 @@ public class IncomeService {
       adminAccount.setPreSettlement(adminAccount.getPreSettlement().add(adminIncome));
       userAccountService.save(adminAccount);
 
-      List<User> parents = this.userService.getParentQueue(appUser.getAgentId());
       parents.forEach(user -> {
         Pair<UserFee, UserFee> userFeePair;
         try {
@@ -87,7 +85,6 @@ public class IncomeService {
           userAccountService.save(userAccount);
         } catch (EntityNotFoundException e) {
           UserAccount newAccount = new UserAccount();
-          newAccount.setId(UUID.randomUUID().toString());
           newAccount.setBalance(new BigDecimal("0.00"));
           newAccount.setPreSettlement(income);
           newAccount.setUserId(user.getId());
@@ -109,7 +106,7 @@ public class IncomeService {
     return income.setScale(2, RoundingMode.UP);
   }
 
-  public BigDecimal calculatePlatformIncome(BigDecimal amount, ChannelType type) {
+  private BigDecimal calculatePlatformIncome(BigDecimal amount, ChannelType type) {
     Channel channel = this.channelService.findByChannelType(type);
     BigDecimal incomeRate = channel.getFeeRate().subtract(channel.getPlatformFeeRate());
     BigDecimal incomeFee = channel.getFee().subtract(channel.getPlatformFee());

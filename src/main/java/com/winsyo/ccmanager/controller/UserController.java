@@ -3,18 +3,22 @@ package com.winsyo.ccmanager.controller;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.winsyo.ccmanager.domain.User;
+import com.winsyo.ccmanager.dto.CreateUserDto;
 import com.winsyo.ccmanager.dto.TreeDto;
 import com.winsyo.ccmanager.dto.TreeNodeDto;
 import com.winsyo.ccmanager.service.RoleService;
 import com.winsyo.ccmanager.service.UserService;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,6 +40,12 @@ public class UserController {
     return ok(user);
   }
 
+  @GetMapping(value = "getUserById")
+  public ResponseEntity getUserById(String id) {
+    User user = userService.findById(id);
+    return ok(user);
+  }
+
   @GetMapping(value = "findUsersByParentId")
   public ResponseEntity findUsersByParentId(String id) {
     List<User> users = userService.findUsersByParentId(id);
@@ -54,10 +64,22 @@ public class UserController {
     return ok(dto);
   }
 
-  @PostMapping(value = "createUser")
-  public ResponseEntity createUser() {
+  @GetMapping(value = "checkLoginNameExist")
+  public ResponseEntity checkLoginNameExist(String username) {
+    boolean exist = userService.checkLoginNameExist(username);
+    return ok(exist);
+  }
 
-    return null;
+  @PostMapping(value = "createUser")
+  public ResponseEntity createUser(@RequestBody CreateUserDto dto) {
+    userService.createUser(dto);
+    return ok(true);
+  }
+
+  @PostMapping(value = "modifyUser")
+  public ResponseEntity modifyUser(@RequestBody CreateUserDto dto){
+    userService.modifyUser(dto);
+    return ok(true);
   }
 
   @GetMapping(value = "findAll")
@@ -66,17 +88,10 @@ public class UserController {
     return ok(all);
   }
 
-  @PostMapping(value = "initRole")
-  public ResponseEntity initRole() {
-    roleService.initRole();
-    return ok("成功");
+  @GetMapping(value = "findUsers")
+  public ResponseEntity findUsers(String loginName) {
+    List<User> all = userService.findUsers(loginName);
+    return ok(all);
   }
-
-  @PostMapping(value = "initUserRole")
-  public ResponseEntity initUserRole() {
-    userService.initUserRole();
-    return ok("成功");
-  }
-
 
 }

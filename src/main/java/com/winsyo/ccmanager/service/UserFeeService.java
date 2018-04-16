@@ -1,5 +1,6 @@
 package com.winsyo.ccmanager.service;
 
+import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.domain.UserFee;
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
@@ -16,10 +17,11 @@ import org.springframework.stereotype.Service;
 public class UserFeeService {
 
   private UserFeeRepository userFeeRepository;
+  private UserService userService;
 
-  @Autowired
-  public UserFeeService(UserFeeRepository userFeeRepository) {
+  public UserFeeService(UserFeeRepository userFeeRepository, UserService userService) {
     this.userFeeRepository = userFeeRepository;
+    this.userService = userService;
   }
 
   public UserFee findByUserIdAndChannelTypeAndFeeRate(String userId, ChannelType type, boolean isFeeRate) {
@@ -56,4 +58,5 @@ public class UserFeeService {
     return findByUserIdAndChannelType(userId, type);
 
   }
+
 }

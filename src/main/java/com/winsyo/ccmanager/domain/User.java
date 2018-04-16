@@ -16,12 +16,14 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @NoArgsConstructor
 @Entity
 @Table(name = "sys_user")
+@DynamicUpdate
 public class User {
 
   @Id
@@ -51,7 +53,7 @@ public class User {
    * 手机号
    */
   @Column
-  private String mobile;
+  private String phone;
 
   /**
    * 邀请码
@@ -80,6 +82,9 @@ public class User {
    */
   @Column(name = "parent_id")
   private String parentId;
+
+  @Column(name = "parent_ids")
+  private String parentIds;
 
   /**
    * 顶级用户ID

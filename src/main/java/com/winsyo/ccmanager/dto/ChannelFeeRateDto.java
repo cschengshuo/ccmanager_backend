@@ -10,8 +10,6 @@ public class ChannelFeeRateDto {
 
   private String label;
 
-  private boolean status;
-
   private BigDecimal max;
 
   private BigDecimal min = new BigDecimal("0");
@@ -20,13 +18,8 @@ public class ChannelFeeRateDto {
 
   private String index;
 
-  private BigDecimal step = new BigDecimal("0.0001");
+  private BigDecimal step;
 
-  public ChannelFeeRateDto(String index, String label, BigDecimal max, boolean status) {
-    this.label = label;
-    this.index = index;
-    this.max = max;
-    this.status = status;
+  private boolean feeRate;
 
-  }
 }
