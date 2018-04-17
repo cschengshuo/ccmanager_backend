@@ -16,7 +16,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
   @Override
   public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) {
     try {
-      response.sendError(401, "你没有执行该操作的权限");
+      response.sendError(403, "你没有执行该操作的权限");
     } catch (IOException e1) {
       e1.printStackTrace();
     }
