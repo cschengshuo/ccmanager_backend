@@ -4,6 +4,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.dto.CreateUserDto;
+import com.winsyo.ccmanager.dto.ModifyUserDto;
 import com.winsyo.ccmanager.dto.TreeDto;
 import com.winsyo.ccmanager.dto.TreeNodeDto;
 import com.winsyo.ccmanager.service.RoleService;
@@ -77,7 +78,7 @@ public class UserController {
   }
 
   @PostMapping(value = "modifyUser")
-  public ResponseEntity modifyUser(@RequestBody CreateUserDto dto){
+  public ResponseEntity modifyUser(@RequestBody ModifyUserDto dto){
     userService.modifyUser(dto);
     return ok(true);
   }

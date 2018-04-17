@@ -12,4 +12,6 @@ public interface UserFeeRepository extends JpaRepository<UserFee, String>, JpaSp
 
   Optional<UserFee> findByUserIdAndChannelTypeAndFeeRate(String userId, ChannelType channelType, boolean feeRate);
 
+  void deleteByUserId(String userId);
+
 }

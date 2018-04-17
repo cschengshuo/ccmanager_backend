@@ -57,7 +57,7 @@ public class ChannelService {
       Pair<UserFee, UserFee> pair = userFeeService.findByUserIdAndChannelType(userId, channel.getChannelType());
 
       ChannelFeeRateDto feeRate = new ChannelFeeRateDto();
-      feeRate.setIndex(channel.getChannelType().name() + "FeeRate");
+      feeRate.setIndex(channel.getChannelType().name() + "_FeeRate");
       feeRate.setLabel(channel.getName() + "费率");
       feeRate.setMax(pair.getFirst().getValue());
       feeRate.setStep(new BigDecimal("0.0001"));
@@ -65,7 +65,7 @@ public class ChannelService {
       feeRate.setFeeRate(true);
 
       ChannelFeeRateDto fee = new ChannelFeeRateDto();
-      fee.setIndex(channel.getChannelType().name() + "Fee");
+      fee.setIndex(channel.getChannelType().name() + "_Fee");
       fee.setLabel(channel.getName() + "代收费");
       fee.setMax(pair.getSecond().getValue());
       fee.setStep(new BigDecimal("0.5"));

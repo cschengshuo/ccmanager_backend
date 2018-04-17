@@ -3,12 +3,15 @@ package com.winsyo.ccmanager.service;
 import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.domain.UserFee;
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
+import com.winsyo.ccmanager.dto.FeeRateDto;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.UserFeeRepository;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import javax.transaction.Transactional;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
@@ -17,11 +20,9 @@ import org.springframework.stereotype.Service;
 public class UserFeeService {
 
   private UserFeeRepository userFeeRepository;
-  private UserService userService;
 
-  public UserFeeService(UserFeeRepository userFeeRepository, UserService userService) {
+  public UserFeeService(UserFeeRepository userFeeRepository) {
     this.userFeeRepository = userFeeRepository;
-    this.userService = userService;
   }
 
   public UserFee findByUserIdAndChannelTypeAndFeeRate(String userId, ChannelType type, boolean isFeeRate) {
@@ -57,6 +58,30 @@ public class UserFeeService {
 
     return findByUserIdAndChannelType(userId, type);
 
+  }
+
+  @Transactional
+  public void createUserFee(Map<String, FeeRateDto> map, String userId) {
+    map.forEach((s, feeRateDto) -> {
+      String[] split = StringUtils.split(s, '_');
+      ChannelType channelType = ChannelType.valueOf(split[0]);
+      UserFee fee = new UserFee();
+      fee.setValue(feeRateDto.getValue());
+      fee.setUserId(userId);
+      fee.setChannelType(channelType);
+
+      if (StringUtils.equals(split[1], "FeeRate")) {
+        fee.setFeeRate(true);
+      } else {
+        fee.setFeeRate(false);
+      }
+      userFeeRepository.save(fee);
+    });
+  }
+
+  @Transactional
+  public void removeUserFee(String userId){
+    userFeeRepository.deleteByUserId(userId);
   }
 
 }

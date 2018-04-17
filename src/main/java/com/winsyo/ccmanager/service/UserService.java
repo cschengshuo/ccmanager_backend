@@ -3,13 +3,17 @@ package com.winsyo.ccmanager.service;
 import com.winsyo.ccmanager.config.JwtUser;
 import com.winsyo.ccmanager.domain.Role;
 import com.winsyo.ccmanager.domain.User;
+import com.winsyo.ccmanager.domain.UserFee;
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import com.winsyo.ccmanager.domain.enumerate.UserType;
 import com.winsyo.ccmanager.dto.CreateUserDto;
+import com.winsyo.ccmanager.dto.FeeRateDto;
+import com.winsyo.ccmanager.dto.ModifyUserDto;
 import com.winsyo.ccmanager.dto.TreeDto;
 import com.winsyo.ccmanager.dto.TreeNodeDto;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.RoleRepository;
+import com.winsyo.ccmanager.repository.UserFeeRepository;
 import com.winsyo.ccmanager.repository.UserRepository;
 import com.winsyo.ccmanager.util.Utils;
 import java.util.ArrayList;
@@ -17,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
@@ -34,11 +39,12 @@ public class UserService {
 
   private UserRepository userRepository;
   private RoleRepository roleRepository;
+  private UserFeeService userFeeService;
 
-  @Autowired
-  public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+  public UserService(UserRepository userRepository, RoleRepository roleRepository, UserFeeService userFeeService) {
     this.userRepository = userRepository;
     this.roleRepository = roleRepository;
+    this.userFeeService = userFeeService;
   }
 
   public List<User> findAll() {
@@ -117,12 +123,13 @@ public class UserService {
     user.setName(dto.getName());
     user.setType(UserType.AGENT);
     user.setPhone(dto.getPhone());
+    user.setAgentAreaCode(dto.getAreaCode());
     try {
       User parent = findById(dto.getParentId());
-
       user.setParentId(parent.getId());
       user.setTopUserId(parent.getTopUserId());
       user.setUserType(parent.getUserType() + 1);
+      user.setParentIds("");
     } catch (EntityNotFoundException e) {
       User currentUser = getCurrentUserInfo();
       User parent;
@@ -138,11 +145,20 @@ public class UserService {
       user.setParentIds("");
     }
     userRepository.save(user);
-
+    userFeeService.createUserFee(dto.getFeeRate(), user.getId());
   }
 
   @Transactional
-  public void modifyUser(CreateUserDto dto) {
+  public void modifyUser(ModifyUserDto dto) {
+    User user = findById(dto.getId());
+    user.setAgentAreaCode(dto.getAreaCode());
+    user.setIdentityCard(dto.getIdCard());
+    user.setName(dto.getName());
+    user.setPhone(dto.getPhone());
+    userRepository.save(user);
+
+    userFeeService.removeUserFee(dto.getId());
+    userFeeService.createUserFee(dto.getFeeRate(), dto.getId());
 
   }
 
