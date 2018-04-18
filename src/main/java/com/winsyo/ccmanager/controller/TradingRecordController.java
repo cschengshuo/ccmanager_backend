@@ -3,7 +3,6 @@ package com.winsyo.ccmanager.controller;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.winsyo.ccmanager.domain.TradingRecord;
-import com.winsyo.ccmanager.dto.TradingRecordDto;
 import com.winsyo.ccmanager.service.TradingRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

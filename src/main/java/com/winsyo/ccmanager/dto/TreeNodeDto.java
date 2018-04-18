@@ -4,8 +4,12 @@ import com.winsyo.ccmanager.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class TreeNodeDto extends TreeDto {
 
   private List<TreeDto> children;

@@ -1,7 +1,10 @@
 package com.winsyo.ccmanager.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.winsyo.ccmanager.domain.enumerate.UserType;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,13 +21,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
 @NoArgsConstructor
 @Entity
 @Table(name = "sys_user")
 @DynamicUpdate
-public class User {
+public class User implements UserDetails {
 
   @Id
   @GeneratedValue(generator = "uuid")
@@ -41,7 +47,7 @@ public class User {
    * 登录名
    */
   @Column(name = "login_name")
-  private String loginName;
+  private String username;
 
   /**
    * 密码
@@ -110,5 +116,36 @@ public class User {
 
   @Column(name = "agent_area_code")
   private String agentAreaCode;
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    List<Role> roles = this.getRoles();
+    List<SimpleGrantedAuthority> authorities = roles.stream().map((role) -> role.getRole()).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    return authorities;
+  }
+
+  @JsonIgnore
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @JsonIgnore
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @JsonIgnore
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @JsonIgnore
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
 
 }

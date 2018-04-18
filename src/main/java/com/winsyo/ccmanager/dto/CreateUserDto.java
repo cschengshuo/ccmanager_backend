@@ -22,7 +22,7 @@ public class CreateUserDto {
 
   private String idCard;
 
-  private Map<String,FeeRateDto> feeRate;
+  private Map<String, FeeRateDto> feeRate;
 
   private String areaCode;
 

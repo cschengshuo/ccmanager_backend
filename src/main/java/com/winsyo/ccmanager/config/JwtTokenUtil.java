@@ -1,5 +1,6 @@
 package com.winsyo.ccmanager.config;
 
+import com.winsyo.ccmanager.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -117,7 +118,7 @@ public class JwtTokenUtil implements Serializable {
    * @return 是否有效
    */
   public Boolean validateToken(String token, UserDetails userDetails) {
-    JwtUser user = (JwtUser) userDetails;
+    User user = (User) userDetails;
     String username = getUsernameFromToken(token);
     return (username.equals(user.getUsername()) && !isTokenExpired(token));
   }

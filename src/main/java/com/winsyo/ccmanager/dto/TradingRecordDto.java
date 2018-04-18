@@ -1,8 +1,6 @@
 package com.winsyo.ccmanager.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.alibaba.fastjson.annotation.JSONType;
-import com.winsyo.ccmanager.domain.Channel;
 import com.winsyo.ccmanager.domain.TradingRecord;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -17,7 +15,7 @@ public class TradingRecordDto {
 
   private String recordId;
 
-  @JSONField(format="yyyy-MM-dd HH:mm:ss")
+  @JSONField(format = "yyyy-MM-dd HH:mm:ss")
   private Instant time;
 
   private BigDecimal money;
@@ -40,12 +38,12 @@ public class TradingRecordDto {
 
   private String userName;
 
-  public TradingRecordDto(TradingRecord tradingRecord,String userName) {
+  public TradingRecordDto(TradingRecord tradingRecord, String userName) {
     this.recordId = tradingRecord.getRecordId();
     this.time = tradingRecord.getTime();
     this.money = tradingRecord.getMoney();
     this.status = tradingRecord.getStatus();
-    if (tradingRecord.getPayWayTAG() != null){
+    if (tradingRecord.getPayWayTAG() != null) {
       this.payWayTAG = tradingRecord.getPayWayTAG().index();
     }
     this.type = tradingRecord.getType();

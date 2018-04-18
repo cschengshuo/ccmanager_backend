@@ -11,11 +11,9 @@ import com.winsyo.ccmanager.repository.RoleRepository;
 import com.winsyo.ccmanager.repository.UserFeeRepository;
 import com.winsyo.ccmanager.repository.UserRepository;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 import javax.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -222,7 +220,7 @@ public class InitializationService {
   public void initUserPassword() {
     List<User> all = userRepository.findAll();
     all.forEach(user -> {
-      if (user.getType() != UserType.ADMIN){
+      if (user.getType() != UserType.ADMIN) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode("654321"));
         userRepository.save(user);

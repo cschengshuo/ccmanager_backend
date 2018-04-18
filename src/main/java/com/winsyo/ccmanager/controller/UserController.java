@@ -6,11 +6,10 @@ import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.dto.CreateUserDto;
 import com.winsyo.ccmanager.dto.ModifyUserDto;
 import com.winsyo.ccmanager.dto.TreeDto;
-import com.winsyo.ccmanager.dto.TreeNodeDto;
 import com.winsyo.ccmanager.service.RoleService;
 import com.winsyo.ccmanager.service.UserService;
+import com.winsyo.ccmanager.util.Utils;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -37,7 +35,7 @@ public class UserController {
 
   @GetMapping(value = "getCurrentUserInfo")
   public ResponseEntity getCurrentUserInfo() throws AuthenticationException {
-    User user = userService.getCurrentUserInfo();
+    User user = Utils.getCurrentUser();
     return ok(user);
   }
 
@@ -56,29 +54,24 @@ public class UserController {
 
   @GetMapping(value = "getUserTreeRoot")
   public ResponseEntity getUserTreeRoot() {
-    User user = userService.getPlatformAdministrator();
-    TreeNodeDto dto = new TreeNodeDto(user);
-    List<User> users = userService.findUsersByParentId(user.getId());
-    List<TreeDto> dtos = users.stream().map(userService::map).collect(Collectors.toList());
-    dto.setChildren(dtos);
-    dto.setExpand(true);
+    TreeDto dto = userService.getUserTreeRoot();
     return ok(dto);
   }
 
   @GetMapping(value = "checkLoginNameExist")
   public ResponseEntity checkLoginNameExist(String username) {
-    boolean exist = userService.checkLoginNameExist(username);
+    boolean exist = userService.checkUsernameExist(username);
     return ok(exist);
   }
 
   @PostMapping(value = "createUser")
   public ResponseEntity createUser(@RequestBody CreateUserDto dto) {
-    userService.createUser(dto);
+    userService.createAgentUser(dto);
     return ok(true);
   }
 
   @PostMapping(value = "modifyUser")
-  public ResponseEntity modifyUser(@RequestBody ModifyUserDto dto){
+  public ResponseEntity modifyUser(@RequestBody ModifyUserDto dto) {
     userService.modifyUser(dto);
     return ok(true);
   }

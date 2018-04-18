@@ -24,4 +24,5 @@ public class AppUserController {
     List<AppUser> appUsers = appUserService.findAppUsers(agentId);
     return appUsers;
   }
+
 }

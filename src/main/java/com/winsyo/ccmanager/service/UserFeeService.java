@@ -1,6 +1,5 @@
 package com.winsyo.ccmanager.service;
 
-import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.domain.UserFee;
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import com.winsyo.ccmanager.dto.FeeRateDto;
@@ -12,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +24,7 @@ public class UserFeeService {
   }
 
   public UserFee findByUserIdAndChannelTypeAndFeeRate(String userId, ChannelType type, boolean isFeeRate) {
-    UserFee userFee = userFeeRepository.findByUserIdAndChannelTypeAndFeeRate(userId, type, isFeeRate).orElseThrow(() -> new EntityNotFoundException(""));
+    UserFee userFee = userFeeRepository.findByUserIdAndChannelTypeAndFeeRate(userId, type, isFeeRate).orElseThrow(() -> new EntityNotFoundException("为找到用户费率"));
     return userFee;
   }
 
@@ -80,7 +78,7 @@ public class UserFeeService {
   }
 
   @Transactional
-  public void removeUserFee(String userId){
+  public void removeUserFee(String userId) {
     userFeeRepository.deleteByUserId(userId);
   }
 

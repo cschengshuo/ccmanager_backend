@@ -2,36 +2,23 @@ package com.winsyo.ccmanager.dto;
 
 import com.winsyo.ccmanager.domain.Channel;
 import java.math.BigDecimal;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ChannelDto {
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class ChannelDto extends PlatformChannelDto {
 
-  private BigDecimal feeRate;
+  private BigDecimal costFeeRate;
 
-  private BigDecimal fee;
-
-  private BigDecimal seniorFeeRate;
-
-  private BigDecimal seniorFee;
-
-  private String id;
-
-  private String description;
-
-  private String name;
+  private BigDecimal costFee;
 
   public ChannelDto(Channel channel) {
-    this.feeRate = channel.getFeeRate();
-    this.fee = channel.getFee();
-    this.seniorFeeRate = channel.getSeniorFeeRate();
-    this.seniorFee = channel.getSeniorFee();
-    this.id = channel.getId();
-    this.description = channel.getDescription();
-    this.name = channel.getName();
+    super(channel);
+    this.costFeeRate = channel.getCostFeeRate();
+    this.costFee = channel.getCostFee();
   }
+
 }

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +19,11 @@ public class ReportService {
   private TradingRecordService tradingRecordService;
   private IncomeService incomeService;
 
+  public ReportService(AppUserService appUserService, TradingRecordService tradingRecordService, IncomeService incomeService) {
+    this.appUserService = appUserService;
+    this.tradingRecordService = tradingRecordService;
+    this.incomeService = incomeService;
+  }
 
   public List<ReportDto> getPersonReport(String userId, int type, boolean isAdmin, Instant startTime, Instant endTime) {
     if (startTime == null || endTime == null) {
@@ -62,18 +66,15 @@ public class ReportService {
 
   /**
    * 获取统计数据
-   * @author chengshuo 2018年01月16日 15:31:44
+   *
    * @param userId 用户ID
-   * @param type
-   * @param isAdmin
-   * @return
+   * @author chengshuo 2018年01月16日 15:31:44
    */
   public List<ReportDto> getTodayReport(String userId, int type, boolean isAdmin) {
     ReportDto total = new ReportDto("汇总");
     ReportDto plan = new ReportDto("计划");
     ReportDto channelC = new ReportDto("通道C");
     ReportDto channelD = new ReportDto("通道D");
-
 
     List<TradingRecord> records = new ArrayList<>();
 
@@ -119,11 +120,8 @@ public class ReportService {
 
   /**
    * 根据交易记录获取该用户所得收益报表
+   *
    * @author chengshuo 2018年01月26日 17:30:45
-   * @param records
-   * @param userId
-   * @param isAdmin
-   * @return
    */
   private List<ReportDto> getReportFromRecord(List<TradingRecord> records, String userId, boolean isAdmin) {
     List<ReportDto> reports = new ArrayList<>();

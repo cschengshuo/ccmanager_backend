@@ -3,32 +3,24 @@ Configuration:
 
   Properties:
     Property:
-      - name: log.level.console
-        value: trace
-      - name: log.level.ccmanager
-        value: trace
-      - name: log.path
-        value: /opt/logs
       - name: project.name
         value: my-spring-boot
 
   Appenders:
+
     Console:
       name: CONSOLE
       target: SYSTEM_OUT
-      ThresholdFilter:
-        level: ${sys:log.level.console}
-        onMatch: ACCEPT
-        onMismatch: DENY
       PatternLayout:
-        pattern: "%highlight{%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n}{STYLE=Logback}"
+        pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
+
     RollingFile:
       - name: ROLLING_FILE
         ignoreExceptions: false
-        fileName: ${log.path}/${project.name}.log
-        filePattern: "${log.path}/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz"
+        fileName: ../logs/${project.name}.log
+        filePattern: "../logs/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz"
         PatternLayout:
-          pattern: "%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n"
+          pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
         Policies:
           SizeBasedTriggeringPolicy:
             size: "128 MB"
@@ -37,14 +29,16 @@ Configuration:
 
   Loggers:
     Root:
-      level: info
+      level: INFO
       AppenderRef:
         - ref: CONSOLE
         - ref: ROLLING_FILE
+
     Logger:
       - name: com.winsyo.ccmanager
+      - name: org.hibernate.SQL
         additivity: false
-        level: ${sys:log.level.ccmanager}
+        level: DEBUG
         AppenderRef:
           - ref: CONSOLE
           - ref: ROLLING_FILE

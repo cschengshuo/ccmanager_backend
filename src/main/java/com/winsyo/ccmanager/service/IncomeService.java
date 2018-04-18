@@ -11,10 +11,8 @@ import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.UUID;
 import javax.transaction.Transactional;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
@@ -47,7 +45,7 @@ public class IncomeService {
       return;
     }
 
-    for (TradingRecord record : records) {
+    records.forEach(record -> {
       BigDecimal money = record.getMoney();
       AppUser appUser;
       List<User> parents;
@@ -55,11 +53,11 @@ public class IncomeService {
         appUser = appUserService.findById(record.getUserId());
         parents = this.userService.getParentQueue(appUser.getAgentId());
       } catch (EntityNotFoundException e) {
-        continue;
+        return;
       }
       ChannelType type = record.getPayWayTAG();
       if (type == null) {
-        continue;
+        return;
       }
 
       User admin = this.userService.getSystemAdministrator();
@@ -89,27 +87,18 @@ public class IncomeService {
           newAccount.setPreSettlement(income);
           newAccount.setUserId(user.getId());
           userAccountService.save(newAccount);
-
         }
       });
 
       record.setSettlementStatus(true);
       tradingRecordService.save(record);
-    }
+    });
   }
 
   public BigDecimal calculateAdminIncome(BigDecimal amount, ChannelType type) {
     Channel channel = this.channelService.findByChannelType(type);
     BigDecimal incomeRate = channel.getPlatformFeeRate().subtract(channel.getCostFeeRate());
     BigDecimal incomeFee = channel.getPlatformFee().subtract(channel.getCostFee());
-    BigDecimal income = amount.multiply(incomeRate).add(incomeFee);
-    return income.setScale(2, RoundingMode.UP);
-  }
-
-  private BigDecimal calculatePlatformIncome(BigDecimal amount, ChannelType type) {
-    Channel channel = this.channelService.findByChannelType(type);
-    BigDecimal incomeRate = channel.getFeeRate().subtract(channel.getPlatformFeeRate());
-    BigDecimal incomeFee = channel.getFee().subtract(channel.getPlatformFee());
     BigDecimal income = amount.multiply(incomeRate).add(incomeFee);
     return income.setScale(2, RoundingMode.UP);
   }
@@ -131,6 +120,14 @@ public class IncomeService {
       default:
         return null;
     }
+  }
+
+  private BigDecimal calculatePlatformIncome(BigDecimal amount, ChannelType type) {
+    Channel channel = this.channelService.findByChannelType(type);
+    BigDecimal incomeRate = channel.getFeeRate().subtract(channel.getPlatformFeeRate());
+    BigDecimal incomeFee = channel.getFee().subtract(channel.getPlatformFee());
+    BigDecimal income = amount.multiply(incomeRate).add(incomeFee);
+    return income.setScale(2, RoundingMode.UP);
   }
 
   /**

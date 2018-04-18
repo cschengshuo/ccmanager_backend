@@ -8,10 +8,10 @@ import com.winsyo.ccmanager.domain.enumerate.UserType;
 import com.winsyo.ccmanager.dto.ChannelFeeRateDto;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.ChannelRepository;
+import com.winsyo.ccmanager.util.Utils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.util.Pair;
@@ -35,14 +35,14 @@ public class ChannelService {
   }
 
   public Channel findByChannelType(ChannelType type) {
-    return channelRepository.findByChannelType(type).orElseThrow(() -> new EntityNotFoundException(""));
+    return channelRepository.findByChannelType(type).orElseThrow(() -> new EntityNotFoundException("未找到该通道"));
   }
 
   public List<ChannelFeeRateDto> getSubFeeRateRange(String parentId) {
     List<ChannelFeeRateDto> results = new ArrayList<>();
 
     if (StringUtils.isEmpty(parentId)) {
-      User currentUser = userService.getCurrentUserInfo();
+      User currentUser = Utils.getCurrentUser();
       if (currentUser.getType() != UserType.ADMIN) {
         parentId = currentUser.getId();
       } else {
