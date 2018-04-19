@@ -3,7 +3,7 @@ package com.winsyo.ccmanager.dto;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.winsyo.ccmanager.domain.TradingRecord;
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ public class TradingRecordDto {
   private String recordId;
 
   @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-  private Instant time;
+  private LocalDateTime time;
 
   private BigDecimal money;
 
@@ -38,7 +38,8 @@ public class TradingRecordDto {
 
   private String userName;
 
-  public TradingRecordDto(TradingRecord tradingRecord, String userName) {
+  public TradingRecordDto(TradingRecordQueryDto dto) {
+    TradingRecord tradingRecord = dto.getTradingRecord();
     this.recordId = tradingRecord.getRecordId();
     this.time = tradingRecord.getTime();
     this.money = tradingRecord.getMoney();
@@ -52,6 +53,6 @@ public class TradingRecordDto {
     this.inCardNo = tradingRecord.getInCardNo();
     this.recordNo = tradingRecord.getRecordNo();
     this.planId = tradingRecord.getPlanId();
-    this.userName = userName;
+    this.userName = dto.getUsername();
   }
 }

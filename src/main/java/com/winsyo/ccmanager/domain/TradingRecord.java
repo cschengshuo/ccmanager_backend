@@ -2,7 +2,7 @@ package com.winsyo.ccmanager.domain;
 
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -31,7 +31,7 @@ public class TradingRecord {
    * 时间
    */
   @Column
-  private Instant time;
+  private LocalDateTime time;
 
   /**
    * 类型

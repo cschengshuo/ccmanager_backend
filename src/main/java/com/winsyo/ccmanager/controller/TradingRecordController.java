@@ -2,7 +2,8 @@ package com.winsyo.ccmanager.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-import com.winsyo.ccmanager.domain.TradingRecord;
+import com.winsyo.ccmanager.dto.TradingRecordDto;
+import com.winsyo.ccmanager.dto.TradingRecordQueryDto;
 import com.winsyo.ccmanager.service.TradingRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,8 +28,9 @@ public class TradingRecordController {
   @GetMapping(value = "findAll")
   public ResponseEntity findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size, String cardNo) {
     PageRequest pagination = PageRequest.of(page, size);
-    Page<TradingRecord> all = tradingRecordService.findAll(pagination, cardNo);
-    return ok(all);
+    Page<TradingRecordQueryDto> all = tradingRecordService.findAll(pagination, cardNo);
+    Page<TradingRecordDto> result = all.map(TradingRecordDto::new);
+    return ok(result);
   }
 
 }

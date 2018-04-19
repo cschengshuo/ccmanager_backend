@@ -2,17 +2,16 @@ package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.TradingRecord;
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
+import com.winsyo.ccmanager.dto.TradingRecordQueryDto;
 import com.winsyo.ccmanager.repository.TradingRecordRepository;
 import com.winsyo.ccmanager.util.Utils;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,21 +27,13 @@ public class TradingRecordService {
     this.userService = userService;
   }
 
-  public Page<TradingRecord> findAll(Pageable pageable, String cardNo) {
+  public Page<TradingRecordQueryDto> findAll(Pageable pageable, String cardNo) {
     String agentId = Utils.getCurrentUser().getId();
     List<String> userIds = userService.getAllChildren(agentId).stream().map(user -> user.getId()).collect(Collectors.toList());
     userIds.add(agentId);
+    cardNo = cardNo + "%";
 
-    Specification<TradingRecord> specification = (Specification<TradingRecord>) (root, query, builder) -> {
-      List<Predicate> list = new ArrayList<Predicate>();
-      if (StringUtils.isNotEmpty(cardNo)) {
-        list.add(builder.like(root.get("cardNo").as(String.class), cardNo + '%'));
-      }
-      Predicate[] p = new Predicate[list.size()];
-      return builder.and(list.toArray(p));
-    };
-    Page<TradingRecord> all = tradingRecordRepository.findAll(specification, pageable);
-    return all;
+    return tradingRecordRepository.findTradingRecords(userIds, cardNo, pageable);
   }
 
   public List<TradingRecord> listUnsettleTradingRecords() {
@@ -63,19 +54,12 @@ public class TradingRecordService {
     return tradingRecordRepository.save(record);
   }
 
-  /**
-   * 列出今天的交易记录
-   */
-  public List<TradingRecord> listTodayTradingRecords() {
-    List<TradingRecord> records = tradingRecordRepository.findAll();
-    return records;
+  public List<TradingRecord> findTradingRecordsByTime(String agentId, LocalDateTime start, LocalDateTime end) {
+    return tradingRecordRepository.findTradingRecordsByTime(agentId, start, end);
   }
 
-  /**
-   * 列出本月交易记录
-   */
-  public List<TradingRecord> listMonthTradingRecords() {
-    List<TradingRecord> records = tradingRecordRepository.findAll();
-    return records;
+  public List<TradingRecord> findTradingRecordsByTime(List<String> agentIds, LocalDateTime start, LocalDateTime end) {
+    return tradingRecordRepository.findTradingRecordsByTime(agentIds, start, end);
   }
+
 }

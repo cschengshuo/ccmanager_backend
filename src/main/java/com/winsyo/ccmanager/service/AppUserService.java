@@ -3,13 +3,10 @@ package com.winsyo.ccmanager.service;
 import com.winsyo.ccmanager.domain.AppUser;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.AppUserRepository;
-import com.winsyo.ccmanager.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.criteria.Predicate;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 

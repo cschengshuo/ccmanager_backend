@@ -23,7 +23,7 @@ public class AppUserController {
 
   @GetMapping(value = "findAppUsersByAgentId")
   public List<AppUser> findAppUsersByAgentId(String agentId) {
-    if (StringUtils.isEmpty(agentId)){
+    if (StringUtils.isEmpty(agentId)) {
       agentId = Utils.getCurrentUser().getId();
     }
     List<AppUser> appUsers = appUserService.findAppUsers(agentId);

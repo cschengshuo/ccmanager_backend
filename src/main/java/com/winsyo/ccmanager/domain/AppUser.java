@@ -1,6 +1,6 @@
 package com.winsyo.ccmanager.domain;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -43,13 +43,13 @@ public class AppUser {
   private String agentId;
 
   @Column
-  private Instant registerTime;
+  private LocalDateTime registerTime;
 
   @Column
-  private Instant approveTime;
+  private LocalDateTime approveTime;
 
   @Column
-  private Instant upgradeTime;
+  private LocalDateTime upgradeTime;
 
   @Column
   private boolean isSeniorUser;

@@ -2,14 +2,23 @@ package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.AppUser;
 import com.winsyo.ccmanager.domain.TradingRecord;
+import com.winsyo.ccmanager.domain.UserFee;
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
+import com.winsyo.ccmanager.domain.enumerate.ReportType;
 import com.winsyo.ccmanager.dto.ReportDto;
+import com.winsyo.ccmanager.util.Utils;
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,80 +27,54 @@ public class ReportService {
   private AppUserService appUserService;
   private TradingRecordService tradingRecordService;
   private IncomeService incomeService;
+  private UserService userService;
+  private UserFeeService userFeeService;
 
-  public ReportService(AppUserService appUserService, TradingRecordService tradingRecordService, IncomeService incomeService) {
+  public ReportService(AppUserService appUserService, TradingRecordService tradingRecordService, IncomeService incomeService, UserService userService,
+      UserFeeService userFeeService) {
     this.appUserService = appUserService;
     this.tradingRecordService = tradingRecordService;
     this.incomeService = incomeService;
+    this.userService = userService;
+    this.userFeeService = userFeeService;
   }
 
-  public List<ReportDto> getPersonReport(String userId, int type, boolean isAdmin, Instant startTime, Instant endTime) {
-    if (startTime == null || endTime == null) {
-      return null;
-    }
-    ReportDto total = new ReportDto("汇总");
-    ReportDto plan = new ReportDto("计划");
-    ReportDto channelC = new ReportDto("通道C");
-    ReportDto channelD = new ReportDto("通道D");
-    List<TradingRecord> records = tradingRecordService.listMonthTradingRecords();
-    List<ReportDto> reports = getReportFromRecord(records, userId, isAdmin);
+  public List<ReportDto> getReport(ReportType type,LocalDateTime startDate, LocalDateTime endDate) {
 
-    reports.forEach((report) -> {
-      ChannelType channelType = ChannelType.indexOf(report.getChannelType());
-      switch (channelType) {
-        case PLAN:
-          addReport(plan, report);
-          break;
+    String userId = Utils.getCurrentUser().getId();
+    List<String> children = userService.getAllChildren(userId).stream().map(user -> user.getId()).collect(Collectors.toList());
 
-        case C:
-          addReport(channelC, report);
-          break;
-
-        case D:
-          addReport(channelD, report);
-          break;
-
-        default:
-          break;
-      }
-    });
-
-    addReport(total, plan);
-    addReport(total, channelC);
-    addReport(total, channelD);
-
-    List<ReportDto> result = Arrays.asList(total, plan, channelC, channelD);
-    return result;
-  }
-
-  /**
-   * 获取统计数据
-   *
-   * @param userId 用户ID
-   * @author chengshuo 2018年01月16日 15:31:44
-   */
-  public List<ReportDto> getTodayReport(String userId, int type, boolean isAdmin) {
-    ReportDto total = new ReportDto("汇总");
-    ReportDto plan = new ReportDto("计划");
-    ReportDto channelC = new ReportDto("通道C");
-    ReportDto channelD = new ReportDto("通道D");
-
-    List<TradingRecord> records = new ArrayList<>();
-
+    LocalDateTime start = null;
+    LocalDateTime end = null;
     switch (type) {
-      case 1:
-        records = tradingRecordService.listTodayTradingRecords();
+      case TODAY:
+        start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        end = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
         break;
-      case 2: // TODO 改进
-        records = tradingRecordService.listMonthTradingRecords();
-      default:
+      case MONTH:
+        start = LocalDateTime.now().with(TemporalAdjusters.firstDayOfMonth());
+        end = LocalDateTime.now().with(TemporalAdjusters.lastDayOfMonth());
         break;
+      case TIME:
+        start = startDate;
+        end = endDate;
+
     }
 
-    List<ReportDto> reports = getReportFromRecord(records, userId, isAdmin);
+    List<TradingRecord> selfRecords =  tradingRecordService.findTradingRecordsByTime(userId, start, end);
+//    List<TradingRecord> subRecords = tradingRecordService.findTradingRecordsByTime(children, start, end);
+
+    List<ReportDto> reports = dealSelfRecord(selfRecords, userId);
+
+    ReportDto total = new ReportDto("汇总");
+    ReportDto plan = new ReportDto("计划");
+    ReportDto channelC = new ReportDto("通道C");
+    ReportDto channelD = new ReportDto("通道D");
+    ReportDto channelE = new ReportDto("通道E");
+    ReportDto channelF = new ReportDto("通道F");
 
     reports.forEach((report) -> {
-      ChannelType channelType = ChannelType.indexOf(report.getChannelType());
+      ChannelType channelType = report.getChannelType();
       switch (channelType) {
         case PLAN:
           addReport(plan, report);
@@ -105,7 +88,12 @@ public class ReportService {
           addReport(channelD, report);
           break;
 
-        default:
+        case E:
+          addReport(channelE, report);
+          break;
+
+        case F:
+          addReport(channelF, report);
           break;
       }
     });
@@ -113,9 +101,10 @@ public class ReportService {
     addReport(total, plan);
     addReport(total, channelC);
     addReport(total, channelD);
+    addReport(total, channelE);
+    addReport(total, channelF);
 
-    List<ReportDto> result = Arrays.asList(total, plan, channelC, channelD);
-    return result;
+    return Arrays.asList(total, plan, channelC, channelD,channelE,channelF);
   }
 
   /**
@@ -123,59 +112,39 @@ public class ReportService {
    *
    * @author chengshuo 2018年01月26日 17:30:45
    */
-  private List<ReportDto> getReportFromRecord(List<TradingRecord> records, String userId, boolean isAdmin) {
+  private List<ReportDto> dealSelfRecord(List<TradingRecord> records,String userId) {
     List<ReportDto> reports = new ArrayList<>();
+
     records.forEach((record) -> {
       ReportDto dto = new ReportDto();
       BigDecimal money = record.getMoney();
-      // 获取该笔交易归属的手机用户
-      String appUserId = record.getUserId();
-      AppUser appUser = appUserService.findById(appUserId);
-      if (appUser == null) {
-        return;
-      }
-      boolean isSenior = appUser.isSeniorUser();
-      // 获取该笔交易的交易类型
       ChannelType type = record.getPayWayTAG();
       if (type == null) {
         return;
       }
-      dto.setChannelType(type.index());
+      dto.setChannelType(type);
 
-      if (isAdmin) { // 当前用户为管理员
-        dto.setAmount(money);
-        BigDecimal income = incomeService.calculateAdminIncome(money, type);
-        dto.setIncome(income);
-      } else if (StringUtils.equals(userId, appUser.getAgentId())) { // 手机用户归属于当前用户
-        dto.setAmount(money);
+      Pair<UserFee, UserFee> userFeePair = userFeeService.findByUserIdAndChannelType(userId, type);
 
-        BigDecimal income = incomeService.calculatePersonalIncome(money, type, userId);
-        dto.setIncome(income);
-        dto.setIncomeFromUser(income);
-      } else {
-//        Pair<BigDecimal, BigDecimal> income = incomeService.calculatePersonalIncomeAndSub(money, type,
-//            userId, appUser.getAgentId());
-//        if (income == null) { // 当前用户不在该笔交易的获益队列中
-//          return;
-//        }
+      BigDecimal feeRate = userFeePair.getFirst().getValue();
+      BigDecimal fee = userFeePair.getSecond().getValue();
+      BigDecimal income = money.multiply(feeRate).add(fee).setScale(2, RoundingMode.UP);
 
-//        dto.setSubAmount(money);
-//
-//        dto.setIncome(income.getFirst());
-//        dto.setIncomeFromSub(income.getFirst());
-//        dto.setSubIncome(income.getSecond());
-      }
+      dto.setSelfAmount(money);
+      dto.setSelfIncome(income);
+      dto.setIncome(income);
+
       reports.add(dto);
     });
     return reports;
   }
 
   private void addReport(ReportDto lhs, ReportDto rhs) {
-    lhs.setAmount(lhs.getAmount().add(rhs.getAmount()));
     lhs.setIncome(lhs.getIncome().add(rhs.getIncome()));
-    lhs.setIncomeFromSub(lhs.getIncomeFromSub().add(rhs.getIncomeFromSub()));
-    lhs.setIncomeFromUser(lhs.getIncomeFromUser().add(rhs.getIncomeFromUser()));
+    lhs.setSelfAmount(lhs.getSelfAmount().add(rhs.getSelfAmount()));
+    lhs.setSelfIncome(lhs.getSelfIncome().add(rhs.getSelfIncome()));
     lhs.setSubAmount(lhs.getSubAmount().add(rhs.getSubAmount()));
+    lhs.setIncomeFromSub(lhs.getIncomeFromSub().add(rhs.getIncomeFromSub()));
     lhs.setSubIncome(lhs.getSubIncome().add(rhs.getSubIncome()));
   }
 }

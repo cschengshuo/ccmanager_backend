@@ -25,7 +25,7 @@ public class ExeceptionHandler {
     Map<String, String> errorMsg = new HashMap<>();
     errorMsg.put("code", "conflict");
     errorMsg.put("message", ex.getMessage());
-    logger.error("未找到实体",ex);
+    logger.error("未找到实体", ex);
     return status(HttpStatus.CONFLICT).body(errorMsg);
   }
 
