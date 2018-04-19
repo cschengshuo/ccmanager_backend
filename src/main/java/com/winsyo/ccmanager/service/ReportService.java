@@ -1,6 +1,5 @@
 package com.winsyo.ccmanager.service;
 
-import com.winsyo.ccmanager.domain.AppUser;
 import com.winsyo.ccmanager.domain.TradingRecord;
 import com.winsyo.ccmanager.domain.UserFee;
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -39,10 +37,9 @@ public class ReportService {
     this.userFeeService = userFeeService;
   }
 
-  public List<ReportDto> getReport(ReportType type,LocalDateTime startDate, LocalDateTime endDate) {
+  public List<ReportDto> getReport(ReportType type, LocalDateTime startDate, LocalDateTime endDate) {
 
     String userId = Utils.getCurrentUser().getId();
-    List<String> children = userService.getAllChildren(userId).stream().map(user -> user.getId()).collect(Collectors.toList());
 
     LocalDateTime start = null;
     LocalDateTime end = null;
@@ -61,10 +58,10 @@ public class ReportService {
 
     }
 
-    List<TradingRecord> selfRecords =  tradingRecordService.findTradingRecordsByTime(userId, start, end);
-//    List<TradingRecord> subRecords = tradingRecordService.findTradingRecordsByTime(children, start, end);
+    List<TradingRecord> selfRecords = tradingRecordService.findTradingRecordsByTime(userId, start, end);
 
     List<ReportDto> reports = dealSelfRecord(selfRecords, userId);
+    List<ReportDto> childrenReports = getChildrenReport(userId, start, end);
 
     ReportDto total = new ReportDto("汇总");
     ReportDto plan = new ReportDto("计划");
@@ -73,7 +70,21 @@ public class ReportService {
     ReportDto channelE = new ReportDto("通道E");
     ReportDto channelF = new ReportDto("通道F");
 
-    reports.forEach((report) -> {
+    add(reports, plan, channelC, channelD, channelE, channelF);
+
+    add(childrenReports, plan, channelC, channelD, channelE, channelF);
+
+    addReport(total, plan);
+    addReport(total, channelC);
+    addReport(total, channelD);
+    addReport(total, channelE);
+    addReport(total, channelF);
+
+    return Arrays.asList(total, plan, channelC, channelD, channelE, channelF);
+  }
+
+  private void add(List<ReportDto> childrenReports, ReportDto plan, ReportDto channelC, ReportDto channelD, ReportDto channelE, ReportDto channelF) {
+    childrenReports.forEach((report) -> {
       ChannelType channelType = report.getChannelType();
       switch (channelType) {
         case PLAN:
@@ -97,14 +108,6 @@ public class ReportService {
           break;
       }
     });
-
-    addReport(total, plan);
-    addReport(total, channelC);
-    addReport(total, channelD);
-    addReport(total, channelE);
-    addReport(total, channelF);
-
-    return Arrays.asList(total, plan, channelC, channelD,channelE,channelF);
   }
 
   /**
@@ -112,7 +115,7 @@ public class ReportService {
    *
    * @author chengshuo 2018年01月26日 17:30:45
    */
-  private List<ReportDto> dealSelfRecord(List<TradingRecord> records,String userId) {
+  private List<ReportDto> dealSelfRecord(List<TradingRecord> records, String userId) {
     List<ReportDto> reports = new ArrayList<>();
 
     records.forEach((record) -> {
@@ -133,6 +136,39 @@ public class ReportService {
       dto.setSelfAmount(money);
       dto.setSelfIncome(income);
       dto.setIncome(income);
+
+      reports.add(dto);
+    });
+    return reports;
+  }
+
+  private List<ReportDto> getChildrenReport(String userId, LocalDateTime start, LocalDateTime end) {
+    List<String> children = userService.getAllChildren(userId).stream().map(user -> user.getId()).collect(Collectors.toList());
+    List<TradingRecord> subRecords = tradingRecordService.findTradingRecordsByTime(children, start, end);
+    return dealChildrenDto(subRecords, userId);
+  }
+
+  private List<ReportDto> dealChildrenDto(List<TradingRecord> records, String userId) {
+    List<ReportDto> reports = new ArrayList<>();
+
+    records.forEach((record) -> {
+      ReportDto dto = new ReportDto();
+      BigDecimal money = record.getMoney();
+      ChannelType type = record.getPayWayTAG();
+      if (type == null) {
+        return;
+      }
+      dto.setChannelType(type);
+
+      Pair<UserFee, UserFee> userFeePair = userFeeService.findByUserIdAndChannelType(userId, type);
+
+      BigDecimal feeRate = userFeePair.getFirst().getValue();
+      BigDecimal fee = userFeePair.getSecond().getValue();
+      BigDecimal income = money.multiply(feeRate).add(fee).setScale(2, RoundingMode.UP);
+
+      dto.setSubAmount(money);
+      dto.setIncome(income);
+      dto.setIncomeFromSub(income);
 
       reports.add(dto);
     });

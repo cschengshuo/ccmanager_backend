@@ -1,13 +1,14 @@
 package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.AppUser;
+import com.winsyo.ccmanager.dto.AppUserDto;
+import com.winsyo.ccmanager.dto.AppUserQueryDto;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.AppUserRepository;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.criteria.Predicate;
-import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,22 +23,16 @@ public class AppUserService {
   }
 
   public AppUser findById(String id) {
-    return appUserRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("未找到该手机用户"));
+    return appUserRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("未找到该手机用户", id));
   }
 
-  public List<AppUser> findAppUsers(String agentId) {
+  public Page<AppUserDto> findAppUsers(String agentId, Pageable pagination) {
     List<String> userIds = userService.getAllChildren(agentId).stream().map(user -> user.getId()).collect(Collectors.toList());
     userIds.add(agentId);
 
-    Specification<AppUser> appUserSpecification = (Specification<AppUser>) (root, query, builder) -> {
-      List<Predicate> list = new ArrayList<>();
-
-      list.add(root.get("agentId").as(String.class).in(userIds));
-      Predicate[] p = new Predicate[list.size()];
-      return builder.and(list.toArray(p));
-    };
-    List<AppUser> appUsers = appUserRepository.findAll(appUserSpecification);
-    return appUsers;
+    Page<AppUserQueryDto> appUsers = appUserRepository.findAppUsers(userIds, pagination);
+    Page<AppUserDto> results = appUsers.map(appUserQueryDto -> new AppUserDto(appUserQueryDto));
+    return results;
   }
 
 

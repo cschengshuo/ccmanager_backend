@@ -18,7 +18,7 @@ public class UserAccountService {
   }
 
   public UserAccount findByUserId(String userId) {
-    UserAccount userAccount = userAccountRepository.findByUserId(userId).orElseThrow(() -> new EntityNotFoundException("未找到用户账户"));
+    UserAccount userAccount = userAccountRepository.findByUserId(userId).orElseThrow(() -> new EntityNotFoundException("未找到用户账户", userId));
     return userAccount;
   }
 

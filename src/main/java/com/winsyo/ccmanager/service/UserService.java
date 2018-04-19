@@ -47,11 +47,11 @@ public class UserService {
   }
 
   public User findByUsername(String username) {
-    return userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("未找到该用户"));
+    return userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("未找到该用户", username));
   }
 
   public User findById(String id) {
-    return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("未找到该用户"));
+    return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("未找到该用户", id));
   }
 
   public List<User> findUsersByParentId(String parentId) {
@@ -59,11 +59,11 @@ public class UserService {
   }
 
   public User getSystemAdministrator() {
-    return userRepository.findByType(UserType.ADMIN).orElseThrow(() -> new EntityNotFoundException("未找到系统管理员"));
+    return userRepository.findByType(UserType.ADMIN).orElseThrow(() -> new EntityNotFoundException("未找到系统管理员", UserType.ADMIN.name()));
   }
 
   public User getPlatformAdministrator() {
-    return userRepository.findByType(UserType.PLATFORM).orElseThrow(() -> new EntityNotFoundException("未找到平台管理员"));
+    return userRepository.findByType(UserType.PLATFORM).orElseThrow(() -> new EntityNotFoundException("未找到平台管理员", UserType.PLATFORM.name()));
   }
 
   public TreeDto map(User user) {

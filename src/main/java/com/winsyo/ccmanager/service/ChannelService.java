@@ -35,7 +35,7 @@ public class ChannelService {
   }
 
   public Channel findByChannelType(ChannelType type) {
-    return channelRepository.findByChannelType(type).orElseThrow(() -> new EntityNotFoundException("未找到该通道"));
+    return channelRepository.findByChannelType(type).orElseThrow(() -> new EntityNotFoundException("未找到该通道", type.name()));
   }
 
   public List<ChannelFeeRateDto> getSubFeeRateRange(String parentId) {

@@ -55,11 +55,22 @@ public class TradingRecordService {
   }
 
   public List<TradingRecord> findTradingRecordsByTime(String agentId, LocalDateTime start, LocalDateTime end) {
-    return tradingRecordRepository.findTradingRecordsByTime(agentId, start, end);
+    return tradingRecordRepository.findTradingRecordsByTime(agentId, start, end).stream().filter(this::isValidChannelType).collect(Collectors.toList());
   }
 
   public List<TradingRecord> findTradingRecordsByTime(List<String> agentIds, LocalDateTime start, LocalDateTime end) {
-    return tradingRecordRepository.findTradingRecordsByTime(agentIds, start, end);
+    return tradingRecordRepository.findTradingRecordsByTime(agentIds, start, end).stream().filter(this::isValidChannelType).collect(Collectors.toList());
+  }
+
+  public boolean isValidChannelType(TradingRecord tradingRecord){
+    List<ChannelType> types = new ArrayList<>();
+    types.add(ChannelType.PLAN);
+    types.add(ChannelType.C);
+    types.add(ChannelType.D);
+    types.add(ChannelType.E);
+    types.add(ChannelType.F);
+
+    return types.contains(tradingRecord.getPayWayTAG());
   }
 
 }

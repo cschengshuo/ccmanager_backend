@@ -24,7 +24,7 @@ public class UserFeeService {
   }
 
   public UserFee findByUserIdAndChannelTypeAndFeeRate(String userId, ChannelType type, boolean isFeeRate) {
-    UserFee userFee = userFeeRepository.findByUserIdAndChannelTypeAndFeeRate(userId, type, isFeeRate).orElseThrow(() -> new EntityNotFoundException("为找到用户费率"));
+    UserFee userFee = userFeeRepository.findByUserIdAndChannelTypeAndFeeRate(userId, type, isFeeRate).orElseThrow(() -> new EntityNotFoundException("未找到用户费率", userId));
     return userFee;
   }
 
