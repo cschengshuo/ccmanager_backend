@@ -3,8 +3,10 @@ package com.winsyo.ccmanager.service;
 import com.winsyo.ccmanager.domain.TradingRecord;
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import com.winsyo.ccmanager.repository.TradingRecordRepository;
+import com.winsyo.ccmanager.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
@@ -18,13 +20,19 @@ public class TradingRecordService {
 
   private TradingRecordRepository tradingRecordRepository;
   private AppUserService appUserService;
+  private UserService userService;
 
-  public TradingRecordService(TradingRecordRepository tradingRecordRepository, AppUserService appUserService) {
+  public TradingRecordService(TradingRecordRepository tradingRecordRepository, AppUserService appUserService, UserService userService) {
     this.tradingRecordRepository = tradingRecordRepository;
     this.appUserService = appUserService;
+    this.userService = userService;
   }
 
   public Page<TradingRecord> findAll(Pageable pageable, String cardNo) {
+    String agentId = Utils.getCurrentUser().getId();
+    List<String> userIds = userService.getAllChildren(agentId).stream().map(user -> user.getId()).collect(Collectors.toList());
+    userIds.add(agentId);
+
     Specification<TradingRecord> specification = (Specification<TradingRecord>) (root, query, builder) -> {
       List<Predicate> list = new ArrayList<Predicate>();
       if (StringUtils.isNotEmpty(cardNo)) {

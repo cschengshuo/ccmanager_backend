@@ -3,8 +3,10 @@ package com.winsyo.ccmanager.service;
 import com.winsyo.ccmanager.domain.AppUser;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.AppUserRepository;
+import com.winsyo.ccmanager.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.criteria.Predicate;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,11 @@ import org.springframework.stereotype.Service;
 public class AppUserService {
 
   private AppUserRepository appUserRepository;
+  private UserService userService;
 
-  @Autowired
-  public AppUserService(AppUserRepository appUserRepository) {
+  public AppUserService(AppUserRepository appUserRepository, UserService userService) {
     this.appUserRepository = appUserRepository;
+    this.userService = userService;
   }
 
   public AppUser findById(String id) {
@@ -26,12 +29,13 @@ public class AppUserService {
   }
 
   public List<AppUser> findAppUsers(String agentId) {
+    List<String> userIds = userService.getAllChildren(agentId).stream().map(user -> user.getId()).collect(Collectors.toList());
+    userIds.add(agentId);
+
     Specification<AppUser> appUserSpecification = (Specification<AppUser>) (root, query, builder) -> {
       List<Predicate> list = new ArrayList<>();
 
-      if (StringUtils.isNotEmpty(agentId)) {
-        list.add(builder.equal(root.get("agentId").as(String.class), agentId));
-      }
+      list.add(root.get("agentId").as(String.class).in(userIds));
       Predicate[] p = new Predicate[list.size()];
       return builder.and(list.toArray(p));
     };

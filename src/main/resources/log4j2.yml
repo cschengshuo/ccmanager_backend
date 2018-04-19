@@ -36,7 +36,6 @@ Configuration:
 
     Logger:
       - name: com.winsyo.ccmanager
-      - name: org.hibernate.SQL
         additivity: false
         level: DEBUG
         AppenderRef:

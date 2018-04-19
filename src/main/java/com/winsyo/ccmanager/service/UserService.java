@@ -205,4 +205,20 @@ public class UserService {
 
   }
 
+  public List<User> getAllChildren(String userId) {
+    List<User> result = new ArrayList<>();
+
+    User parent = findById(userId);
+    List<User> children = findUsersByParentId(parent.getId());
+    result.addAll(children);
+
+    children.forEach(user -> {
+      List<User> grandchildren = getAllChildren(user.getId());
+      result.addAll(grandchildren);
+    });
+
+    return result;
+  }
+
+
 }
