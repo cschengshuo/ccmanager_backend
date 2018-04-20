@@ -2,6 +2,8 @@ package com.winsyo.ccmanager.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
+import java.math.BigDecimal;
+
 import com.winsyo.ccmanager.dto.AppUserDto;
 import com.winsyo.ccmanager.service.AppUserService;
 import com.winsyo.ccmanager.util.Utils;
@@ -36,4 +38,13 @@ public class AppUserController {
     return ok(appUsers);
   }
 
+  
+  @GetMapping(value = "getAppUserWithdrawSum")
+  public ResponseEntity getAppUserWithdrawSum() {
+	  BigDecimal sumMoney = appUserService.getAppUserWithdrawSumMoney();
+    return ok(sumMoney);
+  }
+  
+  
+  
 }
