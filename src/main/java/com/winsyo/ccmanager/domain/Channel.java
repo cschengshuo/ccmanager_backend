@@ -82,7 +82,7 @@ public class Channel {
   /**
    * 通道描述
    */
-  @Column
+  @Column(length = 1000)
   private String description;
 
   @Column

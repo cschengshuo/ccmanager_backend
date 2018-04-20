@@ -1,9 +1,11 @@
 package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.Channel;
+import com.winsyo.ccmanager.domain.SystemConfig;
 import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.domain.UserFee;
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
+import com.winsyo.ccmanager.domain.enumerate.SystemConfigType;
 import com.winsyo.ccmanager.domain.enumerate.UserType;
 import com.winsyo.ccmanager.dto.ChannelFeeRateDto;
 import com.winsyo.ccmanager.dto.ModifyChannelDto;
@@ -23,14 +25,10 @@ import org.springframework.stereotype.Service;
 public class ChannelService {
 
   private ChannelRepository channelRepository;
+  private SystemConfigService systemConfigService;
   private UserService userService;
   private UserFeeService userFeeService;
 
-  public ChannelService(ChannelRepository channelRepository, UserService userService, UserFeeService userFeeService) {
-    this.channelRepository = channelRepository;
-    this.userService = userService;
-    this.userFeeService = userFeeService;
-  }
 
   public List<Channel> findAll() {
     return channelRepository.findAll(Sort.by("channelType"));
@@ -103,6 +101,32 @@ public class ChannelService {
     }
     if (!StringUtils.equals(dto.getDescription(), channel.getDescription())) {
       channel.setDescription(dto.getDescription());
+
+      switch (channel.getChannelType()) {
+        case C:
+          SystemConfig c = systemConfigService.findByConfigType(SystemConfigType.CHANNEL_C_DESC);
+          c.setDescription(dto.getDescription());
+          systemConfigService.save(c);
+          break;
+
+        case D:
+          SystemConfig d = systemConfigService.findByConfigType(SystemConfigType.CHANNEL_D_DESC);
+          d.setDescription(dto.getDescription());
+          systemConfigService.save(d);
+          break;
+
+        case E:
+          SystemConfig e = systemConfigService.findByConfigType(SystemConfigType.CHANNEL_E_DESC);
+          e.setDescription(dto.getDescription());
+          systemConfigService.save(e);
+          break;
+
+        case F:
+          SystemConfig f = systemConfigService.findByConfigType(SystemConfigType.CHANNEL_F_DESC);
+          f.setDescription(dto.getDescription());
+          systemConfigService.save(f);
+          break;
+      }
     }
 
     channelRepository.save(channel);

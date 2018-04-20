@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TradingRecordRepository extends JpaRepository<TradingRecord, String>, JpaSpecificationExecutor<TradingRecord> {
 
-  List<TradingRecord> findByPayWayTAGIsInAndSettlementStatusAndOk(List<PayWayTag> payWayTAGs, boolean status, boolean ok);
+  List<TradingRecord> findByPayWayTAGIsInAndSettlementStatusAndOkAndType(List<PayWayTag> payWayTAGs, boolean status, boolean ok, String type);
 
   @Query(value = "select new com.winsyo.ccmanager.dto.TradingRecordQueryDto(rec, app.name) from TradingRecord rec, AppUser app where rec.cardNo like :cardNo and rec.userId = app.userId and app.agentId in :agentIds order by rec.time desc")
   Page<TradingRecordQueryDto> findTradingRecords(@Param("agentIds") List<String> agentIds, @Param("cardNo") String cardNo, Pageable pageable);
@@ -24,10 +24,10 @@ public interface TradingRecordRepository extends JpaRepository<TradingRecord, St
   @Query(value = "select new com.winsyo.ccmanager.dto.TradingRecordQueryDto(rec, app.name) from TradingRecord rec, AppUser app where rec.userId = app.userId and app.agentId in :agentIds and rec.payWayTAG = :payWayTAG order by rec.time desc")
   Page<TradingRecordQueryDto> findTradingRecordsByPayWayTag(@Param("agentIds") List<String> agentIds, @Param("payWayTAG") PayWayTag payWayTAG, Pageable pageable);
 
-  @Query(value = "select rec from TradingRecord rec, AppUser app where rec.userId = app.userId and app.agentId in :agentIds and rec.time >= :startTime and rec.time <= :endTime")
+  @Query(value = "select rec from TradingRecord rec, AppUser app where rec.userId = app.userId and app.agentId in :agentIds and rec.type = '0' and rec.time >= :startTime and rec.time <= :endTime")
   List<TradingRecord> findTradingRecordsByTime(@Param("agentIds") List<String> agentIds, @Param("startTime") LocalDateTime start, @Param("endTime") LocalDateTime end);
 
-  @Query(value = "select rec from TradingRecord rec, AppUser app where rec.userId = app.userId and app.agentId = :agentId and rec.time >= :startTime and rec.time <= :endTime")
+  @Query(value = "select rec from TradingRecord rec, AppUser app where rec.userId = app.userId and app.agentId = :agentId and rec.type = '0' and rec.time >= :startTime and rec.time <= :endTime")
   List<TradingRecord> findTradingRecordsByTime(@Param("agentId") String agentId, @Param("startTime") LocalDateTime start, @Param("endTime") LocalDateTime end);
 
 }
