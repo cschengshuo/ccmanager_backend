@@ -18,11 +18,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -167,19 +165,19 @@ public class UserService {
 
   }
 
-  public List<User> findUsers(String name) {
-    Specification<User> appUserSpecification = (Specification<User>) (root, query, builder) -> {
-      List<Predicate> list = new ArrayList<Predicate>();
-      list.add(builder.equal(root.get("type").as(UserType.class), UserType.AGENT));
-      if (StringUtils.isNotEmpty(name)) {
-        list.add(builder.like(root.get("name").as(String.class), name + '%'));
-      }
-      Predicate[] p = new Predicate[list.size()];
-      return builder.and(list.toArray(p));
-    };
-    List<User> users = userRepository.findAll(appUserSpecification);
-    return users;
-  }
+//  public List<User> findUsers(String name) {
+//    Specification<User> appUserSpecification = (Specification<User>) (root, query, builder) -> {
+//      List<Predicate> list = new ArrayList<>();
+//      list.add(builder.equal(root.get("type").as(UserType.class), UserType.AGENT));
+//      if (StringUtils.isNotEmpty(name)) {
+//        list.add(builder.like(root.get("name").as(String.class), name + '%'));
+//      }
+//      Predicate[] p = new Predicate[list.size()];
+//      return builder.and(list.toArray(p));
+//    };
+//    List<User> users = userRepository.findAll(appUserSpecification);
+//    return users;
+//  }
 
   public TreeDto getUserTreeRoot() {
     User user;
@@ -214,6 +212,21 @@ public class UserService {
 
     children.forEach(user -> {
       List<User> grandchildren = getAllChildren(user.getId());
+      result.addAll(grandchildren);
+    });
+
+    return result;
+  }
+
+  public List<User> findUsers(String userId, String name) {
+    List<User> result = new ArrayList<>();
+
+    User parent = findById(userId);
+    List<User> children = userRepository.findUsersByParentIdAndUsernameContains(userId, name);
+    result.addAll(children);
+
+    children.forEach(user -> {
+      List<User> grandchildren = findUsers(user.getId(), name);
       result.addAll(grandchildren);
     });
 

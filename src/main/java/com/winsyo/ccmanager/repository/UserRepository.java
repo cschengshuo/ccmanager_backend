@@ -15,6 +15,8 @@ public interface UserRepository extends JpaRepository<User, String>, JpaSpecific
 
   List<User> findUsersByParentId(String parentId);
 
+  List<User> findUsersByParentIdAndUsernameContains(String parentId, String name);
+
   long countByParentId(String parentId);
 
   Optional<User> findByType(UserType type);

@@ -3,6 +3,7 @@ package com.winsyo.ccmanager.controller;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.winsyo.ccmanager.domain.User;
+import com.winsyo.ccmanager.domain.enumerate.UserType;
 import com.winsyo.ccmanager.dto.CreateUserDto;
 import com.winsyo.ccmanager.dto.ModifyUserDto;
 import com.winsyo.ccmanager.dto.TreeDto;
@@ -84,7 +85,14 @@ public class UserController {
 
   @GetMapping(value = "findUsers")
   public ResponseEntity findUsers(String loginName) {
-    List<User> all = userService.findUsers(loginName);
+    User currentUser = Utils.getCurrentUser();
+    User user;
+    if (currentUser.getType() != UserType.ADMIN) {
+      user = currentUser;
+    } else {
+      user = userService.getPlatformAdministrator();
+    }
+    List<User> all = userService.findUsers(user.getId(), loginName);
     return ok(all);
   }
 

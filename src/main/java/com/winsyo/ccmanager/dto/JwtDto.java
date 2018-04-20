@@ -1,5 +1,7 @@
 package com.winsyo.ccmanager.dto;
 
+import com.winsyo.ccmanager.domain.User;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,10 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginDto {
+public class JwtDto implements Serializable {
 
-  private String username;
+  private User user;
 
-  private String password;
+  private String jwt;
 
 }
