@@ -1,5 +1,6 @@
 package com.winsyo.ccmanager.domain;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -53,5 +54,8 @@ public class AppUser {
 
   @Column
   private boolean isSeniorUser;
+  
+  @Column
+  private BigDecimal canbalance;
 
 }

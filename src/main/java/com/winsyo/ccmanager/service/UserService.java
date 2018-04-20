@@ -5,6 +5,7 @@ import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.domain.enumerate.UserType;
 import com.winsyo.ccmanager.dto.CreateUserDto;
 import com.winsyo.ccmanager.dto.ModifyUserDto;
+import com.winsyo.ccmanager.dto.ModifyUserInfoDto;
 import com.winsyo.ccmanager.dto.TreeDto;
 import com.winsyo.ccmanager.dto.TreeNodeDto;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
@@ -233,5 +234,13 @@ public class UserService {
     return result;
   }
 
+  public void modifyUserInfo(ModifyUserInfoDto dto) {
+	  User user = findById(dto.getId());
+	  user.setName(dto.getName());
+	  user.setPhone(dto.getPhone());
+	  user.setIdentityCard(dto.getIdentityCard());
+	  userRepository.save(user);
+  }
+  
 
 }
