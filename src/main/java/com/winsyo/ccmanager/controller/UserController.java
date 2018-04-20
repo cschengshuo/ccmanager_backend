@@ -5,6 +5,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.domain.enumerate.UserType;
 import com.winsyo.ccmanager.dto.CreateUserDto;
+import com.winsyo.ccmanager.dto.ModifyLoginPasswordDto;
 import com.winsyo.ccmanager.dto.ModifyUserDto;
 import com.winsyo.ccmanager.dto.ModifyUserInfoDto;
 import com.winsyo.ccmanager.dto.TreeDto;
@@ -103,6 +104,12 @@ public class UserController {
     return ok(true);
   }
   
-  
+  @PostMapping(value = "modifyLoginPassword")
+  public ResponseEntity modifyLoginPassword(@RequestBody ModifyLoginPasswordDto dto) {
+	  
+	  User user = Utils.getCurrentUser();
+      userService.setPassword(user.getUsername(),dto.getOldPassword(),dto.getPassword());
+    return ok(true);
+  }
 
 }
