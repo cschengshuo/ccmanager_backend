@@ -1,0 +1,32 @@
+package com.winsyo.ccmanager.controller;
+
+import static org.springframework.http.ResponseEntity.ok;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.winsyo.ccmanager.dto.RechargeRecordDto;
+import com.winsyo.ccmanager.service.UtilService;
+
+@RestController
+@RequestMapping(value = "/util")
+public class UtilController {
+
+  private UtilService utilService;
+
+  @Autowired
+  public UtilController(UtilService utilService) {
+    this.utilService = utilService;
+  }
+
+  @GetMapping(value = "getAppUserWithdrawSum")
+  public ResponseEntity getAppUserWithdrawSum(@RequestBody RechargeRecordDto dto) {
+    utilService.addRechargeRecord(dto);
+    return ok(true);
+  }
+
+}
