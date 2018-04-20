@@ -22,7 +22,7 @@ public interface AppUserRepository extends JpaRepository<AppUser, String>, JpaSp
   Page<AppUserQueryDto> findAppUsers(@Param("agentIds") List<String> agentIds, Pageable pageable);
   
   
-  @Query(value = "select count(canbalance) from AppUser")
+  @Query(value = "select sum(canbalance) from AppUser")
   BigDecimal findAppUserWithdrawSumMoney();
 
 }

@@ -1,10 +1,12 @@
 package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.AppUser;
+import com.winsyo.ccmanager.domain.enumerate.PayWayTag;
 import com.winsyo.ccmanager.dto.AppUserDto;
 import com.winsyo.ccmanager.dto.AppUserQueryDto;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.AppUserRepository;
+import com.winsyo.ccmanager.repository.TradingRecordRepository;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,10 +20,13 @@ public class AppUserService {
 
   private AppUserRepository appUserRepository;
   private UserService userService;
+  private TradingRecordRepository tradingRecordRepository;
+  
 
-  public AppUserService(AppUserRepository appUserRepository, UserService userService) {
+  public AppUserService(AppUserRepository appUserRepository, UserService userService,TradingRecordRepository tradingRecordRepository) {
     this.appUserRepository = appUserRepository;
     this.userService = userService;
+    this.tradingRecordRepository = tradingRecordRepository;
   }
 
   public AppUser findById(String id) {
@@ -41,5 +46,9 @@ public class AppUserService {
 	    return appUserRepository.findAppUserWithdrawSumMoney();
   }
   
+  
+  public BigDecimal getAppUserHasWithdrawedSumMoney() {
+	    return tradingRecordRepository.findAppUserHasWithdrawedSumMoney(PayWayTag.WITHDRAW, true);
+}
 
 }

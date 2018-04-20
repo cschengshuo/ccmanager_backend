@@ -46,5 +46,11 @@ public class AppUserController {
   }
   
   
+  @GetMapping(value = "getAppUserHasWithdrawedSum")
+  public ResponseEntity getAppUserWithdrawedSum() {
+	  BigDecimal sumMoney = appUserService.getAppUserHasWithdrawedSumMoney();
+    return ok(sumMoney);
+  }
+  
   
 }
