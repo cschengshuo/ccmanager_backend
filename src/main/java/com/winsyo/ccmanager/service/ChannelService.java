@@ -6,12 +6,14 @@ import com.winsyo.ccmanager.domain.UserFee;
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import com.winsyo.ccmanager.domain.enumerate.UserType;
 import com.winsyo.ccmanager.dto.ChannelFeeRateDto;
+import com.winsyo.ccmanager.dto.ModifyChannelDto;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.ChannelRepository;
 import com.winsyo.ccmanager.util.Utils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.util.Pair;
@@ -36,6 +38,10 @@ public class ChannelService {
 
   public Channel findByChannelType(ChannelType type) {
     return channelRepository.findByChannelType(type).orElseThrow(() -> new EntityNotFoundException("未找到该通道", type.name()));
+  }
+
+  public Channel findById(String id) {
+    return channelRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("未找到该通道", id));
   }
 
   public List<ChannelFeeRateDto> getSubFeeRateRange(String parentId) {
@@ -79,5 +85,27 @@ public class ChannelService {
     return results;
   }
 
+  @Transactional
+  public void modify(ModifyChannelDto dto) {
+    Channel channel = findById(dto.getId());
+
+    if (dto.getPlatformFeeRate() != null && dto.getPlatformFeeRate().compareTo(channel.getPlatformFeeRate()) != 0) {
+      channel.setPlatformFeeRate(dto.getPlatformFeeRate());
+    }
+    if (dto.getPlatformFee() != null && dto.getPlatformFee().compareTo(channel.getPlatformFee()) != 0) {
+      channel.setPlatformFee(dto.getPlatformFee());
+    }
+    if (dto.getCostFeeRate() != null && dto.getCostFeeRate().compareTo(channel.getCostFeeRate()) != 0) {
+      channel.setCostFeeRate(dto.getCostFeeRate());
+    }
+    if (dto.getCostFee() != null && dto.getCostFee().compareTo(channel.getCostFee()) != 0) {
+      channel.setCostFee(dto.getCostFee());
+    }
+    if (!StringUtils.equals(dto.getDescription(), channel.getDescription())) {
+      channel.setDescription(dto.getDescription());
+    }
+
+    channelRepository.save(channel);
+  }
 
 }
