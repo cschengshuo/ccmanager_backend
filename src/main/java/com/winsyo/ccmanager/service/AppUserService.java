@@ -5,6 +5,8 @@ import com.winsyo.ccmanager.dto.AppUserDto;
 import com.winsyo.ccmanager.dto.AppUserQueryDto;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.AppUserRepository;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
@@ -35,5 +37,9 @@ public class AppUserService {
     return results;
   }
 
+  public BigDecimal getAppUserWithdrawSumMoney() {
+	    return appUserRepository.findAppUserWithdrawSumMoney();
+  }
+  
 
 }
