@@ -1,6 +1,5 @@
 package com.winsyo.ccmanager.domain;
 
-import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import com.winsyo.ccmanager.domain.enumerate.PayWayTag;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

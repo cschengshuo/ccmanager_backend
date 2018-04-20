@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TradingRecordRepository extends JpaRepository<TradingRecord, String>, JpaSpecificationExecutor<TradingRecord> {
 
-  List<TradingRecord> findByPayWayTAGIsInAndSettlementStatusAndOk(List<PayWayTag> payWayTAGs,boolean status,  boolean ok);
+  List<TradingRecord> findByPayWayTAGIsInAndSettlementStatusAndOk(List<PayWayTag> payWayTAGs, boolean status, boolean ok);
 
   @Query(value = "select new com.winsyo.ccmanager.dto.TradingRecordQueryDto(rec, app.name) from TradingRecord rec, AppUser app where rec.cardNo like :cardNo and rec.userId = app.userId and app.agentId in :agentIds order by rec.time desc")
   Page<TradingRecordQueryDto> findTradingRecords(@Param("agentIds") List<String> agentIds, @Param("cardNo") String cardNo, Pageable pageable);

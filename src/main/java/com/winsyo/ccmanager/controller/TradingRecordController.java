@@ -34,8 +34,8 @@ public class TradingRecordController {
   }
 
   @GetMapping(value = "findWithDrawRecords")
-  public ResponseEntity findWithDrawRecords(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size){
-    PageRequest pagination = PageRequest.of(page,size);
+  public ResponseEntity findWithDrawRecords(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
+    PageRequest pagination = PageRequest.of(page, size);
     Page<TradingRecordQueryDto> all = tradingRecordService.findWithDraw(pagination);
     Page<TradingRecordDto> result = all.map(TradingRecordDto::new);
     return ok(result);

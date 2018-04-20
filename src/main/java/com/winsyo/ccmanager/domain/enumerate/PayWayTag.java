@@ -1,6 +1,6 @@
 package com.winsyo.ccmanager.domain.enumerate;
 
-public enum  PayWayTag {
+public enum PayWayTag {
 
   /**
    * 计划

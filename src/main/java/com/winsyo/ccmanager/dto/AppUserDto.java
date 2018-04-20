@@ -1,12 +1,8 @@
 package com.winsyo.ccmanager.dto;
 
 import com.winsyo.ccmanager.domain.AppUser;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
-import javax.persistence.Column;
-
 import lombok.Data;
 
 @Data
@@ -37,7 +33,7 @@ public class AppUserDto {
   private LocalDateTime upgradeTime;
 
   private boolean seniorUser;
-  
+
   private BigDecimal canbalance;
 
   public AppUserDto(AppUserQueryDto dto) {

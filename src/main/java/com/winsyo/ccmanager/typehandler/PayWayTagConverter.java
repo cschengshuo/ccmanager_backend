@@ -1,6 +1,5 @@
 package com.winsyo.ccmanager.typehandler;
 
-import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import com.winsyo.ccmanager.domain.enumerate.PayWayTag;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

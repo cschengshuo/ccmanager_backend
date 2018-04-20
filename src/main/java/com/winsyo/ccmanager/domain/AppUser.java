@@ -54,7 +54,7 @@ public class AppUser {
 
   @Column
   private boolean isSeniorUser;
-  
+
   @Column
   private BigDecimal canbalance;
 

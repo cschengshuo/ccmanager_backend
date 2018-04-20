@@ -235,12 +235,12 @@ public class UserService {
   }
 
   public void modifyUserInfo(ModifyUserInfoDto dto) {
-	  User user = findById(dto.getId());
-	  user.setName(dto.getName());
-	  user.setPhone(dto.getPhone());
-	  user.setIdentityCard(dto.getIdentityCard());
-	  userRepository.save(user);
+    User user = findById(dto.getId());
+    user.setName(dto.getName());
+    user.setPhone(dto.getPhone());
+    user.setIdentityCard(dto.getIdentityCard());
+    userRepository.save(user);
   }
-  
+
 
 }

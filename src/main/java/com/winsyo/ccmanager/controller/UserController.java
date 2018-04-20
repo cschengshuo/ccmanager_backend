@@ -97,18 +97,18 @@ public class UserController {
     List<User> all = userService.findUsers(user.getId(), loginName);
     return ok(all);
   }
-  
+
   @PostMapping(value = "modifyUserInfo")
   public ResponseEntity modifyUserInfo(@RequestBody ModifyUserInfoDto dto) {
     userService.modifyUserInfo(dto);
     return ok(true);
   }
-  
+
   @PostMapping(value = "modifyLoginPassword")
   public ResponseEntity modifyLoginPassword(@RequestBody ModifyLoginPasswordDto dto) {
-	  
-	  User user = Utils.getCurrentUser();
-      userService.setPassword(user.getUsername(),dto.getOldPassword(),dto.getPassword());
+
+    User user = Utils.getCurrentUser();
+    userService.setPassword(user.getUsername(), dto.getOldPassword(), dto.getPassword());
     return ok(true);
   }
 
