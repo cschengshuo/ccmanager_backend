@@ -6,6 +6,7 @@ import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.domain.enumerate.UserType;
 import com.winsyo.ccmanager.dto.CreateUserDto;
 import com.winsyo.ccmanager.dto.ModifyUserDto;
+import com.winsyo.ccmanager.dto.ModifyUserInfoDto;
 import com.winsyo.ccmanager.dto.TreeDto;
 import com.winsyo.ccmanager.service.RoleService;
 import com.winsyo.ccmanager.service.UserService;
@@ -95,5 +96,13 @@ public class UserController {
     List<User> all = userService.findUsers(user.getId(), loginName);
     return ok(all);
   }
+  
+  @PostMapping(value = "modifyUserInfo")
+  public ResponseEntity modifyUserInfo(@RequestBody ModifyUserInfoDto dto) {
+    userService.modifyUserInfo(dto);
+    return ok(true);
+  }
+  
+  
 
 }
