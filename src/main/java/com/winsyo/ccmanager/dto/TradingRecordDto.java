@@ -22,7 +22,7 @@ public class TradingRecordDto {
 
   private int status;
 
-  private int payWayTAG;
+  private String payWayTAG;
 
   private String type;
 

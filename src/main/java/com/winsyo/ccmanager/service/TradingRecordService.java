@@ -2,6 +2,7 @@ package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.TradingRecord;
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
+import com.winsyo.ccmanager.domain.enumerate.PayWayTag;
 import com.winsyo.ccmanager.dto.TradingRecordQueryDto;
 import com.winsyo.ccmanager.repository.TradingRecordRepository;
 import com.winsyo.ccmanager.util.Utils;
@@ -36,16 +37,23 @@ public class TradingRecordService {
     return tradingRecordRepository.findTradingRecords(userIds, cardNo, pageable);
   }
 
-  public List<TradingRecord> listUnsettleTradingRecords() {
-    List<String> list = new ArrayList<>();
-    list.add(ChannelType.PLAN.index() + "");
-    list.add(ChannelType.C.index() + "");
-    list.add(ChannelType.D.index() + "");
-    list.add(ChannelType.E.index() + "");
-    list.add(ChannelType.F.index() + "");
+  public Page<TradingRecordQueryDto> findWithDraw(Pageable pagable) {
+    String agentId = Utils.getCurrentUser().getId();
+    List<String> userIds = userService.getAllChildren(agentId).stream().map(user -> user.getId()).collect(Collectors.toList());
+    userIds.add(agentId);
 
-    List<TradingRecord> records = tradingRecordRepository
-        .findByPayWayTAGIsInAndSettlementStatusAndOk(list, false, true);
+    return tradingRecordRepository.findTradingRecordsByPayWayTag(userIds, PayWayTag.WITHDRAW, pagable);
+  }
+
+  public List<TradingRecord> listUnsettleTradingRecords() {
+    List<PayWayTag> list = new ArrayList<>();
+    list.add(PayWayTag.PLAN);
+    list.add(PayWayTag.C);
+    list.add(PayWayTag.D);
+    list.add(PayWayTag.E);
+    list.add(PayWayTag.F);
+
+    List<TradingRecord> records = tradingRecordRepository.findByPayWayTAGIsInAndSettlementStatusAndOk(list, false, true);
     return records;
   }
 
@@ -62,7 +70,7 @@ public class TradingRecordService {
     return tradingRecordRepository.findTradingRecordsByTime(agentIds, start, end).stream().filter(this::isValidChannelType).collect(Collectors.toList());
   }
 
-  public boolean isValidChannelType(TradingRecord tradingRecord){
+  public boolean isValidChannelType(TradingRecord tradingRecord) {
     List<ChannelType> types = new ArrayList<>();
     types.add(ChannelType.PLAN);
     types.add(ChannelType.C);

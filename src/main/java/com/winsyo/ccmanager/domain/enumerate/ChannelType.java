@@ -1,5 +1,7 @@
 package com.winsyo.ccmanager.domain.enumerate;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 public enum ChannelType {
 
   /**
@@ -50,6 +52,16 @@ public enum ChannelType {
   public static ChannelType indexOf(int index) {
     for (ChannelType item : ChannelType.values()) {
       if (item.index == index) {
+        return item;
+      }
+    }
+    return null;
+  }
+
+  public static ChannelType indexOf(PayWayTag payWayTag) {
+    Integer integer = NumberUtils.createInteger(payWayTag.index());
+    for (ChannelType item : ChannelType.values()) {
+      if (item.index == integer) {
         return item;
       }
     }

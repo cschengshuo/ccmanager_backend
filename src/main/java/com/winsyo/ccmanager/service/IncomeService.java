@@ -55,7 +55,7 @@ public class IncomeService {
       } catch (EntityNotFoundException e) {
         return;
       }
-      ChannelType type = record.getPayWayTAG();
+      ChannelType type =  ChannelType.indexOf(record.getPayWayTAG()) ;
       if (type == null) {
         return;
       }

@@ -121,7 +121,7 @@ public class ReportService {
     records.forEach((record) -> {
       ReportDto dto = new ReportDto();
       BigDecimal money = record.getMoney();
-      ChannelType type = record.getPayWayTAG();
+      ChannelType type = ChannelType.indexOf(record.getPayWayTAG()) ;
       if (type == null) {
         return;
       }
@@ -154,7 +154,7 @@ public class ReportService {
     records.forEach((record) -> {
       ReportDto dto = new ReportDto();
       BigDecimal money = record.getMoney();
-      ChannelType type = record.getPayWayTAG();
+      ChannelType type = ChannelType.indexOf(record.getPayWayTAG()) ;
       if (type == null) {
         return;
       }
