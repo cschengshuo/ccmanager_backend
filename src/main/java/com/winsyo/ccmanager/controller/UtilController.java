@@ -5,6 +5,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,9 +24,15 @@ public class UtilController {
     this.utilService = utilService;
   }
 
-  @GetMapping(value = "getAppUserWithdrawSum")
-  public ResponseEntity getAppUserWithdrawSum(@RequestBody RechargeRecordDto dto) {
+  @PostMapping(value = "addRechargeRecord")
+  public ResponseEntity addRechargeRecord(@RequestBody RechargeRecordDto dto) {
     utilService.addRechargeRecord(dto);
+    return ok(true);
+  }
+
+  @GetMapping(value = "sendAnnouncement")
+  public ResponseEntity sendAnnouncement(String text) {
+    utilService.sendAnnouncement(text);
     return ok(true);
   }
 
