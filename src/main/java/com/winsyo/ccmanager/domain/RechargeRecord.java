@@ -1,13 +1,12 @@
 package com.winsyo.ccmanager.domain;
 
 /*
- * 
+ *
  */
 
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,7 +24,7 @@ public class RechargeRecord {
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")
   private String id;
-  
+
   @Column
   private String userId;
 
@@ -34,7 +33,6 @@ public class RechargeRecord {
 
   @Column
   private LocalDateTime time;
-
 
 
 }

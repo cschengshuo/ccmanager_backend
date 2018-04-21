@@ -111,9 +111,6 @@ public class UserController {
     userService.setPassword(user.getUsername(), dto.getOldPassword(), dto.getPassword());
     return ok(true);
   }
-  
-  
-  
-  
+
 
 }

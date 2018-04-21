@@ -1,4 +1,4 @@
-package com.winsyo.ccmanager.util.UmengPush;
+package com.winsyo.ccmanager.util.umengpush;
 
 public class UmengPush {
 

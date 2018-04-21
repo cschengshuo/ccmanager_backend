@@ -16,12 +16,12 @@ public class SystemConfigService {
     this.systemConfigRepository = systemConfigRepository;
   }
 
-  public SystemConfig findByConfigType (SystemConfigType type){
-    return systemConfigRepository.findByConfigType(type).orElseThrow(() -> new EntityNotFoundException("未找到系统设置",type.name()));
+  public SystemConfig findByConfigType(SystemConfigType type) {
+    return systemConfigRepository.findByConfigType(type).orElseThrow(() -> new EntityNotFoundException("未找到系统设置", type.name()));
   }
 
   @Transactional
-  public SystemConfig save(SystemConfig config){
+  public SystemConfig save(SystemConfig config) {
     return systemConfigRepository.save(config);
   }
 }

@@ -53,7 +53,7 @@ public class TradingRecordService {
     list.add(PayWayTag.E);
     list.add(PayWayTag.F);
 
-    List<TradingRecord> records = tradingRecordRepository.findByPayWayTAGIsInAndSettlementStatusAndOkAndType(list, false, true,"0");
+    List<TradingRecord> records = tradingRecordRepository.findByPayWayTAGIsInAndSettlementStatusAndOkAndType(list, false, true, "0");
     return records;
   }
 
