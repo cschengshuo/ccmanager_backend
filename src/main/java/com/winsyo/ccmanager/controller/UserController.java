@@ -4,17 +4,16 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.domain.enumerate.UserType;
-import com.winsyo.ccmanager.dto.CreateUserDto;
-import com.winsyo.ccmanager.dto.ModifyLoginPasswordDto;
-import com.winsyo.ccmanager.dto.ModifyUserDto;
-import com.winsyo.ccmanager.dto.ModifyUserInfoDto;
-import com.winsyo.ccmanager.dto.TreeDto;
+import com.winsyo.ccmanager.dto.request.CreateUserDto;
+import com.winsyo.ccmanager.dto.request.ModifyLoginPasswordDto;
+import com.winsyo.ccmanager.dto.request.ModifyUserDto;
+import com.winsyo.ccmanager.dto.request.ModifyUserInfoDto;
+import com.winsyo.ccmanager.dto.response.TreeDto;
 import com.winsyo.ccmanager.service.RoleService;
 import com.winsyo.ccmanager.service.UserService;
 import com.winsyo.ccmanager.util.Utils;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +29,6 @@ public class UserController {
   private UserService userService;
   private RoleService roleService;
 
-  @Autowired
   public UserController(UserService userService, RoleService roleService) {
     this.userService = userService;
     this.roleService = roleService;

@@ -2,10 +2,9 @@ package com.winsyo.ccmanager.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-import com.winsyo.ccmanager.dto.TradingRecordDto;
-import com.winsyo.ccmanager.dto.TradingRecordQueryDto;
+import com.winsyo.ccmanager.dto.response.TradingRecordDto;
+import com.winsyo.ccmanager.dto.query.TradingRecordQueryDto;
 import com.winsyo.ccmanager.service.TradingRecordService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,6 @@ public class TradingRecordController {
 
   private TradingRecordService tradingRecordService;
 
-  @Autowired
   public TradingRecordController(TradingRecordService tradingRecordService) {
     this.tradingRecordService = tradingRecordService;
   }

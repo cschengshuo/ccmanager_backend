@@ -1,4 +1,4 @@
-package com.winsyo.ccmanager.dto;
+package com.winsyo.ccmanager.dto.request;
 
 import lombok.Data;
 

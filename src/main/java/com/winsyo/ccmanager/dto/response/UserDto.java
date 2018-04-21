@@ -1,4 +1,4 @@
-package com.winsyo.ccmanager.dto.view;
+package com.winsyo.ccmanager.dto.response;
 
 public class UserDto {
 

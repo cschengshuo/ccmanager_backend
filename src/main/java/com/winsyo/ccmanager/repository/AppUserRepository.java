@@ -1,7 +1,7 @@
 package com.winsyo.ccmanager.repository;
 
 import com.winsyo.ccmanager.domain.AppUser;
-import com.winsyo.ccmanager.dto.AppUserQueryDto;
+import com.winsyo.ccmanager.dto.query.AppUserQueryDto;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.data.domain.Page;

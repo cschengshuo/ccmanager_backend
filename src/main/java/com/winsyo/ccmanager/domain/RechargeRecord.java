@@ -1,10 +1,5 @@
 package com.winsyo.ccmanager.domain;
 
-/*
- *
- */
-
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -15,6 +10,9 @@ import javax.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
+/*
+ * 充值记录
+ */
 @Data
 @Entity
 @Table(name = "recharge_record")

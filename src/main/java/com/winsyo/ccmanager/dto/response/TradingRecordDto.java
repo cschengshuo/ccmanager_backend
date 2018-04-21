@@ -1,4 +1,4 @@
-package com.winsyo.ccmanager.dto.view;
+package com.winsyo.ccmanager.dto.response;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.winsyo.ccmanager.domain.TradingRecord;

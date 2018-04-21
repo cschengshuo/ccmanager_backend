@@ -1,4 +1,4 @@
-package com.winsyo.ccmanager.dto;
+package com.winsyo.ccmanager.dto.response;
 
 import com.winsyo.ccmanager.domain.Channel;
 import com.winsyo.ccmanager.dto.response.PlatformChannelDto;

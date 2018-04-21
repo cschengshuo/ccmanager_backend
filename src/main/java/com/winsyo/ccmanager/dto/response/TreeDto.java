@@ -1,4 +1,4 @@
-package com.winsyo.ccmanager.dto.view;
+package com.winsyo.ccmanager.dto.response;
 
 import com.winsyo.ccmanager.domain.User;
 import lombok.AllArgsConstructor;

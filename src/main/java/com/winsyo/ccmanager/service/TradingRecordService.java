@@ -3,7 +3,7 @@ package com.winsyo.ccmanager.service;
 import com.winsyo.ccmanager.domain.TradingRecord;
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import com.winsyo.ccmanager.domain.enumerate.PayWayTag;
-import com.winsyo.ccmanager.dto.TradingRecordQueryDto;
+import com.winsyo.ccmanager.dto.query.TradingRecordQueryDto;
 import com.winsyo.ccmanager.repository.TradingRecordRepository;
 import com.winsyo.ccmanager.util.Utils;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package com.winsyo.ccmanager.dto;
+package com.winsyo.ccmanager.dto.query;
 
 import com.winsyo.ccmanager.domain.AppUser;
 import lombok.AllArgsConstructor;

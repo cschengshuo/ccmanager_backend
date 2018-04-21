@@ -19,7 +19,6 @@ public class ExeceptionHandler {
 
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-
   @ExceptionHandler(value = {EntityNotFoundException.class})
   public ResponseEntity entityNotFoundExceptionHandler(Exception ex, WebRequest req) {
     Map<String, String> errorMsg = new HashMap<>();

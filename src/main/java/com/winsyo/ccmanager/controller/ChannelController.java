@@ -3,14 +3,13 @@ package com.winsyo.ccmanager.controller;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.winsyo.ccmanager.domain.Channel;
-import com.winsyo.ccmanager.dto.ChannelDto;
-import com.winsyo.ccmanager.dto.ChannelFeeRateDto;
-import com.winsyo.ccmanager.dto.ModifyChannelDto;
-import com.winsyo.ccmanager.dto.PlatformChannelDto;
+import com.winsyo.ccmanager.dto.response.ChannelDto;
+import com.winsyo.ccmanager.dto.response.ChannelFeeRateDto;
+import com.winsyo.ccmanager.dto.request.ModifyChannelDto;
+import com.winsyo.ccmanager.dto.response.PlatformChannelDto;
 import com.winsyo.ccmanager.service.ChannelService;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +24,6 @@ public class ChannelController {
 
   private ChannelService channelService;
 
-  @Autowired
   public ChannelController(ChannelService channelService) {
     this.channelService = channelService;
   }

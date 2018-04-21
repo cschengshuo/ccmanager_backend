@@ -18,7 +18,6 @@ public class UtilController {
 
   private UtilService utilService;
 
-  @Autowired
   public UtilController(UtilService utilService) {
     this.utilService = utilService;
   }

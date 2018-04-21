@@ -2,7 +2,7 @@ package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.UserFee;
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
-import com.winsyo.ccmanager.dto.FeeRateDto;
+import com.winsyo.ccmanager.dto.request.FeeRateDto;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.UserFeeRepository;
 import java.math.BigDecimal;

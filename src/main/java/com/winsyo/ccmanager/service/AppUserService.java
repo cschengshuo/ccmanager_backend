@@ -2,8 +2,8 @@ package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.AppUser;
 import com.winsyo.ccmanager.domain.enumerate.PayWayTag;
-import com.winsyo.ccmanager.dto.AppUserDto;
-import com.winsyo.ccmanager.dto.AppUserQueryDto;
+import com.winsyo.ccmanager.dto.response.AppUserDto;
+import com.winsyo.ccmanager.dto.query.AppUserQueryDto;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.AppUserRepository;
 import com.winsyo.ccmanager.repository.TradingRecordRepository;

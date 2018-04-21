@@ -1,4 +1,4 @@
-package com.winsyo.ccmanager.dto;
+package com.winsyo.ccmanager.dto.response;
 
 import java.math.BigDecimal;
 import lombok.Data;

@@ -7,7 +7,7 @@ import org.json.JSONObject;
 public abstract class IOSNotification extends UmengNotification {
 
   // Keys can be set in the aps level
-  protected static final HashSet<String> APS_KEYS = new HashSet<String>(Arrays.asList(new String[]{
+  protected static final HashSet<String> APS_KEYS = new HashSet<>(Arrays.asList(new String[]{
       "alert", "badge", "sound", "content-available"
   }));
 

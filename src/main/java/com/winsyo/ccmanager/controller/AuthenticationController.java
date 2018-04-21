@@ -3,11 +3,10 @@ package com.winsyo.ccmanager.controller;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.winsyo.ccmanager.domain.User;
-import com.winsyo.ccmanager.dto.JwtDto;
-import com.winsyo.ccmanager.dto.LoginDto;
+import com.winsyo.ccmanager.dto.response.JwtDto;
+import com.winsyo.ccmanager.dto.request.LoginDto;
 import com.winsyo.ccmanager.service.AuthenticationService;
 import com.winsyo.ccmanager.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +21,6 @@ public class AuthenticationController {
   private AuthenticationService authenticationService;
   private UserService userService;
 
-  @Autowired
   public AuthenticationController(AuthenticationService authenticationService, UserService userService) {
     this.authenticationService = authenticationService;
     this.userService = userService;
