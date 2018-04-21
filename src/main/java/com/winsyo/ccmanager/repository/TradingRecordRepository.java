@@ -3,6 +3,8 @@ package com.winsyo.ccmanager.repository;
 import com.winsyo.ccmanager.domain.TradingRecord;
 import com.winsyo.ccmanager.domain.enumerate.PayWayTag;
 import com.winsyo.ccmanager.dto.TradingRecordQueryDto;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -30,4 +32,8 @@ public interface TradingRecordRepository extends JpaRepository<TradingRecord, St
   @Query(value = "select rec from TradingRecord rec, AppUser app where rec.userId = app.userId and app.agentId = :agentId and rec.type = '0' and rec.time >= :startTime and rec.time <= :endTime")
   List<TradingRecord> findTradingRecordsByTime(@Param("agentId") String agentId, @Param("startTime") LocalDateTime start, @Param("endTime") LocalDateTime end);
 
+  
+  @Query(value = "select sum(money) from TradingRecord where payWayTAG = :payWayTAG and ok=:ok ")
+  BigDecimal findAppUserHasWithdrawedSumMoney(@Param("payWayTAG") PayWayTag payWayTAG,@Param("ok") boolean ok);
+  
 }
