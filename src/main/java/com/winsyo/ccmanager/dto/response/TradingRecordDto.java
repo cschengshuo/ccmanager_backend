@@ -1,7 +1,8 @@
-package com.winsyo.ccmanager.dto;
+package com.winsyo.ccmanager.dto.view;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.winsyo.ccmanager.domain.TradingRecord;
+import com.winsyo.ccmanager.dto.query.TradingRecordQueryDto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,7 @@
-package com.winsyo.ccmanager.dto;
+package com.winsyo.ccmanager.dto.view;
 
 import com.winsyo.ccmanager.domain.AppUser;
+import com.winsyo.ccmanager.dto.query.AppUserQueryDto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.Data;
