@@ -1,8 +1,10 @@
 package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.UserAccount;
+import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.UserAccountRepository;
+import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +19,13 @@ public class UserAccountService {
     this.userAccountRepository = userAccountRepository;
   }
 
-  public UserAccount findByUserId(String userId) {
-    UserAccount userAccount = userAccountRepository.findByUserId(userId).orElseThrow(() -> new EntityNotFoundException("未找到用户账户", userId));
+  public UserAccount findByUserIdAndType(String userId, ChannelType type) {
+    UserAccount userAccount = userAccountRepository.findByUserIdAndType(userId, type).orElseThrow(() -> new EntityNotFoundException("未找到用户账户", userId));
+    return userAccount;
+  }
+
+  public List<UserAccount> findByUserId(String userId) {
+    List<UserAccount> userAccount = userAccountRepository.findByUserId(userId);
     return userAccount;
   }
 

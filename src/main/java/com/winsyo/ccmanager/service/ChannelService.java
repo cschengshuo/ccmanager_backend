@@ -29,6 +29,13 @@ public class ChannelService {
   private UserService userService;
   private UserFeeService userFeeService;
 
+  public ChannelService(ChannelRepository channelRepository, SystemConfigService systemConfigService, UserService userService,
+      UserFeeService userFeeService) {
+    this.channelRepository = channelRepository;
+    this.systemConfigService = systemConfigService;
+    this.userService = userService;
+    this.userFeeService = userFeeService;
+  }
 
   public List<Channel> findAll() {
     return channelRepository.findAll(Sort.by("channelType"));

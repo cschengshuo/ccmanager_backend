@@ -61,7 +61,7 @@ public class IncomeService {
       }
 
       User admin = this.userService.getSystemAdministrator();
-      UserAccount adminAccount = userAccountService.findByUserId(admin.getId());
+      UserAccount adminAccount = userAccountService.findByUserIdAndType(admin.getId(), type);
       BigDecimal adminIncome = this.calculateAdminIncome(money, type);
       adminAccount.setPreSettlement(adminAccount.getPreSettlement().add(adminIncome));
       userAccountService.save(adminAccount);
@@ -78,7 +78,7 @@ public class IncomeService {
         BigDecimal income = money.multiply(feeRate).add(fee).setScale(2, RoundingMode.UP);
 
         try {
-          UserAccount userAccount = userAccountService.findByUserId(user.getId());
+          UserAccount userAccount = userAccountService.findByUserIdAndType(user.getId(), type);
           userAccount.setPreSettlement(userAccount.getPreSettlement().add(income));
           userAccountService.save(userAccount);
         } catch (EntityNotFoundException e) {
@@ -86,6 +86,7 @@ public class IncomeService {
           newAccount.setBalance(new BigDecimal("0.00"));
           newAccount.setPreSettlement(income);
           newAccount.setUserId(user.getId());
+          newAccount.setType(type);
           userAccountService.save(newAccount);
         }
       });

@@ -17,7 +17,7 @@ public interface AppUserRepository extends JpaRepository<AppUser, String>, JpaSp
 
   List<AppUser> findAppUsersByAgentId(String agentId);
 
-  @Query(value = "select new com.winsyo.ccmanager.dto.AppUserQueryDto(app, u.name) from AppUser app, User u where app.agentId = u.id and app.agentId in :agentIds")
+  @Query(value = "select new com.winsyo.ccmanager.dto.query.AppUserQueryDto(app, u.name) from AppUser app, User u where app.agentId = u.id and app.agentId in :agentIds")
   Page<AppUserQueryDto> findAppUsers(@Param("agentIds") List<String> agentIds, Pageable pageable);
 
 

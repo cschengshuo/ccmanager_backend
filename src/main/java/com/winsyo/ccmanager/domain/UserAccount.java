@@ -1,5 +1,6 @@
 package com.winsyo.ccmanager.domain;
 
+import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,5 +30,8 @@ public class UserAccount {
 
   @Column(name = "pre_settlement", precision = 13, scale = 2)
   private BigDecimal preSettlement;
+
+  @Column
+  private ChannelType type;
 
 }

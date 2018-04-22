@@ -34,11 +34,7 @@ public class Utils {
     lst.add(a1);
     lst.add(a2);
 
-    //   System.out.println(lst);
-
     Collections.shuffle(lst);
-
-    // System.out.println(lst);
 
     String resultStr = "";
     for (int i = 0; i < lst.size(); i++) {
