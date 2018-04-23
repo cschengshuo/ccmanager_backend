@@ -65,6 +65,10 @@ public class UserService {
     return userRepository.findByType(UserType.PLATFORM).orElseThrow(() -> new EntityNotFoundException("未找到平台管理员", UserType.PLATFORM.name()));
   }
 
+  public User getVirtualAgent() {
+    return userRepository.findByType(UserType.VIRTUAL).orElseThrow(() -> new EntityNotFoundException("未找到虚拟代理商", UserType.VIRTUAL.name()));
+  }
+
   public TreeDto map(User user) {
     long count = userRepository.countByParentId(user.getId());
     if (count > 0) {
@@ -118,7 +122,7 @@ public class UserService {
   public void createAgentUser(CreateUserDto dto) {
     User user = new User();
     Role agent = roleRepository.findByRole("AGENT");
-    user.setRoles(new LinkedList<>(Arrays.asList(agent)));
+    user.setRoles(new LinkedList<>(Collections.singletonList(agent)));
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     user.setPassword(encoder.encode(dto.getPassword()));
     user.setIdentityCard(dto.getIdCard());
@@ -205,11 +209,10 @@ public class UserService {
   }
 
   public List<User> getAllChildren(String userId) {
-    List<User> result = new ArrayList<>();
 
     User parent = findById(userId);
     List<User> children = findUsersByParentId(parent.getId());
-    result.addAll(children);
+    List<User> result = new ArrayList<>(children);
 
     children.forEach(user -> {
       List<User> grandchildren = getAllChildren(user.getId());
@@ -220,11 +223,10 @@ public class UserService {
   }
 
   public List<User> findUsers(String userId, String name) {
-    List<User> result = new ArrayList<>();
 
     User parent = findById(userId);
     List<User> children = userRepository.findUsersByParentIdAndUsernameContains(userId, name);
-    result.addAll(children);
+    List<User> result = new ArrayList<>(children);
 
     children.forEach(user -> {
       List<User> grandchildren = findUsers(user.getId(), name);

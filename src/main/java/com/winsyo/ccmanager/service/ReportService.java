@@ -1,6 +1,7 @@
 package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.TradingRecord;
+import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.domain.UserFee;
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import com.winsyo.ccmanager.domain.enumerate.ReportType;
@@ -38,9 +39,6 @@ public class ReportService {
   }
 
   public List<ReportDto> getReport(ReportType type, LocalDateTime startDate, LocalDateTime endDate) {
-
-    String userId = Utils.getCurrentUser().getId();
-
     LocalDateTime start = null;
     LocalDateTime end = null;
     switch (type) {
@@ -55,13 +53,26 @@ public class ReportService {
       case TIME:
         start = startDate;
         end = endDate;
-
     }
 
-    List<TradingRecord> selfRecords = tradingRecordService.findTradingRecordsByTime(userId, start, end);
+    User user = Utils.getCurrentUser();
 
-    List<ReportDto> reports = dealSelfRecord(selfRecords, userId);
-    List<ReportDto> childrenReports = getChildrenReport(userId, start, end);
+    List<ReportDto> dtos = new ArrayList<>();
+    switch (user.getType()) {
+      case ADMIN:
+        List<TradingRecord> allRecords = tradingRecordService.findTradingRecordsByTime(start, end);
+        List<ReportDto> adminReports = dealAdminRecord(allRecords);
+        dtos.addAll(adminReports);
+        break;
+      case PLATFORM:
+      case AGENT:
+        List<TradingRecord> selfRecords = tradingRecordService.findTradingRecordsByTime(user.getId(), start, end);
+        List<ReportDto> selfReports = dealSelfRecord(selfRecords, user.getId());
+        dtos.addAll(selfReports);
+        List<ReportDto> childrenReports = getChildrenReport(user.getId(), start, end);
+        dtos.addAll(childrenReports);
+        break;
+    }
 
     ReportDto total = new ReportDto("汇总");
     ReportDto plan = new ReportDto("计划");
@@ -70,10 +81,7 @@ public class ReportService {
     ReportDto channelE = new ReportDto("通道E");
     ReportDto channelF = new ReportDto("通道F");
 
-    add(reports, plan, channelC, channelD, channelE, channelF);
-
-    add(childrenReports, plan, channelC, channelD, channelE, channelF);
-
+    add(dtos, plan, channelC, channelD, channelE, channelF);
     addReport(total, plan);
     addReport(total, channelC);
     addReport(total, channelD);
@@ -110,6 +118,30 @@ public class ReportService {
     });
   }
 
+  private List<ReportDto> dealAdminRecord(List<TradingRecord> records){
+    List<ReportDto> reports = new ArrayList<>();
+
+    records.forEach((record) -> {
+      ReportDto dto = new ReportDto();
+      BigDecimal money = record.getMoney();
+      ChannelType type = ChannelType.indexOf(record.getPayWayTAG());
+      if (type == null) {
+        return;
+      }
+      dto.setChannelType(type);
+
+      BigDecimal income = incomeService.calculateAdminIncome(money, type);
+
+      dto.setSubAmount(money);
+      dto.setIncome(income);
+      dto.setIncomeFromSub(income);
+
+      reports.add(dto);
+    });
+    return reports;
+
+  }
+
   /**
    * 根据交易记录获取该用户所得收益报表
    *
@@ -143,7 +175,7 @@ public class ReportService {
   }
 
   private List<ReportDto> getChildrenReport(String userId, LocalDateTime start, LocalDateTime end) {
-    List<String> children = userService.getAllChildren(userId).stream().map(user -> user.getId()).collect(Collectors.toList());
+    List<String> children = userService.getAllChildren(userId).stream().map(User::getId).collect(Collectors.toList());
     List<TradingRecord> subRecords = tradingRecordService.findTradingRecordsByTime(children, start, end);
     return dealChildrenDto(subRecords, userId);
   }

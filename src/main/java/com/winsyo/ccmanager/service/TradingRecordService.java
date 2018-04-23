@@ -1,7 +1,7 @@
 package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.TradingRecord;
-import com.winsyo.ccmanager.domain.enumerate.ChannelType;
+import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.domain.enumerate.PayWayTag;
 import com.winsyo.ccmanager.dto.query.TradingRecordQueryDto;
 import com.winsyo.ccmanager.repository.TradingRecordRepository;
@@ -15,6 +15,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+/**
+ * 交易记录服务
+ */
 @Service
 public class TradingRecordService {
 
@@ -30,7 +33,7 @@ public class TradingRecordService {
 
   public Page<TradingRecordQueryDto> findAll(Pageable pageable, String cardNo) {
     String agentId = Utils.getCurrentUser().getId();
-    List<String> userIds = userService.getAllChildren(agentId).stream().map(user -> user.getId()).collect(Collectors.toList());
+    List<String> userIds = userService.getAllChildren(agentId).stream().map(User::getId).collect(Collectors.toList());
     userIds.add(agentId);
     cardNo = cardNo + "%";
 
@@ -39,22 +42,18 @@ public class TradingRecordService {
 
   public Page<TradingRecordQueryDto> findWithDraw(Pageable pagable) {
     String agentId = Utils.getCurrentUser().getId();
-    List<String> userIds = userService.getAllChildren(agentId).stream().map(user -> user.getId()).collect(Collectors.toList());
+    List<String> userIds = userService.getAllChildren(agentId).stream().map(User::getId).collect(Collectors.toList());
     userIds.add(agentId);
 
     return tradingRecordRepository.findTradingRecordsByPayWayTag(userIds, PayWayTag.WITHDRAW, pagable);
   }
 
   public List<TradingRecord> listUnsettleTradingRecords() {
-    List<PayWayTag> list = new ArrayList<>();
-    list.add(PayWayTag.PLAN);
-    list.add(PayWayTag.C);
-    list.add(PayWayTag.D);
-    list.add(PayWayTag.E);
-    list.add(PayWayTag.F);
+    List<PayWayTag> list = getPayWayTagList();
 
-    List<TradingRecord> records = tradingRecordRepository.findByPayWayTAGIsInAndSettlementStatusAndOkAndType(list, false, true, "0");
-    return records;
+    List<TradingRecord> records = tradingRecordRepository.findByPayWayTAGIsInAndSettlementStatusAndType(list, false, "0");
+    return filterOk(records);
+
   }
 
   @Transactional
@@ -63,22 +62,39 @@ public class TradingRecordService {
   }
 
   public List<TradingRecord> findTradingRecordsByTime(String agentId, LocalDateTime start, LocalDateTime end) {
-    return tradingRecordRepository.findTradingRecordsByTime(agentId, start, end).stream().filter(this::isValidChannelType).collect(Collectors.toList());
+    List<PayWayTag> list = getPayWayTagList();
+
+    List<TradingRecord> records = tradingRecordRepository.findTradingRecordsByTime(agentId, start, end, list);
+    return filterOk(records);
+
   }
 
   public List<TradingRecord> findTradingRecordsByTime(List<String> agentIds, LocalDateTime start, LocalDateTime end) {
-    return tradingRecordRepository.findTradingRecordsByTime(agentIds, start, end).stream().filter(this::isValidChannelType).collect(Collectors.toList());
+    List<PayWayTag> list = getPayWayTagList();
+
+    List<TradingRecord> records = tradingRecordRepository.findTradingRecordsByTime(agentIds, start, end, list);
+    return filterOk(records);
+
   }
 
-  public boolean isValidChannelType(TradingRecord tradingRecord) {
-    List<ChannelType> types = new ArrayList<>();
-    types.add(ChannelType.PLAN);
-    types.add(ChannelType.C);
-    types.add(ChannelType.D);
-    types.add(ChannelType.E);
-    types.add(ChannelType.F);
+  public List<TradingRecord> findTradingRecordsByTime(LocalDateTime start, LocalDateTime end) {
+    List<TradingRecord> records = tradingRecordRepository.findByPayWayTAGIsInAndTypeAndTimeBetween(getPayWayTagList(), "0", start, end);
+    return filterOk(records);
+  }
 
-    return types.contains(tradingRecord.getPayWayTAG());
+  private List<TradingRecord> filterOk(List<TradingRecord> records) {
+    return records.stream().filter(TradingRecord::isOk).collect(Collectors.toList());
+  }
+
+  private List<PayWayTag> getPayWayTagList() {
+    List<PayWayTag> list = new ArrayList<>();
+    list.add(PayWayTag.PLAN);
+    list.add(PayWayTag.C);
+    list.add(PayWayTag.D);
+    list.add(PayWayTag.E);
+    list.add(PayWayTag.F);
+
+    return list;
   }
 
 }

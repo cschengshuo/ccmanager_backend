@@ -36,9 +36,17 @@ Configuration:
 
     Logger:
       - name: com.winsyo.ccmanager
-      - name: org.hibernate.sql
+
         additivity: false
         level: DEBUG
+        AppenderRef:
+          - ref: CONSOLE
+          - ref: ROLLING_FILE
+    Logger:
+      - name: org.hibernate.type.descriptor.sql.BasicBinder
+      - name: org.hibernate.SQL
+        additivity: false
+        level: INFO
         AppenderRef:
           - ref: CONSOLE
           - ref: ROLLING_FILE

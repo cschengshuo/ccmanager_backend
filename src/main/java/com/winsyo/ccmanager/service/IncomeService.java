@@ -61,10 +61,8 @@ public class IncomeService {
       }
 
       User admin = this.userService.getSystemAdministrator();
-      UserAccount adminAccount = userAccountService.findByUserIdAndType(admin.getId(), type);
       BigDecimal adminIncome = this.calculateAdminIncome(money, type);
-      adminAccount.setPreSettlement(adminAccount.getPreSettlement().add(adminIncome));
-      userAccountService.save(adminAccount);
+      addPreSettlement(type, admin, adminIncome);
 
       parents.forEach(user -> {
         Pair<UserFee, UserFee> userFeePair;
@@ -77,23 +75,27 @@ public class IncomeService {
         BigDecimal fee = userFeePair.getSecond().getValue();
         BigDecimal income = money.multiply(feeRate).add(fee).setScale(2, RoundingMode.UP);
 
-        try {
-          UserAccount userAccount = userAccountService.findByUserIdAndType(user.getId(), type);
-          userAccount.setPreSettlement(userAccount.getPreSettlement().add(income));
-          userAccountService.save(userAccount);
-        } catch (EntityNotFoundException e) {
-          UserAccount newAccount = new UserAccount();
-          newAccount.setBalance(new BigDecimal("0.00"));
-          newAccount.setPreSettlement(income);
-          newAccount.setUserId(user.getId());
-          newAccount.setType(type);
-          userAccountService.save(newAccount);
-        }
+        addPreSettlement(type, user, income);
       });
 
       record.setSettlementStatus(true);
       tradingRecordService.save(record);
     });
+  }
+
+  private void addPreSettlement(ChannelType type, User user, BigDecimal income) {
+    try {
+      UserAccount adminAccount = userAccountService.findByUserIdAndType(user.getId(), type);
+      adminAccount.setPreSettlement(adminAccount.getPreSettlement().add(income));
+      userAccountService.save(adminAccount);
+    } catch (EntityNotFoundException e) {
+      UserAccount newAccount = new UserAccount();
+      newAccount.setBalance(new BigDecimal("0.00"));
+      newAccount.setPreSettlement(income);
+      newAccount.setUserId(user.getId());
+      newAccount.setType(type);
+      userAccountService.save(newAccount);
+    }
   }
 
   public BigDecimal calculateAdminIncome(BigDecimal amount, ChannelType type) {
@@ -116,8 +118,7 @@ public class IncomeService {
         Pair<UserFee, UserFee> userFeePair = userFeeService.findByUserIdAndChannelType(user.getId(), type);
         BigDecimal feeRate = userFeePair.getFirst().getValue();
         BigDecimal fee = userFeePair.getSecond().getValue();
-        BigDecimal income = amount.multiply(feeRate).add(fee).setScale(2, RoundingMode.UP);
-        return income;
+        return amount.multiply(feeRate).add(fee).setScale(2, RoundingMode.UP);
       default:
         return null;
     }
