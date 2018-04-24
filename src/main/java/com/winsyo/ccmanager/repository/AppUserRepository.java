@@ -4,6 +4,7 @@ import com.winsyo.ccmanager.domain.AppUser;
 import com.winsyo.ccmanager.dto.query.AppUserQueryDto;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,5 +24,9 @@ public interface AppUserRepository extends JpaRepository<AppUser, String>, JpaSp
 
   @Query(value = "select sum(canbalance) from AppUser")
   BigDecimal findAppUserWithdrawSumMoney();
+
+  Optional<AppUser> findByIdNumber(String idNumber);
+
+  List<AppUser> findAppUsersByRecommendUserId(String recommendUserId);
 
 }

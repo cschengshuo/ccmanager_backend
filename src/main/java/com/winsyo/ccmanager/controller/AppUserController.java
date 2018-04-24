@@ -4,8 +4,11 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.winsyo.ccmanager.dto.response.AppUserDto;
 import com.winsyo.ccmanager.service.AppUserService;
+import com.winsyo.ccmanager.service.UserService;
 import com.winsyo.ccmanager.util.Utils;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,9 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppUserController {
 
   private AppUserService appUserService;
+  private UserService userService;
 
-  public AppUserController(AppUserService appUserService) {
+  public AppUserController(AppUserService appUserService, UserService userService) {
     this.appUserService = appUserService;
+    this.userService = userService;
   }
 
   @GetMapping(value = "findAppUsersByAgentId")
@@ -31,7 +36,11 @@ public class AppUserController {
     if (StringUtils.isEmpty(agentId)) {
       agentId = Utils.getCurrentUser().getId();
     }
-    Page<AppUserDto> appUsers = appUserService.findAppUsers(agentId, pagination);
+
+    List<String> userIds = userService.getAllChildren(agentId).stream().map(user -> user.getId()).collect(Collectors.toList());
+    userIds.add(agentId);
+
+    Page<AppUserDto> appUsers = appUserService.findAppUsers(userIds, pagination);
     return ok(appUsers);
   }
 

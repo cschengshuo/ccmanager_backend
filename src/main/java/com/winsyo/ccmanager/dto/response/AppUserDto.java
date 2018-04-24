@@ -43,7 +43,7 @@ public class AppUserDto {
     this.contactPhone = appUser.getContactPhone();
     this.inviteCode = appUser.getInviteCode();
     this.name = appUser.getName();
-    this.IDNumber = appUser.getIDNumber();
+    this.IDNumber = appUser.getIdNumber();
     this.inviteCoded = appUser.getInviteCoded();
     this.recommendUserId = appUser.getRecommendUserId();
     this.agentId = appUser.getAgentId();

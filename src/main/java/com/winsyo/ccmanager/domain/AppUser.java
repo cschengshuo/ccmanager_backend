@@ -8,11 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Data
 @NoArgsConstructor
 @Entity
 @Table(name = "appuser")
+@DynamicUpdate
 public class AppUser {
 
   @Id
@@ -25,15 +27,21 @@ public class AppUser {
   @Column
   private String password;
 
+  /**
+   * 邀请码
+   */
   @Column
   private String inviteCode;
 
   @Column
   private String name;
 
-  @Column
-  private String IDNumber;
+  @Column(name = "IDNumber")
+  private String idNumber;
 
+  /**
+   * 被邀请码
+   */
   @Column(name = "invitecoded")
   private String inviteCoded;
 

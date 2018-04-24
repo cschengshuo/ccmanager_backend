@@ -1,18 +1,6 @@
 package com.winsyo.ccmanager.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
+import com.winsyo.ccmanager.domain.AppUser;
 import com.winsyo.ccmanager.domain.Role;
 import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.domain.enumerate.UserType;
@@ -26,6 +14,16 @@ import com.winsyo.ccmanager.exception.OperationFailureException;
 import com.winsyo.ccmanager.repository.RoleRepository;
 import com.winsyo.ccmanager.repository.UserRepository;
 import com.winsyo.ccmanager.util.Utils;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.transaction.Transactional;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 /**
  * 系统用户服务
@@ -36,11 +34,13 @@ public class UserService {
   private UserRepository userRepository;
   private RoleRepository roleRepository;
   private UserFeeService userFeeService;
+  private AppUserService appUserService;
 
-  public UserService(UserRepository userRepository, RoleRepository roleRepository, UserFeeService userFeeService) {
+  public UserService(UserRepository userRepository, RoleRepository roleRepository, UserFeeService userFeeService, AppUserService appUserService) {
     this.userRepository = userRepository;
     this.roleRepository = roleRepository;
     this.userFeeService = userFeeService;
+    this.appUserService = appUserService;
   }
 
   public List<User> findAll() {
@@ -163,9 +163,29 @@ public class UserService {
       user.setUserType(parent.getUserType() + 1);
       user.setParentIds("");
     }
-    userRepository.save(user);
+    user = userRepository.save(user);
     userFeeService.createUserFee(dto.getFeeRate(), user.getId());
+
+    try {
+      AppUser appUser = appUserService.findByIDNumber(user.getIdentityCard());
+
+      user.setInviteCode(appUser.getInviteCode());
+      userRepository.save(user);
+
+      List<AppUser> subAppUsers = appUserService.findSubAppUsers(appUser.getUserId());
+      subAppUsers.add(appUser);
+
+      final String agentId = user.getId();
+      subAppUsers.forEach(appUser1 -> {
+        appUser1.setAgentId(agentId);
+        appUserService.save(appUser1);
+      });
+    } catch (EntityNotFoundException e) {
+
+    }
+
   }
+
 
   @Transactional
   public void modifyUser(ModifyUserDto dto) {
@@ -230,7 +250,6 @@ public class UserService {
   }
 
   public List<User> getAllChildren(String userId) {
-
     User parent = findById(userId);
     List<User> children = findUsersByParentId(parent.getId());
     List<User> result = new ArrayList<>(children);
@@ -244,7 +263,6 @@ public class UserService {
   }
 
   public List<User> findUsers(String userId, String name) {
-
     User parent = findById(userId);
     List<User> children = userRepository.findUsersByParentIdAndUsernameContains(userId, name);
     List<User> result = new ArrayList<>(children);
