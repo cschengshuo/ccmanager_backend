@@ -16,12 +16,11 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "messageinfo")
 @DynamicUpdate
-public class Messageinfo {
+public class MessageInfo {
 
   @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
-  private String id;
+  @GeneratedValue
+  private Long id;
 
   @Column
   private String text;

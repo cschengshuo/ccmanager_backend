@@ -28,10 +28,4 @@ public class UtilController {
     return ok(true);
   }
 
-  @GetMapping(value = "sendAnnouncement")
-  public ResponseEntity sendAnnouncement(String text) {
-    utilService.sendAnnouncement(text);
-    return ok(true);
-  }
-
 }

@@ -1,11 +1,9 @@
 package com.winsyo.ccmanager.service;
 
-import com.winsyo.ccmanager.domain.Messageinfo;
 import com.winsyo.ccmanager.domain.RechargeRecord;
 import com.winsyo.ccmanager.dto.RechargeRecordDto;
 import com.winsyo.ccmanager.repository.MessageinfoRepository;
 import com.winsyo.ccmanager.repository.RechargeRecordRepository;
-import com.winsyo.ccmanager.util.umengpush.UmengPush;
 import java.time.LocalDateTime;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -31,20 +29,6 @@ public class UtilService {
     rechargeRecord.setTime(LocalDateTime.now());
 
     rechargeRecordRepository.save(rechargeRecord);
-  }
-
-  @Transactional
-  public void sendAnnouncement(String text) {
-    Messageinfo messageinfo = new Messageinfo();
-    messageinfo.setText(text);
-    messageinfo.setType("0");
-    messageinfo.setCreatetime(LocalDateTime.now());
-
-    messageinfoRepository.save(messageinfo);
-
-    UmengPush.sendAndroidBroadcast(text);
-    UmengPush.sendIOSBroadcast(text);
-
   }
 
 }

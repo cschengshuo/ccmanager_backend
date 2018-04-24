@@ -12,24 +12,20 @@ public class UmengPush {
       broadcast.setText(text);
       broadcast.goAppAfterOpen();
       broadcast.setDisplayType(AndroidNotification.DisplayType.NOTIFICATION);
-
       // TODO Set 'production_mode' to 'false' if it's a test device.
       // For how to register a test device, please see the developer doc.
       broadcast.setProductionMode();
       // Set customized fields
       broadcast.setExtraField("test", "helloworld");
-      client.send(broadcast);
 
+      client.send(broadcast);
     } catch (Exception e) {
       // TODO: handle exception
     }
-
   }
 
   public static void sendIOSBroadcast(String text) {
-
     try {
-
       IOSBroadcast broadcast = new IOSBroadcast("59c4cf56f29d985b98000124", "svkrr6pnh6yjvum8mcg1uyrsplget5pf");
 
       broadcast.setAlert("平台公告" + "\n" + text);
@@ -39,20 +35,15 @@ public class UmengPush {
       broadcast.setTestMode();
       // Set customized fields
       broadcast.setCustomizedField("test", "helloworld");
-      client.send(broadcast);
 
+      client.send(broadcast);
     } catch (Exception e) {
       // TODO: handle exception
     }
-
   }
 
   public static void main(String[] args) {
-
-    // sendAndroidBroadcast("wwww");
-
     sendIOSBroadcast("233222");
-
   }
 
 }
