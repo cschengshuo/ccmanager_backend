@@ -1,5 +1,18 @@
 package com.winsyo.ccmanager.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.winsyo.ccmanager.domain.Role;
 import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.domain.enumerate.UserType;
@@ -13,17 +26,6 @@ import com.winsyo.ccmanager.exception.OperationFailureException;
 import com.winsyo.ccmanager.repository.RoleRepository;
 import com.winsyo.ccmanager.repository.UserRepository;
 import com.winsyo.ccmanager.util.Utils;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.transaction.Transactional;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
 
 /**
  * 系统用户服务
@@ -132,6 +134,15 @@ public class UserService {
     user.setType(UserType.AGENT);
     user.setPhone(dto.getPhone());
     user.setAgentAreaCode(dto.getAreaCode());
+
+    if (StringUtils.isNotEmpty(dto.getAreaCode())) {
+      User resultUser = userRepository.findUserByAgentAreaCode(dto.getAreaCode());
+      if (resultUser != null) {
+        throw new OperationFailureException("代理区域重复");
+      }
+
+    }
+
     try {
       User parent = findById(dto.getParentId());
       user.setParentId(parent.getId());
@@ -160,6 +171,15 @@ public class UserService {
   public void modifyUser(ModifyUserDto dto) {
     User user = findById(dto.getId());
     user.setAgentAreaCode(dto.getAreaCode());
+
+    if (StringUtils.isNotEmpty(dto.getAreaCode())) {
+      User resultUser = userRepository.findUserByAgentAreaCode(dto.getAreaCode());
+      if (resultUser != null) {
+        throw new OperationFailureException("代理区域重复");
+      }
+
+    }
+
     user.setIdentityCard(dto.getIdCard());
     user.setName(dto.getName());
     user.setPhone(dto.getPhone());
@@ -170,19 +190,20 @@ public class UserService {
 
   }
 
-//  public List<User> findUsers(String name) {
-//    Specification<User> appUserSpecification = (Specification<User>) (root, query, builder) -> {
-//      List<Predicate> list = new ArrayList<>();
-//      list.add(builder.equal(root.get("type").as(UserType.class), UserType.AGENT));
-//      if (StringUtils.isNotEmpty(name)) {
-//        list.add(builder.like(root.get("name").as(String.class), name + '%'));
-//      }
-//      Predicate[] p = new Predicate[list.size()];
-//      return builder.and(list.toArray(p));
-//    };
-//    List<User> users = userRepository.findAll(appUserSpecification);
-//    return users;
-//  }
+  // public List<User> findUsers(String name) {
+  // Specification<User> appUserSpecification = (Specification<User>) (root,
+  // query, builder) -> {
+  // List<Predicate> list = new ArrayList<>();
+  // list.add(builder.equal(root.get("type").as(UserType.class), UserType.AGENT));
+  // if (StringUtils.isNotEmpty(name)) {
+  // list.add(builder.like(root.get("name").as(String.class), name + '%'));
+  // }
+  // Predicate[] p = new Predicate[list.size()];
+  // return builder.and(list.toArray(p));
+  // };
+  // List<User> users = userRepository.findAll(appUserSpecification);
+  // return users;
+  // }
 
   public TreeDto getUserTreeRoot() {
     User user;
@@ -243,6 +264,5 @@ public class UserService {
     user.setIdentityCard(dto.getIdentityCard());
     userRepository.save(user);
   }
-
 
 }
