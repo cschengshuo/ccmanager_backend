@@ -19,6 +19,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
@@ -117,6 +118,18 @@ public class User implements UserDetails {
   @Column(name = "agent_area_code")
   private String agentAreaCode;
 
+  /**
+   * 账户是否启用
+   */
+  @Column(nullable = false)
+  private boolean enabled;
+
+  /**
+   * 账户是否失效
+   */
+  @Column(nullable = false)
+  private boolean expired;
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     List<Role> roles = this.getRoles();
@@ -127,7 +140,7 @@ public class User implements UserDetails {
   @JsonIgnore
   @Override
   public boolean isAccountNonExpired() {
-    return true;
+    return !expired;
   }
 
   @JsonIgnore
@@ -139,12 +152,6 @@ public class User implements UserDetails {
   @JsonIgnore
   @Override
   public boolean isCredentialsNonExpired() {
-    return true;
-  }
-
-  @JsonIgnore
-  @Override
-  public boolean isEnabled() {
     return true;
   }
 

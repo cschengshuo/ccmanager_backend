@@ -134,6 +134,8 @@ public class UserService {
     user.setType(UserType.AGENT);
     user.setPhone(dto.getPhone());
     user.setAgentAreaCode(dto.getAreaCode());
+    user.setEnabled(true);
+    user.setExpired(false);
 
     if (StringUtils.isNotEmpty(dto.getAreaCode())) {
       User resultUser = userRepository.findUserByAgentAreaCode(dto.getAreaCode());
