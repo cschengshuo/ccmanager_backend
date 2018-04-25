@@ -93,12 +93,23 @@ public class ChannelService {
   @Transactional
   public void modify(ModifyChannelDto dto) {
     Channel channel = findById(dto.getId());
+    User platform = userService.getPlatformAdministrator();
 
     if (dto.getPlatformFeeRate() != null && dto.getPlatformFeeRate().compareTo(channel.getPlatformFeeRate()) != 0) {
       channel.setPlatformFeeRate(dto.getPlatformFeeRate());
+
+      UserFee feeRate = userFeeService.findByUserIdAndChannelTypeAndFeeRate(platform.getId(), channel.getChannelType(), true);
+      BigDecimal incomeRate = channel.getFeeRate().subtract(channel.getPlatformFeeRate());
+      feeRate.setValue(incomeRate);
+      userFeeService.save(feeRate);
     }
     if (dto.getPlatformFee() != null && dto.getPlatformFee().compareTo(channel.getPlatformFee()) != 0) {
       channel.setPlatformFee(dto.getPlatformFee());
+
+      UserFee fee = userFeeService.findByUserIdAndChannelTypeAndFeeRate(platform.getId(), channel.getChannelType(), false);
+      BigDecimal incomeFee = channel.getFee().subtract(channel.getPlatformFee());
+      fee.setValue(incomeFee);
+      userFeeService.save(fee);
     }
     if (dto.getCostFeeRate() != null && dto.getCostFeeRate().compareTo(channel.getCostFeeRate()) != 0) {
       channel.setCostFeeRate(dto.getCostFeeRate());

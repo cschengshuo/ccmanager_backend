@@ -6,6 +6,7 @@ import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.domain.UserFee;
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
 import com.winsyo.ccmanager.domain.enumerate.UserType;
+import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.ChannelRepository;
 import com.winsyo.ccmanager.repository.RoleRepository;
 import com.winsyo.ccmanager.repository.UserFeeRepository;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -165,7 +167,6 @@ public class InitializationService {
     });
   }
 
-
   @Transactional
   public void initUserFee() {
     List<User> all = userRepository.findAll();
@@ -174,24 +175,7 @@ public class InitializationService {
     all.forEach(user -> {
       switch (user.getType()) {
         case PLATFORM:
-          channels.forEach(channel -> {
-            BigDecimal incomeRate = channel.getFeeRate().subtract(channel.getPlatformFeeRate());
-            BigDecimal incomeFee = channel.getFee().subtract(channel.getPlatformFee());
-
-            UserFee feeRate = new UserFee();
-            feeRate.setChannelType(channel.getChannelType());
-            feeRate.setUserId(user.getId());
-            feeRate.setValue(incomeRate);
-            feeRate.setFeeRate(true);
-            userFeeRepository.save(feeRate);
-
-            UserFee fee = new UserFee();
-            fee.setChannelType(channel.getChannelType());
-            fee.setUserId(user.getId());
-            fee.setValue(incomeFee);
-            fee.setFeeRate(false);
-            userFeeRepository.save(fee);
-          });
+          setPlatformUserFee(user, channels);
           break;
 
         case VIRTUAL:
@@ -213,6 +197,37 @@ public class InitializationService {
           });
           break;
       }
+    });
+  }
+
+  @Transactional
+  public void initPlatformUserFee(){
+    User platform = userRepository.findByType(UserType.PLATFORM).orElseThrow(() -> new EntityNotFoundException("未找到平台用户",UserType.PLATFORM.name()));
+
+    userFeeRepository.deleteByUserId(platform.getId());
+
+    List<Channel> channels = channelRepository.findAll();
+    setPlatformUserFee(platform, channels);
+  }
+
+  private void setPlatformUserFee(User user, List<Channel> channels) {
+    channels.forEach(channel -> {
+      BigDecimal incomeRate = channel.getFeeRate().subtract(channel.getPlatformFeeRate());
+      BigDecimal incomeFee = channel.getFee().subtract(channel.getPlatformFee());
+
+      UserFee feeRate = new UserFee();
+      feeRate.setChannelType(channel.getChannelType());
+      feeRate.setUserId(user.getId());
+      feeRate.setValue(incomeRate);
+      feeRate.setFeeRate(true);
+      userFeeRepository.save(feeRate);
+
+      UserFee fee = new UserFee();
+      fee.setChannelType(channel.getChannelType());
+      fee.setUserId(user.getId());
+      fee.setValue(incomeFee);
+      fee.setFeeRate(false);
+      userFeeRepository.save(fee);
     });
   }
 

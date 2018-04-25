@@ -82,4 +82,9 @@ public class UserFeeService {
     userFeeRepository.deleteByUserId(userId);
   }
 
+  @Transactional
+  public UserFee save(UserFee userFee){
+    return userFeeRepository.save(userFee);
+  }
+
 }

@@ -186,7 +186,6 @@ public class UserService {
 
   }
 
-
   @Transactional
   public void modifyUser(ModifyUserDto dto) {
     User user = findById(dto.getId());

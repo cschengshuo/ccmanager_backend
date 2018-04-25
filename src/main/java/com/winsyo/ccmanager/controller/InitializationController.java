@@ -53,4 +53,12 @@ public class InitializationController {
     initializationService.initUserPassword();
     return ok("成功");
   }
+
+  @PreAuthorize(value = "hasAuthority('ADMIN')")
+  @PostMapping(value = "initPlatformUserFee")
+  public ResponseEntity initPlatformUserFee(){
+    initializationService.initPlatformUserFee();
+    return ok("成功");
+  }
+
 }
