@@ -2,10 +2,11 @@ package com.winsyo.ccmanager.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-import com.winsyo.ccmanager.domain.Channel;
+import com.winsyo.ccmanager.domain.User;
 import com.winsyo.ccmanager.domain.UserAccount;
-import com.winsyo.ccmanager.domain.enumerate.ChannelType;
+import com.winsyo.ccmanager.dto.response.WithdrawDto;
 import com.winsyo.ccmanager.service.UserAccountService;
+import com.winsyo.ccmanager.util.Utils;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,13 @@ public class UserAccountController {
   public ResponseEntity findByUserId(String userId) {
     List<UserAccount> userAccount = userAccountService.findByUserId(userId);
     return ok(userAccount);
+  }
+
+  @GetMapping(value = "listSubUserAccount")
+  public ResponseEntity listSubUserAccount() {
+    User currentUser = Utils.getCurrentUser();
+    List<WithdrawDto> result = userAccountService.listSubUserAccount(currentUser.getId());
+    return ok(result);
   }
 
 

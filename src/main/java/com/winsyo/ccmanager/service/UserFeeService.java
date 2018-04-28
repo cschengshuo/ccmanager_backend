@@ -83,7 +83,7 @@ public class UserFeeService {
   }
 
   @Transactional
-  public UserFee save(UserFee userFee){
+  public UserFee save(UserFee userFee) {
     return userFeeRepository.save(userFee);
   }
 

@@ -2,7 +2,11 @@ package com.winsyo.ccmanager.config;
 
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import java.util.List;
+import java.util.Locale;
+import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -18,5 +22,7 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
     FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
     converters.add(converter);
   }
+
+
 
 }

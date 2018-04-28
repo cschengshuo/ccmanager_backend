@@ -1,7 +1,6 @@
 package com.winsyo.ccmanager.dto.response;
 
 import com.winsyo.ccmanager.domain.Channel;
-import com.winsyo.ccmanager.dto.response.PlatformChannelDto;
 import java.math.BigDecimal;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

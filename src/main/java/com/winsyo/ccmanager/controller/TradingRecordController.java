@@ -2,8 +2,8 @@ package com.winsyo.ccmanager.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-import com.winsyo.ccmanager.dto.response.TradingRecordDto;
 import com.winsyo.ccmanager.dto.query.TradingRecordQueryDto;
+import com.winsyo.ccmanager.dto.response.TradingRecordDto;
 import com.winsyo.ccmanager.service.TradingRecordService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

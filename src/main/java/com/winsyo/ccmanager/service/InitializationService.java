@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -201,8 +200,8 @@ public class InitializationService {
   }
 
   @Transactional
-  public void initPlatformUserFee(){
-    User platform = userRepository.findByType(UserType.PLATFORM).orElseThrow(() -> new EntityNotFoundException("未找到平台用户",UserType.PLATFORM.name()));
+  public void initPlatformUserFee() {
+    User platform = userRepository.findByType(UserType.PLATFORM).orElseThrow(() -> new EntityNotFoundException("未找到平台用户", UserType.PLATFORM.name()));
 
     userFeeRepository.deleteByUserId(platform.getId());
 

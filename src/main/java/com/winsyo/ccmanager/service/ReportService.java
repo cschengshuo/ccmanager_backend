@@ -118,7 +118,7 @@ public class ReportService {
     });
   }
 
-  private List<ReportDto> dealAdminRecord(List<TradingRecord> records){
+  private List<ReportDto> dealAdminRecord(List<TradingRecord> records) {
     List<ReportDto> reports = new ArrayList<>();
 
     records.forEach((record) -> {

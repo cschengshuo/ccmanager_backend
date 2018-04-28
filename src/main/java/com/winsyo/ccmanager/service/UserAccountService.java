@@ -2,21 +2,22 @@ package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.UserAccount;
 import com.winsyo.ccmanager.domain.enumerate.ChannelType;
+import com.winsyo.ccmanager.dto.response.WithdrawDto;
 import com.winsyo.ccmanager.exception.EntityNotFoundException;
 import com.winsyo.ccmanager.repository.UserAccountRepository;
 import java.util.List;
 import javax.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserAccountService {
 
   private UserAccountRepository userAccountRepository;
+  private SettlementRecordService settlementRecordService;
 
-  @Autowired
-  public UserAccountService(UserAccountRepository userAccountRepository) {
+  public UserAccountService(UserAccountRepository userAccountRepository, SettlementRecordService settlementRecordService) {
     this.userAccountRepository = userAccountRepository;
+    this.settlementRecordService = settlementRecordService;
   }
 
   public UserAccount findByUserIdAndType(String userId, ChannelType type) {
@@ -35,4 +36,8 @@ public class UserAccountService {
     return save;
   }
 
+  public List<WithdrawDto> listSubUserAccount(String id) {
+
+    return null;
+  }
 }

@@ -3,9 +3,9 @@ package com.winsyo.ccmanager.controller;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.winsyo.ccmanager.domain.Channel;
+import com.winsyo.ccmanager.dto.request.ModifyChannelDto;
 import com.winsyo.ccmanager.dto.response.ChannelDto;
 import com.winsyo.ccmanager.dto.response.ChannelFeeRateDto;
-import com.winsyo.ccmanager.dto.request.ModifyChannelDto;
 import com.winsyo.ccmanager.dto.response.PlatformChannelDto;
 import com.winsyo.ccmanager.service.ChannelService;
 import java.util.List;

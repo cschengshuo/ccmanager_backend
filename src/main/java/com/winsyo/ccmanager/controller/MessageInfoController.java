@@ -26,7 +26,7 @@ public class MessageInfoController {
   }
 
   @PostMapping(value = "sendAnnouncement")
-  public ResponseEntity sendAnnouncement(@RequestBody Map<String,String> map) {
+  public ResponseEntity sendAnnouncement(@RequestBody Map<String, String> map) {
     String text = map.get("text");
     messageInfoService.sendAnnouncement(text);
     return ok(true);

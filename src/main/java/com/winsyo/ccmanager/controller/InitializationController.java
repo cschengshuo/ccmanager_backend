@@ -56,7 +56,7 @@ public class InitializationController {
 
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @PostMapping(value = "initPlatformUserFee")
-  public ResponseEntity initPlatformUserFee(){
+  public ResponseEntity initPlatformUserFee() {
     initializationService.initPlatformUserFee();
     return ok("成功");
   }
