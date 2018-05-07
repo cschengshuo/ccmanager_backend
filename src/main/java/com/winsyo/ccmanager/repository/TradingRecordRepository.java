@@ -35,7 +35,7 @@ public interface TradingRecordRepository extends JpaRepository<TradingRecord, St
   List<TradingRecord> findTradingRecordsByTime(@Param("agentId") String agentId, @Param("startTime") LocalDateTime start, @Param("endTime") LocalDateTime end,
       @Param("payWayTAGs") List<PayWayTag> payWayTAGs);
 
-  @Query(value = "select sum(money) from TradingRecord where payWayTAG = :payWayTAG and ok=:ok ")
-  BigDecimal findAppUserHasWithdrawedSumMoney(@Param("payWayTAG") PayWayTag payWayTAG, @Param("ok") boolean ok);
+  @Query(value = "select sum(money) from TradingRecord where payWayTAG = :payWayTAG and ok= '1' ")
+  BigDecimal findAppUserHasWithdrawedSumMoney(@Param("payWayTAG") PayWayTag payWayTAG);
 
 }

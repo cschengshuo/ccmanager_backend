@@ -36,7 +36,6 @@ Configuration:
 
     Logger:
       - name: com.winsyo.ccmanager
-
         additivity: false
         level: DEBUG
         AppenderRef:

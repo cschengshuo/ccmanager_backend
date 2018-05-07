@@ -41,7 +41,7 @@ public class AppUserService {
   }
 
   public BigDecimal getAppUserHasWithdrawedSumMoney() {
-    return tradingRecordRepository.findAppUserHasWithdrawedSumMoney(PayWayTag.WITHDRAW, true);
+    return tradingRecordRepository.findAppUserHasWithdrawedSumMoney(PayWayTag.WITHDRAW);
   }
 
   public AppUser findByIDNumber(String idNumber) {
