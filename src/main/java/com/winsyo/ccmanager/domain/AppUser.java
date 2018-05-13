@@ -66,4 +66,7 @@ public class AppUser {
   @Column
   private BigDecimal canbalance;
 
+  @Column
+  private String userNo;
+
 }

@@ -2,6 +2,7 @@ package com.winsyo.ccmanager.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
+import com.winsyo.ccmanager.service.AppUserService;
 import com.winsyo.ccmanager.service.InitializationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class InitializationController {
 
   private InitializationService initializationService;
+  private AppUserService appUserService;
 
-  public InitializationController(InitializationService initializationService) {
+  public InitializationController(InitializationService initializationService, AppUserService appUserService) {
     this.initializationService = initializationService;
+    this.appUserService = appUserService;
   }
 
   @PreAuthorize(value = "hasAuthority('ADMIN')")
@@ -58,6 +61,13 @@ public class InitializationController {
   @PostMapping(value = "initPlatformUserFee")
   public ResponseEntity initPlatformUserFee() {
     initializationService.initPlatformUserFee();
+    return ok("成功");
+  }
+
+  @PreAuthorize(value = "hasAuthority('ADMIN')")
+  @PostMapping(value = "doCreateMerchant")
+  public ResponseEntity doCreateMerchant() {
+    appUserService.doCreateMerchant();
     return ok("成功");
   }
 
