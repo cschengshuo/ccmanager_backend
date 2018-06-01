@@ -13,12 +13,16 @@ import java.math.RoundingMode;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 @Service
 public class IncomeService {
+
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   private AppUserService appUserService;
   private UserService userService;
@@ -40,6 +44,8 @@ public class IncomeService {
 
   @Transactional
   public void calcIncome() {
+    logger.info("开始计算收益");
+
     List<TradingRecord> records = tradingRecordService.listUnsettleTradingRecords();
     if (CollectionUtils.isEmpty(records)) {
       return;

@@ -24,9 +24,9 @@ public class TradingRecordController {
   }
 
   @GetMapping(value = "findAll")
-  public ResponseEntity findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size, String cardNo) {
+  public ResponseEntity findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size, String cardNo,String userName) {
     PageRequest pagination = PageRequest.of(page, size);
-    Page<TradingRecordQueryDto> all = tradingRecordService.findAll(pagination, cardNo);
+    Page<TradingRecordQueryDto> all = tradingRecordService.findAll(pagination, cardNo,userName);
     Page<TradingRecordDto> result = all.map(TradingRecordDto::new);
     return ok(result);
   }

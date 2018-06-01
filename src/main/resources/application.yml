@@ -53,9 +53,9 @@ spring:
   profiles: dev
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://118.89.34.17:3306/ccmanager?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://47.98.196.148:3306/ccmanager?useUnicode=true&characterEncoding=utf-8
     username: shuo
-    password: Cs!MySQL321368
+    password: cs6834466
   jpa:
     properties:
       hibernate:

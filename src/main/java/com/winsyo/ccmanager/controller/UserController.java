@@ -85,11 +85,8 @@ public class UserController {
 
   @GetMapping(value = "findUsers")
   public ResponseEntity findUsers(String loginName) {
-    User currentUser = Utils.getCurrentUser();
-    User user;
-    if (currentUser.getType() != UserType.ADMIN) {
-      user = currentUser;
-    } else {
+    User user = Utils.getCurrentUser();
+    if (user.getType() == UserType.ADMIN) {
       user = userService.getPlatformAdministrator();
     }
     List<User> all = userService.findUsers(user.getId(), loginName);
@@ -104,11 +101,9 @@ public class UserController {
 
   @PostMapping(value = "modifyLoginPassword")
   public ResponseEntity modifyLoginPassword(@RequestBody ModifyLoginPasswordDto dto) {
-
     User user = Utils.getCurrentUser();
     userService.setPassword(user.getUsername(), dto.getOldPassword(), dto.getPassword());
     return ok(true);
   }
-
 
 }

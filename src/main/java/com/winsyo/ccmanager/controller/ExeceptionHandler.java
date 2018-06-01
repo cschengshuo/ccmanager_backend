@@ -36,4 +36,13 @@ public class ExeceptionHandler {
     return status(HttpStatus.CONFLICT).body(errorMsg);
   }
 
+//  @ExceptionHandler(value = {Exception.class})
+//  public ResponseEntity exceptionHandler(Exception ex, WebRequest req) {
+//    Map<String, String> errorMsg = new HashMap<>();
+//    errorMsg.put("code", "conflict");
+//    errorMsg.put("message", ex.getMessage());
+//    logger.error("未知异常",ex);
+//    return status(HttpStatus.CONFLICT).body(errorMsg);
+//  }
+
 }

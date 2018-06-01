@@ -21,8 +21,8 @@ public interface TradingRecordRepository extends JpaRepository<TradingRecord, St
 
   List<TradingRecord> findByPayWayTAGIsInAndTypeAndTimeBetween(List<PayWayTag> payWayTAGs, String type, LocalDateTime start, LocalDateTime end);
 
-  @Query(value = "select new com.winsyo.ccmanager.dto.query.TradingRecordQueryDto(rec, app.name) from TradingRecord rec, AppUser app where rec.cardNo like :cardNo and rec.userId = app.userId and app.agentId in :agentIds order by rec.time desc")
-  Page<TradingRecordQueryDto> findTradingRecords(@Param("agentIds") List<String> agentIds, @Param("cardNo") String cardNo, Pageable pageable);
+  @Query(value = "select new com.winsyo.ccmanager.dto.query.TradingRecordQueryDto(rec, app.name) from TradingRecord rec, AppUser app where rec.cardNo like :cardNo and app.name like :userName and rec.userId = app.userId and app.agentId in :agentIds order by rec.time desc")
+  Page<TradingRecordQueryDto> findTradingRecords(@Param("agentIds") List<String> agentIds, @Param("cardNo") String cardNo, @Param("userName") String userName, Pageable pageable);
 
   @Query(value = "select new com.winsyo.ccmanager.dto.query.TradingRecordQueryDto(rec, app.name) from TradingRecord rec, AppUser app where rec.userId = app.userId and app.agentId in :agentIds and rec.payWayTAG = :payWayTAG order by rec.time desc")
   Page<TradingRecordQueryDto> findTradingRecordsByPayWayTag(@Param("agentIds") List<String> agentIds, @Param("payWayTAG") PayWayTag payWayTAG, Pageable pageable);

@@ -31,13 +31,14 @@ public class TradingRecordService {
     this.userService = userService;
   }
 
-  public Page<TradingRecordQueryDto> findAll(Pageable pageable, String cardNo) {
+  public Page<TradingRecordQueryDto> findAll(Pageable pageable, String cardNo,String  userName) {
     String agentId = Utils.getCurrentUser().getId();
     List<String> userIds = userService.getAllChildren(agentId).stream().map(User::getId).collect(Collectors.toList());
     userIds.add(agentId);
     cardNo = cardNo + "%";
+    userName ="%" + userName + "%";
 
-    return tradingRecordRepository.findTradingRecords(userIds, cardNo, pageable);
+    return tradingRecordRepository.findTradingRecords(userIds, cardNo,userName, pageable);
   }
 
   public Page<TradingRecordQueryDto> findWithDraw(Pageable pagable) {
