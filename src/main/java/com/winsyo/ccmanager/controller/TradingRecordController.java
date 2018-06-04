@@ -2,7 +2,8 @@ package com.winsyo.ccmanager.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-import com.winsyo.ccmanager.dto.query.TradingRecordQueryDto;
+import com.winsyo.ccmanager.domain.TradingRecord;
+import com.winsyo.ccmanager.domain.enumerate.PayWayTag;
 import com.winsyo.ccmanager.dto.response.TradingRecordDto;
 import com.winsyo.ccmanager.service.TradingRecordService;
 import org.springframework.data.domain.Page;
@@ -24,9 +25,9 @@ public class TradingRecordController {
   }
 
   @GetMapping(value = "findAll")
-  public ResponseEntity findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size, String cardNo,String userName) {
+  public ResponseEntity findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size, String cardNo, String userName) {
     PageRequest pagination = PageRequest.of(page, size);
-    Page<TradingRecordQueryDto> all = tradingRecordService.findAll(pagination, cardNo,userName);
+    Page<TradingRecord> all = tradingRecordService.findAll(cardNo, userName, null, pagination);
     Page<TradingRecordDto> result = all.map(TradingRecordDto::new);
     return ok(result);
   }
@@ -34,7 +35,7 @@ public class TradingRecordController {
   @GetMapping(value = "findWithDrawRecords")
   public ResponseEntity findWithDrawRecords(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
     PageRequest pagination = PageRequest.of(page, size);
-    Page<TradingRecordQueryDto> all = tradingRecordService.findWithDraw(pagination);
+    Page<TradingRecord> all = tradingRecordService.findAll(null, null, PayWayTag.WITHDRAW, pagination);
     Page<TradingRecordDto> result = all.map(TradingRecordDto::new);
     return ok(result);
   }

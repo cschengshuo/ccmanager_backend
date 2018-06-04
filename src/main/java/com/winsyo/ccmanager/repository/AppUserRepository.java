@@ -1,7 +1,6 @@
 package com.winsyo.ccmanager.repository;
 
 import com.winsyo.ccmanager.domain.AppUser;
-import com.winsyo.ccmanager.dto.query.AppUserQueryDto;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -16,11 +15,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AppUserRepository extends JpaRepository<AppUser, String>, JpaSpecificationExecutor<AppUser> {
 
-  List<AppUser> findAppUsersByAgentId(String agentId);
-
-  @Query(value = "select new com.winsyo.ccmanager.dto.query.AppUserQueryDto(app, u.name) from AppUser app, User u where app.agentId = u.id and app.agentId in :agentIds")
-  Page<AppUserQueryDto> findAppUsers(@Param("agentIds") List<String> agentIds, Pageable pageable);
-
+//  List<AppUser> findAppUsersByAgentId(String agentId);
+//
+//  @Query(value = "select new com.winsyo.ccmanager.dto.query.AppUserQueryDto(app, u.name) from AppUser app, User u where app.agent.id = u.id and app.agent.id in :agentIds")
+//  Page<AppUserQueryDto> findAppUsers(@Param("agentIds") List<String> agentIds, Pageable pageable);
 
   @Query(value = "select sum(canbalance) from AppUser")
   BigDecimal findAppUserWithdrawSumMoney();

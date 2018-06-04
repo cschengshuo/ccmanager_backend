@@ -1,7 +1,6 @@
 package com.winsyo.ccmanager.dto.response;
 
 import com.winsyo.ccmanager.domain.AppUser;
-import com.winsyo.ccmanager.dto.query.AppUserQueryDto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.Data;
@@ -37,8 +36,7 @@ public class AppUserDto {
 
   private BigDecimal canbalance;
 
-  public AppUserDto(AppUserQueryDto dto) {
-    AppUser appUser = dto.getAppUser();
+  public AppUserDto(AppUser appUser) {
     this.userId = appUser.getUserId();
     this.contactPhone = appUser.getContactPhone();
     this.inviteCode = appUser.getInviteCode();
@@ -46,8 +44,8 @@ public class AppUserDto {
     this.IDNumber = appUser.getIdNumber();
     this.inviteCoded = appUser.getInviteCoded();
     this.recommendUserId = appUser.getRecommendUserId();
-    this.agentId = appUser.getAgentId();
-    this.agentName = dto.getAgentName();
+    this.agentId = appUser.getAgent().getId();
+    this.agentName = appUser.getAgent().getName();
     this.registerTime = appUser.getRegisterTime();
     this.approveTime = appUser.getApproveTime();
     this.upgradeTime = appUser.getUpgradeTime();

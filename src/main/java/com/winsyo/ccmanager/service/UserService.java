@@ -177,9 +177,9 @@ public class UserService {
       List<AppUser> subAppUsers = appUserService.findSubAppUsers(appUser.getUserId());
       subAppUsers.add(appUser);
 
-      final String agentId = user.getId();
+      final User agentId = user;
       subAppUsers.forEach(appUser1 -> {
-        appUser1.setAgentId(agentId);
+        appUser1.setAgent(agentId);
         appUserService.save(appUser1);
       });
     } catch (EntityNotFoundException e) {

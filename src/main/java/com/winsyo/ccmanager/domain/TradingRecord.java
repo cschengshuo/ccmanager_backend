@@ -5,7 +5,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -54,8 +57,12 @@ public class TradingRecord {
   /**
    * 人员ID
    */
-  @Column
-  private String userId;
+//  @Column
+//  private String userId;
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "userId")
+  private AppUser appUser;
 
   /**
    * 转入卡号

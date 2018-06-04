@@ -56,8 +56,8 @@ public class IncomeService {
       AppUser appUser;
       List<User> parents;
       try {
-        appUser = appUserService.findById(record.getUserId());
-        parents = this.userService.getParentQueue(appUser.getAgentId());
+        appUser = record.getAppUser();
+        parents = this.userService.getParentQueue(appUser.getAgent().getId());
       } catch (EntityNotFoundException e) {
         return;
       }

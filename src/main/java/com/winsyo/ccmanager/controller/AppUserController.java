@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 手机用户Controller
+ */
 @RestController
 @RequestMapping(value = "/app_user")
 public class AppUserController {
@@ -30,8 +33,19 @@ public class AppUserController {
     this.userService = userService;
   }
 
+  /**
+   * 根据代理ID查询可见的手机用户
+   * @param agentId 代理ID
+   * @param username 查询条件 手机用户姓名
+   * @param mobile 查询条件 手机号
+   * @param idCard 查询条件 身份证
+   * @param page 分页位置
+   * @param size 分页大小
+   * @return
+   */
   @GetMapping(value = "findAppUsersByAgentId")
-  public ResponseEntity findAppUsersByAgentId(String agentId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
+  public ResponseEntity findAppUsersByAgentId(String agentId, @RequestParam(required = false) String username, @RequestParam(required = false) String mobile,
+      @RequestParam(required = false) String idCard, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
     PageRequest pagination = PageRequest.of(page, size);
     if (StringUtils.isEmpty(agentId)) {
       agentId = Utils.getCurrentUser().getId();
@@ -40,7 +54,7 @@ public class AppUserController {
     List<String> userIds = userService.getAllChildren(agentId).stream().map(user -> user.getId()).collect(Collectors.toList());
     userIds.add(agentId);
 
-    Page<AppUserDto> appUsers = appUserService.findAppUsers(userIds, pagination);
+    Page<AppUserDto> appUsers = appUserService.findAppUsers(userIds, username, mobile, idCard, pagination);
     return ok(appUsers);
   }
 
@@ -55,6 +69,5 @@ public class AppUserController {
     BigDecimal sumMoney = appUserService.getAppUserHasWithdrawedSumMoney();
     return ok(sumMoney);
   }
-
 
 }

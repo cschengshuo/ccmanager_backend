@@ -56,4 +56,21 @@ public class TradingRecordDto {
     this.planId = tradingRecord.getPlanId();
     this.userName = dto.getUsername();
   }
+
+  public TradingRecordDto(TradingRecord tradingRecord) {
+    this.recordId = tradingRecord.getRecordId();
+    this.time = tradingRecord.getTime();
+    this.money = tradingRecord.getMoney();
+    this.status = tradingRecord.getStatus();
+    if (tradingRecord.getPayWayTAG() != null) {
+      this.payWayTAG = tradingRecord.getPayWayTAG().index();
+    }
+    this.type = tradingRecord.getType();
+    this.cardNo = tradingRecord.getCardNo();
+    this.bankCode = tradingRecord.getBankCode();
+    this.inCardNo = tradingRecord.getInCardNo();
+    this.recordNo = tradingRecord.getRecordNo();
+    this.planId = tradingRecord.getPlanId();
+    this.userName = tradingRecord.getAppUser().getName();
+  }
 }
