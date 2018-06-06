@@ -76,8 +76,8 @@ public class AppUserService {
     return tradingRecordRepository.findAppUserHasWithdrawedSumMoney(PayWayTag.WITHDRAW);
   }
 
-  public AppUser findByIDNumber(String idNumber) {
-    return appUserRepository.findByIdNumber(idNumber).orElseThrow(() -> new EntityNotFoundException("未找到该手机用户", idNumber));
+  public AppUser findByContactPhone(String contactPhone) {
+    return appUserRepository.findByContactPhone(contactPhone).orElseThrow(() -> new EntityNotFoundException("未找到该手机用户", contactPhone));
   }
 
   public List<AppUser> findAppUsersByRecommendUserId(String inviteCoded) {

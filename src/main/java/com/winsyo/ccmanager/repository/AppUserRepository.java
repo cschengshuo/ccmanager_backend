@@ -23,7 +23,7 @@ public interface AppUserRepository extends JpaRepository<AppUser, String>, JpaSp
   @Query(value = "select sum(canbalance) from AppUser")
   BigDecimal findAppUserWithdrawSumMoney();
 
-  Optional<AppUser> findByIdNumber(String idNumber);
+  Optional<AppUser> findByContactPhone(String contactPhone);
 
   List<AppUser> findAppUsersByRecommendUserId(String recommendUserId);
 

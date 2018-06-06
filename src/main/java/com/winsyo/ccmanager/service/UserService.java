@@ -169,7 +169,7 @@ public class UserService {
     userFeeService.createUserFee(dto.getFeeRate(), user.getId());
 
     try {
-      AppUser appUser = appUserService.findByIDNumber(user.getIdentityCard());
+      AppUser appUser = appUserService.findByContactPhone(user.getPhone());
 
       user.setInviteCode(appUser.getInviteCode());
       userRepository.save(user);

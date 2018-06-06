@@ -54,12 +54,6 @@ public class TradingRecord {
   @Column
   private String bankCode;
 
-  /**
-   * 人员ID
-   */
-//  @Column
-//  private String userId;
-
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "userId")
   private AppUser appUser;
