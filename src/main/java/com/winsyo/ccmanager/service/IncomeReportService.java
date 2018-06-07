@@ -21,7 +21,7 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ReportService {
+public class IncomeReportService {
 
   private AppUserService appUserService;
   private TradingRecordService tradingRecordService;
@@ -29,7 +29,7 @@ public class ReportService {
   private UserService userService;
   private UserFeeService userFeeService;
 
-  public ReportService(AppUserService appUserService, TradingRecordService tradingRecordService, IncomeService incomeService, UserService userService,
+  public IncomeReportService(AppUserService appUserService, TradingRecordService tradingRecordService, IncomeService incomeService, UserService userService,
       UserFeeService userFeeService) {
     this.appUserService = appUserService;
     this.tradingRecordService = tradingRecordService;
@@ -38,6 +38,13 @@ public class ReportService {
     this.userFeeService = userFeeService;
   }
 
+  /**
+   * 获取收益报表
+   * @param type
+   * @param startDate
+   * @param endDate
+   * @return
+   */
   public List<ReportDto> getReport(ReportType type, LocalDateTime startDate, LocalDateTime endDate) {
     LocalDateTime start = null;
     LocalDateTime end = null;

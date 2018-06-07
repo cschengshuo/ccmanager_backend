@@ -4,7 +4,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.winsyo.ccmanager.domain.enumerate.ReportType;
 import com.winsyo.ccmanager.dto.ReportDto;
-import com.winsyo.ccmanager.service.ReportService;
+import com.winsyo.ccmanager.service.AppUserReportService;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,20 +16,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 统计报表Controller
+ * 手机用户统计报表Controller
  */
 @RestController
-@RequestMapping(value = "/report")
-public class ReportController {
+@RequestMapping(value = "/appuser_report")
+public class AppUserReportController {
 
-  private ReportService reportService;
+  private AppUserReportService appUserReportService;
 
-  public ReportController(ReportService reportService) {
-    this.reportService = reportService;
+  public AppUserReportController(AppUserReportService appUserReportService) {
+    this.appUserReportService = appUserReportService;
   }
 
   /**
-   * 获取手机统计报表
+   * 获取收益统计报表
    * @param type
    * @param start
    * @param end
@@ -40,7 +40,7 @@ public class ReportController {
       @DateTimeFormat(iso = ISO.DATE_TIME) @RequestParam(required = false) LocalDateTime end) {
     ReportType reportType = ReportType.indexOf(type);
 
-    List<ReportDto> reports = reportService.getReport(reportType, start, end);
+    List<ReportDto> reports = appUserReportService.getReport(reportType, start, end);
     return ok(reports);
   }
 }

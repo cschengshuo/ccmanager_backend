@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "appuser")
+@Table(name = "agent_apply")
 public class AgentApply {
 
   @Id
