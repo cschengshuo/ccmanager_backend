@@ -120,8 +120,14 @@ public class UserService {
     }
   }
 
+  /**
+   * 创建代理用户
+   * @param dto
+   */
   @Transactional
   public void createAgentUser(CreateUserDto dto) {
+    // TODO 校验登录名是否重复
+
     User user = new User();
     Role agent = roleRepository.findByRole("AGENT");
     user.setRoles(new LinkedList<>(Collections.singletonList(agent)));

@@ -10,6 +10,9 @@ import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+/**
+ * 充值记录Services
+ */
 @Service
 public class RechargeRecordService {
 
@@ -21,6 +24,11 @@ public class RechargeRecordService {
     this.userService = userService;
   }
 
+  /**
+   * 添加充值记录
+   * @param userId 代理ID
+   * @param money 充值金额
+   */
   @Transactional
   public void addRechargeRecord(String userId, BigDecimal money) {
     RechargeRecord rechargeRecord = new RechargeRecord();
@@ -31,10 +39,14 @@ public class RechargeRecordService {
     rechargeRecordRepository.save(rechargeRecord);
   }
 
+  /**
+   * 获取平台充值记录
+   * @return
+   */
   public BigDecimal getPlatformRecharge() {
     User platform = userService.getPlatformAdministrator();
     List<RechargeRecord> records = rechargeRecordRepository.findByUserId(platform.getId());
-    BigDecimal result = records.stream().map(rechargeRecord -> rechargeRecord.getMoney()).reduce(BigDecimal::add).orElseThrow(() -> new OperationFailureException("空"));
+    BigDecimal result = records.stream().map(rechargeRecord -> rechargeRecord.getMoney()).reduce(BigDecimal::add).orElse(new BigDecimal("0"));
     return result;
   }
 }

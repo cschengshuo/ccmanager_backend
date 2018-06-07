@@ -11,6 +11,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+/**
+ * 代理账户
+ */
 @Data
 @NoArgsConstructor
 @Entity
@@ -22,15 +25,27 @@ public class UserAccount {
   @GenericGenerator(name = "uuid", strategy = "uuid2")
   private String id;
 
+  /**
+   * 代理ID
+   */
   @Column(name = "user_id")
   private String userId;
 
+  /**
+   * 已提现金额
+   */
   @Column(precision = 13, scale = 2)
   private BigDecimal balance;
 
+  /**
+   * 待提现金额
+   */
   @Column(name = "pre_settlement", precision = 13, scale = 2)
   private BigDecimal preSettlement;
 
+  /**
+   * 账户通道类型
+   */
   @Column
   private ChannelType type;
 

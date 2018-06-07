@@ -14,6 +14,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
+/**
+ * 手机用户交易记录
+ */
 @Data
 @NoArgsConstructor
 @Entity
@@ -21,6 +24,9 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate
 public class TradingRecord {
 
+  /**
+   * 记录ID
+   */
   @Id
   private String recordId;
 
@@ -54,6 +60,9 @@ public class TradingRecord {
   @Column
   private String bankCode;
 
+  /**
+   * 交易手机用户
+   */
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "userId")
   private AppUser appUser;

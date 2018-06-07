@@ -10,25 +10,43 @@ import javax.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
+/**
+ * 用户费率
+ */
 @Data
 @Entity
 @Table(name = "user_fee")
 public class UserFee {
 
+  /**
+   * ID
+   */
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")
   private String id;
 
+  /**
+   * 费率值
+   */
   @Column(precision = 19, scale = 5)
   private BigDecimal value;
 
+  /**
+   * 通道类型
+   */
   @Column
   private ChannelType channelType;
 
+  /**
+   * 用户ID
+   */
   @Column
   private String userId;
 
+  /**
+   * true为费率 false为代收费
+   */
   @Column
   private boolean feeRate;
 

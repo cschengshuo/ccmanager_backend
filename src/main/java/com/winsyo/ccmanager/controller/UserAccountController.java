@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 用户虚拟账户Controller
+ */
 @RestController
 @RequestMapping(value = "/user_account")
 public class UserAccountController {
@@ -23,12 +26,21 @@ public class UserAccountController {
     this.userAccountService = userAccountService;
   }
 
+  /**
+   * 根据代理ID查询
+   * @param userId
+   * @return
+   */
   @GetMapping(value = "findByUserId")
   public ResponseEntity findByUserId(String userId) {
     List<UserAccount> userAccount = userAccountService.findByUserId(userId);
     return ok(userAccount);
   }
 
+  /**
+   * 列出下属用户账户余额
+   * @return
+   */
   @GetMapping(value = "listSubUserAccount")
   public ResponseEntity listSubUserAccount() {
     User currentUser = Utils.getCurrentUser();

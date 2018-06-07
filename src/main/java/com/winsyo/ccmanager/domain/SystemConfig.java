@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 系统配置
+ */
 @Entity
 @Table(name = "system_config")
 @Data
@@ -21,12 +24,21 @@ public class SystemConfig {
   @GeneratedValue
   private Long id;
 
+  /**
+   * 系统配置类型
+   */
   @Column(name = "config_type")
   private SystemConfigType configType;
 
+  /**
+   * 配置名称
+   */
   @Column
   private String description;
 
+  /**
+   * 内容
+   */
   @Column(length = 1000)
   private String value;
 

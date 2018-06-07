@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 用户充值Controller
+ */
 @RestController
 @RequestMapping(value = "/recharge")
 public class RechargeRecordController {
@@ -24,6 +27,11 @@ public class RechargeRecordController {
     this.rechargeRecordService = rechargeRecordService;
   }
 
+  /**
+   * 添加用户充值记录
+   * @param dto
+   * @return
+   */
   @PostMapping(value = "addRechargeRecord")
   public ResponseEntity addRechargeRecord(@RequestBody RechargeRecordDto dto) {
     User currentUser = Utils.getCurrentUser();
@@ -31,6 +39,10 @@ public class RechargeRecordController {
     return ok(true);
   }
 
+  /**
+   * 查询平台充值记录
+   * @return
+   */
   @GetMapping(value = "getPlatformRecharge")
   public ResponseEntity getPlatformRecharge() {
     BigDecimal recharge = rechargeRecordService.getPlatformRecharge();

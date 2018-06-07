@@ -2,6 +2,9 @@ package com.winsyo.ccmanager.domain.enumerate;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
+/**
+ * 通道类型
+ */
 public enum ChannelType {
 
   /**

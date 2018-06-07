@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 平台公告管理
+ */
 @RestController
 @RequestMapping(value = "/message")
 public class MessageInfoController {
@@ -25,6 +28,11 @@ public class MessageInfoController {
     this.messageInfoService = messageInfoService;
   }
 
+  /**
+   * 发送公告
+   * @param map
+   * @return
+   */
   @PostMapping(value = "sendAnnouncement")
   public ResponseEntity sendAnnouncement(@RequestBody Map<String, String> map) {
     String text = map.get("text");
@@ -32,6 +40,12 @@ public class MessageInfoController {
     return ok(true);
   }
 
+  /**
+   * 查询所有公告
+   * @param page
+   * @param size
+   * @return
+   */
   @GetMapping(value = "listAnnouncement")
   public ResponseEntity listAnnouncement(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
     PageRequest pagination = PageRequest.of(page, size);

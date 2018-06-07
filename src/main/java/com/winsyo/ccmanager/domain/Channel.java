@@ -11,6 +11,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+/**
+ * 交易通道
+ */
 @Data
 @NoArgsConstructor
 @Entity
@@ -22,6 +25,9 @@ public class Channel {
   @GenericGenerator(name = "uuid", strategy = "uuid2")
   private String id;
 
+  /**
+   * 通道名称
+   */
   @Column
   private String name;
 
@@ -85,6 +91,9 @@ public class Channel {
   @Column(length = 1000)
   private String description;
 
+  /**
+   * 是否启用
+   */
   @Column
   private Boolean enable;
 

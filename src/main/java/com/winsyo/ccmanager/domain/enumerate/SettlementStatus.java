@@ -1,5 +1,8 @@
 package com.winsyo.ccmanager.domain.enumerate;
 
+/**
+ * 提现记录状态
+ */
 public enum SettlementStatus {
 
   PENDING(1),

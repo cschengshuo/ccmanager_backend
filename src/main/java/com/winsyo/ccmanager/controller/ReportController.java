@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 统计报表Controller
+ */
 @RestController
 @RequestMapping(value = "/report")
 public class ReportController {
@@ -25,6 +28,13 @@ public class ReportController {
     this.reportService = reportService;
   }
 
+  /**
+   * 获取手机统计报表
+   * @param type
+   * @param start
+   * @param end
+   * @return
+   */
   @GetMapping(value = "getReport")
   public ResponseEntity getReport(int type, @RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime start,
       @DateTimeFormat(iso = ISO.DATE_TIME) @RequestParam(required = false) LocalDateTime end) {

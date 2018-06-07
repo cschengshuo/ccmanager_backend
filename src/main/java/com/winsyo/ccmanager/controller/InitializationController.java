@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 平台数据初始化Controller
+ */
 @RestController
 @RequestMapping(value = "/init")
 public class InitializationController {
@@ -22,6 +25,10 @@ public class InitializationController {
     this.appUserService = appUserService;
   }
 
+  /**
+   * 初始化用户费率
+   * @return
+   */
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @PostMapping(value = "initUserFee")
   public ResponseEntity initUserFee() {
@@ -29,6 +36,10 @@ public class InitializationController {
     return ok("成功");
   }
 
+  /**
+   * 初始化通道信息
+   * @return
+   */
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @PostMapping(value = "initChannel")
   public ResponseEntity initChannel() {
@@ -36,6 +47,10 @@ public class InitializationController {
     return ok("成功");
   }
 
+  /**
+   * 初始化角色信息
+   * @return
+   */
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @PostMapping(value = "initRole")
   public ResponseEntity initRole() {
@@ -43,6 +58,10 @@ public class InitializationController {
     return ok("成功");
   }
 
+  /**
+   * 初始化用户角色
+   * @return
+   */
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @PostMapping(value = "initUserRole")
   public ResponseEntity initUserRole() {
@@ -50,6 +69,10 @@ public class InitializationController {
     return ok("成功");
   }
 
+  /**
+   * 初始化所有用户密码
+   * @return
+   */
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @PostMapping(value = "initUserPassword")
   public ResponseEntity initUserPassword() {
@@ -57,6 +80,10 @@ public class InitializationController {
     return ok("成功");
   }
 
+  /**
+   * 初始化平台用户费率
+   * @return
+   */
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @PostMapping(value = "initPlatformUserFee")
   public ResponseEntity initPlatformUserFee() {
@@ -64,6 +91,10 @@ public class InitializationController {
     return ok("成功");
   }
 
+  /**
+   * 进行合利宝商户注册
+   * @return
+   */
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @PostMapping(value = "doCreateMerchant")
   public ResponseEntity doCreateMerchant() {

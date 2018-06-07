@@ -23,12 +23,21 @@ public class RechargeRecord {
   @GenericGenerator(name = "uuid", strategy = "uuid2")
   private String id;
 
+  /**
+   * 充值人ID
+   */
   @Column
   private String userId;
 
+  /**
+   * 充值金额
+   */
   @Column(precision = 19, scale = 2)
   private BigDecimal money;
 
+  /**
+   * 充值时间
+   */
   @Column
   private LocalDateTime time;
 

@@ -25,6 +25,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * 代理平台用户
+ */
 @Data
 @NoArgsConstructor
 @Entity
@@ -32,6 +35,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 @DynamicUpdate
 public class User implements UserDetails {
 
+  /**
+   * ID
+   */
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -67,6 +73,9 @@ public class User implements UserDetails {
   @Column
   private String inviteCode;
 
+  /**
+   * 平台用户类型
+   */
   @Column
   @Enumerated(EnumType.ORDINAL)
   private UserType type;
@@ -110,10 +119,16 @@ public class User implements UserDetails {
   @Column
   private String emergencyContact;
 
+  /**
+   * 用户角色列表
+   */
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
   private List<Role> roles;
 
+  /**
+   * 代理区域
+   */
   @Column(name = "agent_area_code")
   private String agentAreaCode;
 

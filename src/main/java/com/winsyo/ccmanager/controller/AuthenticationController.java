@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 登录Controller
+ */
 @RestController
 @RequestMapping(value = "/auth")
 public class AuthenticationController {
@@ -26,6 +29,12 @@ public class AuthenticationController {
     this.userService = userService;
   }
 
+  /**
+   * 登录  获取JWT Token
+   * @param dto
+   * @return
+   * @throws AuthenticationException
+   */
   @PostMapping(value = "login")
   public ResponseEntity login(@RequestBody LoginDto dto) throws AuthenticationException {
     String jwt = authenticationService.login(dto.getUsername(), dto.getPassword());

@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 交易记录Controller
+ */
 @RestController
 @RequestMapping(value = "/trading_record")
 public class TradingRecordController {
@@ -24,6 +27,14 @@ public class TradingRecordController {
     this.tradingRecordService = tradingRecordService;
   }
 
+  /**
+   * 查询用户交易记录
+   * @param page
+   * @param size
+   * @param cardNo
+   * @param userName
+   * @return
+   */
   @GetMapping(value = "findAll")
   public ResponseEntity findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size, String cardNo, String userName) {
     PageRequest pagination = PageRequest.of(page, size);
@@ -32,6 +43,12 @@ public class TradingRecordController {
     return ok(result);
   }
 
+  /**
+   * 查询用户提现记录
+   * @param page
+   * @param size
+   * @return
+   */
   @GetMapping(value = "findWithDrawRecords")
   public ResponseEntity findWithDrawRecords(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
     PageRequest pagination = PageRequest.of(page, size);

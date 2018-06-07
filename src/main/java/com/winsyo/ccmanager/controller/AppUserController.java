@@ -58,12 +58,20 @@ public class AppUserController {
     return ok(appUsers);
   }
 
+  /**
+   * 获取所有手机用户待提现金额
+   * @return
+   */
   @GetMapping(value = "getAppUserWithdrawSum")
   public ResponseEntity getAppUserWithdrawSum() {
     BigDecimal sumMoney = appUserService.getAppUserWithdrawSumMoney();
     return ok(sumMoney);
   }
 
+  /**
+   * 获取所有手机用户已提现金额
+   * @return
+   */
   @GetMapping(value = "getAppUserHasWithdrawedSum")
   public ResponseEntity getAppUserWithdrawedSum() {
     BigDecimal sumMoney = appUserService.getAppUserHasWithdrawedSumMoney();
