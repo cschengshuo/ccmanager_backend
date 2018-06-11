@@ -32,7 +32,8 @@ public class InitializationController {
   }
 
   @PostMapping(value = "receiveResponse")
-  public ResponseEntity getResponse(@RequestBody Map<String, String> u) {
+  public ResponseEntity receiveResponse(@RequestBody Map<String, String> u) {
+    logger.info("接收回调");
     u.forEach((s, s2) -> {
       logger.info(s + "  " + s2);
     });

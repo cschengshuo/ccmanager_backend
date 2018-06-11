@@ -26,7 +26,7 @@ public class EtonePayService {
 
   public static void main(String[] args) {
     EtonePayService etonePayService = new EtonePayService();
-    etonePayService.pay("160", "徐枫", "130184198504180016", "6217001630025579589", "18610601315",
+    etonePayService.pay("100", "徐枫", "130184198504180016", "6217001630025579589", "18610601315",
         "中国建设银行", "18610601315", "4581240211586178", "438", "2301");
   }
 
@@ -63,7 +63,7 @@ public class EtonePayService {
     String tranDateTime = sdf.format(LocalDateTime.now()); // 交易时间 YYYYMMDDHHMMSS
     String currencyType = "156"; // 货币代码 固定
     String merURL = "https://www.winsyo.com"; // 商户返回页面
-    String backURL = ""; // 回调商户地址
+    String backURL = "http://www.winsyo.com:8080/ccmanagerOK/init/receiveResponse"; // 回调商户地址
     String orderInfo = ""; // 订单信息
     String userId = ""; // 用户 ID
     String userNameHF = Hex.encodeHexString(userName.getBytes(), false); // 开户名（姓名）为Hex编码(16进制转码)后数据
