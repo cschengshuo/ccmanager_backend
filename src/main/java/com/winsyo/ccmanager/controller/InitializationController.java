@@ -4,9 +4,13 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.winsyo.ccmanager.service.AppUserService;
 import com.winsyo.ccmanager.service.InitializationService;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/init")
 public class InitializationController {
 
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
   private InitializationService initializationService;
   private AppUserService appUserService;
 
@@ -25,9 +31,16 @@ public class InitializationController {
     this.appUserService = appUserService;
   }
 
+  @PostMapping(value = "receiveResponse")
+  public ResponseEntity getResponse(@RequestBody Map<String, String> u) {
+    u.forEach((s, s2) -> {
+      logger.info(s + "  " + s2);
+    });
+    return ok("success");
+  }
+
   /**
    * 初始化用户费率
-   * @return
    */
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @PostMapping(value = "initUserFee")
@@ -38,7 +51,6 @@ public class InitializationController {
 
   /**
    * 初始化通道信息
-   * @return
    */
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @PostMapping(value = "initChannel")
@@ -49,7 +61,6 @@ public class InitializationController {
 
   /**
    * 初始化角色信息
-   * @return
    */
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @PostMapping(value = "initRole")
@@ -60,7 +71,6 @@ public class InitializationController {
 
   /**
    * 初始化用户角色
-   * @return
    */
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @PostMapping(value = "initUserRole")
@@ -71,7 +81,6 @@ public class InitializationController {
 
   /**
    * 初始化所有用户密码
-   * @return
    */
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @PostMapping(value = "initUserPassword")
@@ -82,7 +91,6 @@ public class InitializationController {
 
   /**
    * 初始化平台用户费率
-   * @return
    */
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @PostMapping(value = "initPlatformUserFee")
@@ -93,7 +101,6 @@ public class InitializationController {
 
   /**
    * 进行合利宝商户注册
-   * @return
    */
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @PostMapping(value = "doCreateMerchant")
