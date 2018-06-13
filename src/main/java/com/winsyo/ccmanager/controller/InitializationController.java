@@ -30,51 +30,6 @@ public class InitializationController {
     this.appUserService = appUserService;
   }
 
-  @PostMapping(value = "receiveResponse")
-  public ResponseEntity receiveResponse(@RequestParam(required = false) String transCode, @RequestParam(required = false) String merchantId,
-      @RequestParam(required = false) String respCode, @RequestParam(required = false) String sysTraceNum, @RequestParam(required = false) String merOrderNum,
-      @RequestParam(required = false) String orderId, @RequestParam(required = false) String bussId, @RequestParam(required = false) String tranAmt,
-      @RequestParam(required = false) String orderAmt, @RequestParam(required = false) String bankFeeAmt, @RequestParam(required = false) String integralAmt,
-      @RequestParam(required = false) String vaAmt, @RequestParam(required = false) String bankAmt, @RequestParam(required = false) String bankId,
-      @RequestParam(required = false) String integralSeq, @RequestParam(required = false) String vaSeq, @RequestParam(required = false) String bankSeq,
-      @RequestParam(required = false) String tranDateTime, @RequestParam(required = false) String payMentTime, @RequestParam(required = false) String settleDate,
-      @RequestParam(required = false) String currencyType, @RequestParam(required = false) String orderInfo, @RequestParam(required = false) String userId,
-      @RequestParam(required = false) String userIp, @RequestParam(required = false) String reserver1, @RequestParam(required = false) String reserver2,
-      @RequestParam(required = false) String reserver3, @RequestParam(required = false) String reserver4, @RequestParam(required = false) String signValue) {
-    logger.info("接收回调");
-
-    logger.info(transCode);
-    logger.info(merchantId);
-    logger.info(respCode);
-    logger.info(sysTraceNum);
-    logger.info(merOrderNum);
-    logger.info(orderId);
-    logger.info(bussId);
-    logger.info(tranAmt);
-    logger.info(orderAmt);
-    logger.info(bankFeeAmt);
-    logger.info(integralAmt);
-    logger.info(vaAmt);
-    logger.info(bankAmt);
-    logger.info(bankId);
-    logger.info(integralSeq);
-    logger.info(vaSeq);
-    logger.info(bankSeq);
-    logger.info(tranDateTime);
-    logger.info(payMentTime);
-    logger.info(settleDate);
-    logger.info(currencyType);
-    logger.info(orderInfo);
-    logger.info(userId);
-    logger.info(userIp);
-    logger.info(reserver1);
-    logger.info(reserver2);
-    logger.info(reserver3);
-    logger.info(reserver4);
-    logger.info(signValue);
-    return ok("success");
-  }
-
   /**
    * 初始化用户费率
    */

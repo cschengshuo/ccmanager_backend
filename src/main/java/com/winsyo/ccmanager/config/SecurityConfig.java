@@ -38,13 +38,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     this.passwordEncoder = new BCryptPasswordEncoder();
   }
 
-
   @Override
   protected void configure(HttpSecurity httpSecurity) throws Exception {
     httpSecurity.csrf().disable().sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and().authorizeRequests()
-        .antMatchers(HttpMethod.POST, "/auth/login","/init/receiveResponse").permitAll()
+        .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
         .anyRequest().authenticated()
         .and().headers().cacheControl();
     httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
@@ -61,6 +60,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   public AuthenticationManager authenticationManagerBean() throws Exception {
     return super.authenticationManagerBean();
   }
-
 
 }
