@@ -6,8 +6,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AgentApplyRepository  extends JpaRepository<AgentApply, String>, JpaSpecificationExecutor<AgentApply> {
-
-
+public interface AgentApplyRepository extends JpaRepository<AgentApply, String>, JpaSpecificationExecutor<AgentApply> {
 
 }

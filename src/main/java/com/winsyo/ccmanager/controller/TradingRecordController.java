@@ -29,11 +29,6 @@ public class TradingRecordController {
 
   /**
    * 查询用户交易记录
-   * @param page
-   * @param size
-   * @param cardNo
-   * @param userName
-   * @return
    */
   @GetMapping(value = "findAll")
   public ResponseEntity findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size, String cardNo, String userName) {
@@ -45,9 +40,6 @@ public class TradingRecordController {
 
   /**
    * 查询用户提现记录
-   * @param page
-   * @param size
-   * @return
    */
   @GetMapping(value = "findWithDrawRecords")
   public ResponseEntity findWithDrawRecords(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {

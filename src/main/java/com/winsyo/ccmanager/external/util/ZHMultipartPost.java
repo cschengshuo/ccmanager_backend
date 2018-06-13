@@ -55,12 +55,12 @@ import org.apache.http.util.TextUtils;
 
 /**
  * java 模拟 ENCTYPE="multipart/form-data"方式 提交FORM
- * */
+ */
 public class ZHMultipartPost {
 
   /**
    * @param args
-   * @throws Exception 
+   * @throws Exception
    */
   //	public static void main(String[] args) {
   //
@@ -193,6 +193,7 @@ public class ZHMultipartPost {
   }
 
   static class miTM implements TrustManager, X509TrustManager {
+
     @Override
     public X509Certificate[] getAcceptedIssuers() {
       return null;
@@ -258,7 +259,8 @@ public class ZHMultipartPost {
         //				String fileType = "png";//text/plain
         String fileType = "text/plain";//
         if (fileField != null && !"".equals(fileField) && fileName != null && !"".equals(fileName) && fileType != null && !"".equals(fileType)) {
-          res.append(endBoundary).append("Content-Disposition: form-data; name=\"").append(fileField).append("\"; filename=\"").append(fileName).append("\"\r\n").append("Content-Type: ")
+          res.append(endBoundary).append("Content-Disposition: form-data; name=\"").append(fileField).append("\"; filename=\"").append(fileName).append("\"\r\n")
+              .append("Content-Type: ")
               .append(fileType).append("\r\n\r\n");
           dout.write(res.toString().getBytes());
           file = fileMap.get(key);
@@ -332,8 +334,9 @@ public class ZHMultipartPost {
       e.printStackTrace();
       throw new Exception(e);
     } finally {
-      if (httpurlconnection != null)
+      if (httpurlconnection != null) {
         httpurlconnection.disconnect();
+      }
 
     }
     return resultJson;
@@ -424,8 +427,9 @@ public class ZHMultipartPost {
       e.printStackTrace();
       throw new Exception(e);
     } finally {
-      if (httpurlconnection != null)
+      if (httpurlconnection != null) {
         httpurlconnection.disconnect();
+      }
 
     }
     return resultJson;
@@ -441,7 +445,8 @@ public class ZHMultipartPost {
       res.append("Content-Disposition: form-data; name=\"").append(key).append("\"\r\n").append("\r\n").append(value).append("\r\n").append("--").append(boundary).append("\r\n");
     }
     if (fileField != null && !"".equals(fileField) && fileName != null && !"".equals(fileName) && fileType != null && !"".equals(fileType)) {
-      res.append("Content-Disposition: form-data; name=\"").append(fileField).append("\"; filename=\"").append(fileName).append("\"\r\n").append("Content-Type: ").append(fileType).append("\r\n\r\n");
+      res.append("Content-Disposition: form-data; name=\"").append(fileField).append("\"; filename=\"").append(fileName).append("\"\r\n").append("Content-Type: ").append(fileType)
+          .append("\r\n\r\n");
     }
     return res.toString();
   }
@@ -533,8 +538,9 @@ public class ZHMultipartPost {
       e.printStackTrace();
       throw new Exception(e);
     } finally {
-      if (httpurlconnection != null)
+      if (httpurlconnection != null) {
         httpurlconnection.disconnect();
+      }
 
     }
     return resultJson;
@@ -556,7 +562,8 @@ public class ZHMultipartPost {
       //			String fileType = "png";//text/plain
       String fileType = "text/plain";//
       if (fileField != null && !"".equals(fileField) && fileName != null && !"".equals(fileName) && fileType != null && !"".equals(fileType)) {
-        res.append("Content-Disposition: form-data; name=\"").append(fileField).append("\"; filename=\"").append(fileName).append("\"\r\n").append("Content-Type: ").append(fileType).append("\r\n\r\n")
+        res.append("Content-Disposition: form-data; name=\"").append(fileField).append("\"; filename=\"").append(fileName).append("\"\r\n").append("Content-Type: ")
+            .append(fileType).append("\r\n\r\n")
             .append("--").append(boundary).append("\r\n");
         ;
       }
@@ -777,14 +784,13 @@ public class ZHMultipartPost {
   }
 
   /**
+   * @param @param url 请求地址
+   * @param @param map 集合
+   * @param @param charset 编码 utf-8
+   * @param @return 设定文件
+   * @return String    返回类型
    * @Title: doPost post请求
-  * @Description: TODO(这里用一句话描述这个方法的作用)
-  * @param @param url 请求地址
-  * @param @param map 集合
-  * @param @param charset 编码 utf-8
-  * @param @return    设定文件
-  * @return String    返回类型
-  * @throws
+   * @Description: TODO(这里用一句话描述这个方法的作用)
    */
   public static String doPost(String url, Map<String, String> map, String charset) {
     HttpClient httpClient = null;
@@ -914,6 +920,7 @@ public class ZHMultipartPost {
   }
 
   public static class SSLClient extends DefaultHttpClient {
+
     public SSLClient() throws Exception {
       super();
       SSLContext ctx = SSLContext.getInstance("TLS");
@@ -931,7 +938,7 @@ public class ZHMultipartPost {
           return null;
         }
       };
-      ctx.init(null, new TrustManager[] { tm }, null);
+      ctx.init(null, new TrustManager[]{tm}, null);
       SSLSocketFactory ssf = new SSLSocketFactory(ctx, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
       ClientConnectionManager ccm = this.getConnectionManager();
       SchemeRegistry sr = ccm.getSchemeRegistry();

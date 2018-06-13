@@ -31,9 +31,6 @@ public class AuthenticationController {
 
   /**
    * 登录  获取JWT Token
-   * @param dto
-   * @return
-   * @throws AuthenticationException
    */
   @PostMapping(value = "login")
   public ResponseEntity login(@RequestBody LoginDto dto) throws AuthenticationException {
@@ -41,6 +38,5 @@ public class AuthenticationController {
     User user = userService.findByUsername(dto.getUsername());
     return ok(new JwtDto(user, jwt));
   }
-
 
 }

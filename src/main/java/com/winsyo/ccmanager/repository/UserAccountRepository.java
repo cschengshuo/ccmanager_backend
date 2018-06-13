@@ -15,5 +15,4 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, String
 
   List<UserAccount> findByUserId(String userId);
 
-
 }

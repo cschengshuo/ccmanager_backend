@@ -33,7 +33,6 @@ public class ChannelController {
 
   /**
    * 系统管理员查询所有通道信息
-   * @return
    */
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @GetMapping(value = "findAllForAdmin")
@@ -45,7 +44,6 @@ public class ChannelController {
 
   /**
    * 平台管理员查询所有通道信息
-   * @return
    */
   @PreAuthorize(value = "hasAuthority('PLATFORM')")
   @GetMapping(value = "findAllForPlatform")
@@ -57,8 +55,6 @@ public class ChannelController {
 
   /**
    * 系统管理员查询通道信息
-   * @param id
-   * @return
    */
   @PreAuthorize(value = "hasAuthority('ADMIN')")
   @GetMapping(value = "findByIdForAdmin")
@@ -69,8 +65,6 @@ public class ChannelController {
 
   /**
    * 平台管理员查询通道信息
-   * @param id
-   * @return
    */
   @PreAuthorize(value = "hasAuthority('PLATFORM')")
   @GetMapping(value = "findByIdForPlatform")
@@ -81,8 +75,6 @@ public class ChannelController {
 
   /**
    * 修改通道
-   * @param dto
-   * @return
    */
   @PreAuthorize(value = "hasAnyAuthority('ADMIN', 'PLATFORM')")
   @PostMapping(value = "modify")
@@ -93,8 +85,6 @@ public class ChannelController {
 
   /**
    * 查询下属代理所能设置的通道费率范围
-   * @param parentId
-   * @return
    */
   @GetMapping(value = "getSubFeeRateRange")
   public ResponseEntity getSubFeeRateRange(String parentId) {

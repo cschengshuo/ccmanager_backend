@@ -2,7 +2,6 @@ package com.winsyo.ccmanager.service;
 
 import com.winsyo.ccmanager.domain.RechargeRecord;
 import com.winsyo.ccmanager.domain.User;
-import com.winsyo.ccmanager.exception.OperationFailureException;
 import com.winsyo.ccmanager.repository.RechargeRecordRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -26,6 +25,7 @@ public class RechargeRecordService {
 
   /**
    * 添加充值记录
+   *
    * @param userId 代理ID
    * @param money 充值金额
    */
@@ -41,7 +41,6 @@ public class RechargeRecordService {
 
   /**
    * 获取平台充值记录
-   * @return
    */
   public BigDecimal getPlatformRecharge() {
     User platform = userService.getPlatformAdministrator();

@@ -2,12 +2,9 @@ package com.winsyo.ccmanager.repository;
 
 import com.winsyo.ccmanager.domain.TradingRecord;
 import com.winsyo.ccmanager.domain.enumerate.PayWayTag;
-import com.winsyo.ccmanager.dto.query.TradingRecordQueryDto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;

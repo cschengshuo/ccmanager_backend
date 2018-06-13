@@ -16,5 +16,4 @@ public class ChannelWithdrawDto {
 
   private BigDecimal f;
 
-
 }

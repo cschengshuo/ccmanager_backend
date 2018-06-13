@@ -1,6 +1,5 @@
 package com.winsyo.ccmanager.util.umengpush;
 
-
 public class AndroidBroadcast extends AndroidNotification {
 
   public AndroidBroadcast(String appkey, String appMasterSecret) throws Exception {

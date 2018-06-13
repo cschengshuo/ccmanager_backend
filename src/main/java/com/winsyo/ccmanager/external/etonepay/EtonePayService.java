@@ -42,6 +42,7 @@ public class EtonePayService {
 
   /**
    * 支付
+   *
    * @param tranAmt 交易金额(单位：分)
    * @param userName 用户名
    * @param quickPayCertNo 身份证号
@@ -133,7 +134,6 @@ public class EtonePayService {
 
   /**
    * 解析返回内容
-   * @param result
    */
   private void dealResponse(String result) {
     Map<String, String> response = parseResponse(result);

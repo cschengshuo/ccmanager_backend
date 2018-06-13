@@ -6,10 +6,8 @@ public class MD5Utils {
 
   /**
    * MD5签名
-   * 
+   *
    * @param paramSrc the source to be signed
-   * @return
-   * @throws Exception
    */
   public static String sign(String paramSrc, String key, String serverEncodeType) {
     String sign = md5(paramSrc + "&key=" + key, serverEncodeType);
@@ -19,9 +17,8 @@ public class MD5Utils {
 
   /**
    * MD5验签
-   * 
+   *
    * @param source 签名内容
-   * @return
    */
   public static boolean verify(String source, String tfbSign, String key, String serverEncodeType) {
     String sign = md5(source + "&key=" + key, serverEncodeType);
@@ -30,7 +27,7 @@ public class MD5Utils {
   }
 
   public final static String md5(String paramSrc, String serverEncodeType) {
-    char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+    char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
     try {
       byte[] btInput = paramSrc.getBytes(serverEncodeType);
       // 获得MD5摘要算法的 MessageDigest 对象

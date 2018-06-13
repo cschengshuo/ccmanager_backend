@@ -35,13 +35,13 @@ public class AppUserController {
 
   /**
    * 根据代理ID查询可见的手机用户
+   *
    * @param agentId 代理ID
    * @param username 查询条件 手机用户姓名
    * @param mobile 查询条件 手机号
    * @param idCard 查询条件 身份证
    * @param page 分页位置
    * @param size 分页大小
-   * @return
    */
   @GetMapping(value = "findAppUsersByAgentId")
   public ResponseEntity findAppUsersByAgentId(String agentId, @RequestParam(required = false) String username, @RequestParam(required = false) String mobile,
@@ -60,7 +60,6 @@ public class AppUserController {
 
   /**
    * 获取所有手机用户待提现金额
-   * @return
    */
   @GetMapping(value = "getAppUserWithdrawSum")
   public ResponseEntity getAppUserWithdrawSum() {
@@ -70,7 +69,6 @@ public class AppUserController {
 
   /**
    * 获取所有手机用户已提现金额
-   * @return
    */
   @GetMapping(value = "getAppUserHasWithdrawedSum")
   public ResponseEntity getAppUserWithdrawedSum() {

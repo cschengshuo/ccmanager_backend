@@ -14,5 +14,4 @@ public class RoleService {
     this.roleRepository = roleRepository;
   }
 
-
 }

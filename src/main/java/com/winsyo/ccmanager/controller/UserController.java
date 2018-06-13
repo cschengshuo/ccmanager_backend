@@ -39,8 +39,6 @@ public class UserController {
 
   /**
    * 获取当前用户信息
-   * @return
-   * @throws AuthenticationException
    */
   @GetMapping(value = "getCurrentUserInfo")
   public ResponseEntity getCurrentUserInfo() throws AuthenticationException {
@@ -50,8 +48,6 @@ public class UserController {
 
   /**
    * 根据ID查询用户信息
-   * @param id
-   * @return
    */
   @GetMapping(value = "getUserById")
   public ResponseEntity getUserById(String id) {
@@ -61,8 +57,6 @@ public class UserController {
 
   /**
    * 根据上级ID查询下级代理列表
-   * @param id
-   * @return
    */
   @GetMapping(value = "findUsersByParentId")
   public ResponseEntity findUsersByParentId(String id) {
@@ -73,7 +67,6 @@ public class UserController {
 
   /**
    * 获取代理树 根节点
-   * @return
    */
   @GetMapping(value = "getUserTreeRoot")
   public ResponseEntity getUserTreeRoot() {
@@ -83,8 +76,6 @@ public class UserController {
 
   /**
    * 检查登录名是否重复
-   * @param username
-   * @return
    */
   @GetMapping(value = "checkLoginNameExist")
   public ResponseEntity checkLoginNameExist(String username) {
@@ -94,8 +85,6 @@ public class UserController {
 
   /**
    * 创建用户
-   * @param dto
-   * @return
    */
   @PostMapping(value = "createUser")
   public ResponseEntity createUser(@RequestBody CreateUserDto dto) {
@@ -105,8 +94,6 @@ public class UserController {
 
   /**
    * 修改用户
-   * @param dto
-   * @return
    */
   @PostMapping(value = "modifyUser")
   public ResponseEntity modifyUser(@RequestBody ModifyUserDto dto) {
@@ -116,7 +103,7 @@ public class UserController {
 
   /**
    * 查询所有用户
-   * @return
+   *
    * @deprecated 查询所有用户的接口没有地方需要使用
    */
   @Deprecated
@@ -128,8 +115,8 @@ public class UserController {
 
   /**
    * 查询用户列表
+   *
    * @param loginName 查询条件 登录名
-   * @return
    */
   @GetMapping(value = "findUsers")
   public ResponseEntity findUsers(String loginName) {
@@ -143,8 +130,6 @@ public class UserController {
 
   /**
    * 个人中心 修改用户信息
-   * @param dto
-   * @return
    */
   @PostMapping(value = "modifyUserInfo")
   public ResponseEntity modifyUserInfo(@RequestBody ModifyUserInfoDto dto) {
@@ -154,8 +139,6 @@ public class UserController {
 
   /**
    * 个人中心 修改登录密码
-   * @param dto
-   * @return
    */
   @PostMapping(value = "modifyLoginPassword")
   public ResponseEntity modifyLoginPassword(@RequestBody ModifyLoginPasswordDto dto) {

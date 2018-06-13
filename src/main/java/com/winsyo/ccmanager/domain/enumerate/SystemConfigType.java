@@ -2,6 +2,7 @@ package com.winsyo.ccmanager.domain.enumerate;
 
 /**
  * 系统设置类型
+ *
  * @see com.winsyo.ccmanager.domain.SystemConfig
  */
 public enum SystemConfigType {
@@ -25,7 +26,6 @@ public enum SystemConfigType {
    * 通道F描述
    */
   CHANNEL_F_DESC(44);
-
 
   private int index;
 

@@ -40,10 +40,6 @@ public class IncomeReportService {
 
   /**
    * 获取收益报表
-   * @param type
-   * @param startDate
-   * @param endDate
-   * @return
    */
   public List<ReportDto> getReport(ReportType type, LocalDateTime startDate, LocalDateTime endDate) {
     LocalDateTime start = null;

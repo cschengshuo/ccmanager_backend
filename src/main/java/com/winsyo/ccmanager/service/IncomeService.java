@@ -112,7 +112,6 @@ public class IncomeService {
     return income.setScale(2, RoundingMode.UP);
   }
 
-
   public BigDecimal calculatePersonalIncome(BigDecimal amount, ChannelType type, String userId) {
     User user = userService.findById(userId);
     switch (user.getType()) {
@@ -169,6 +168,5 @@ public class IncomeService {
 //    return Pair.of(income, subIncome);
 //
 //  }
-
 
 }

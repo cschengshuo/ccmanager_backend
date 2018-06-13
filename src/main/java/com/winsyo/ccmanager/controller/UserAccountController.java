@@ -28,8 +28,6 @@ public class UserAccountController {
 
   /**
    * 根据代理ID查询
-   * @param userId
-   * @return
    */
   @GetMapping(value = "findByUserId")
   public ResponseEntity findByUserId(String userId) {
@@ -39,7 +37,6 @@ public class UserAccountController {
 
   /**
    * 列出下属用户账户余额
-   * @return
    */
   @GetMapping(value = "listSubUserAccount")
   public ResponseEntity listSubUserAccount() {
@@ -47,6 +44,5 @@ public class UserAccountController {
     List<WithdrawDto> result = userAccountService.listSubUserAccount(currentUser.getId());
     return ok(result);
   }
-
 
 }

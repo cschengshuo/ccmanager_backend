@@ -41,5 +41,4 @@ public class RechargeRecord {
   @Column
   private LocalDateTime time;
 
-
 }

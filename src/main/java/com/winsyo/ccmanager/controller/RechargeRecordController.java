@@ -29,8 +29,6 @@ public class RechargeRecordController {
 
   /**
    * 添加用户充值记录
-   * @param dto
-   * @return
    */
   @PostMapping(value = "addRechargeRecord")
   public ResponseEntity addRechargeRecord(@RequestBody RechargeRecordDto dto) {
@@ -41,7 +39,6 @@ public class RechargeRecordController {
 
   /**
    * 查询平台充值记录
-   * @return
    */
   @GetMapping(value = "getPlatformRecharge")
   public ResponseEntity getPlatformRecharge() {

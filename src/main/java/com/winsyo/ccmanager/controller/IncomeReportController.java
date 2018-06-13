@@ -30,10 +30,6 @@ public class IncomeReportController {
 
   /**
    * 获取收益统计报表
-   * @param type
-   * @param start
-   * @param end
-   * @return
    */
   @GetMapping(value = "getReport")
   public ResponseEntity getReport(int type, @RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime start,

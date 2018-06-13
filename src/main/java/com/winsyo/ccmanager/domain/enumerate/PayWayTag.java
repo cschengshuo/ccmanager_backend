@@ -1,8 +1,7 @@
 package com.winsyo.ccmanager.domain.enumerate;
 
 /**
- * 通道类型
- * 为兼容交易记录表中以字符串形式保存的通道类型而添加
+ * 通道类型 为兼容交易记录表中以字符串形式保存的通道类型而添加
  */
 public enum PayWayTag {
 

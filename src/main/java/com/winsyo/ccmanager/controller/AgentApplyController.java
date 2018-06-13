@@ -4,7 +4,6 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.winsyo.ccmanager.domain.AgentApply;
 import com.winsyo.ccmanager.service.AgentApplyService;
-import java.math.BigDecimal;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +27,6 @@ public class AgentApplyController {
 
   /**
    * 获取所有代理申请列表
-   * @param page
-   * @param size
-   * @return
    */
   @GetMapping(value = "findAll")
   public ResponseEntity findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {

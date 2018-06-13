@@ -19,7 +19,6 @@ public abstract class UmengNotification {
   // This JSONObject is used for constructing the whole request string.
   protected final JSONObject rootJson = new JSONObject();
 
-
   // The app master secret
   protected String appMasterSecret;
 

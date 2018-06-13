@@ -17,20 +17,21 @@ import sun.misc.BASE64Encoder;
 
 /**
  * DES加解密工具类
+ *
  * @author 程高伟
  * @date 2016年6月15日 上午10:02:50
  */
 public class DESUtil {
+
   private static final String DES_ALGORITHM = "DES";
   private final static String DES = "DES";
 
   /**
    * DES加密
-   * 
+   *
    * @param plainData 原始字符串
    * @param secretKey 加密密钥
    * @return 加密后的字符串
-   * @throws Exception
    */
   public static String encryption(String plainData, String secretKey) throws Exception {
 
@@ -67,10 +68,10 @@ public class DESUtil {
 
   /**
    * DES解密
+   *
    * @param secretData 密码字符串
    * @param secretKey 解密密钥
    * @return 原始字符串
-   * @throws Exception
    */
   public static String decryption(String secretData, String secretKey) throws Exception {
 
@@ -108,12 +109,6 @@ public class DESUtil {
 
   /**
    * 获得秘密密钥
-   * 
-   * @param secretKey
-   * @return
-   * @throws NoSuchAlgorithmException
-   * @throws InvalidKeySpecException
-   * @throws InvalidKeyException
    */
   private static SecretKey generateKey(String secretKey) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException {
     SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(DES_ALGORITHM);
@@ -128,14 +123,18 @@ public class DESUtil {
     static private byte[] codes = new byte[256];
 
     static {
-      for (int i = 0; i < 256; i++)
+      for (int i = 0; i < 256; i++) {
         codes[i] = -1;
-      for (int i = 'A'; i <= 'Z'; i++)
+      }
+      for (int i = 'A'; i <= 'Z'; i++) {
         codes[i] = (byte) (i - 'A');
-      for (int i = 'a'; i <= 'z'; i++)
+      }
+      for (int i = 'a'; i <= 'z'; i++) {
         codes[i] = (byte) (26 + i - 'a');
-      for (int i = '0'; i <= '9'; i++)
+      }
+      for (int i = '0'; i <= '9'; i++) {
         codes[i] = (byte) (52 + i - '0');
+      }
       codes['+'] = 62;
       codes['/'] = 63;
     }
@@ -176,10 +175,12 @@ public class DESUtil {
      */
     static private byte[] decode(char[] data) {
       int len = ((data.length + 3) / 4) * 3;
-      if (data.length > 0 && data[data.length - 1] == '=')
+      if (data.length > 0 && data[data.length - 1] == '=') {
         --len;
-      if (data.length > 1 && data[data.length - 2] == '=')
+      }
+      if (data.length > 1 && data[data.length - 2] == '=') {
         --len;
+      }
       byte[] out = new byte[len];
       int shift = 0;
       int accum = 0;
@@ -196,18 +197,17 @@ public class DESUtil {
           }
         }
       }
-      if (index != out.length)
+      if (index != out.length) {
         throw new Error("miscalculated data length!");
+      }
       return out;
     }
   }
 
   /**
    * Description 根据键值进行加密
-   * @param data 
-   * @param key  加密键byte数组
-   * @return
-   * @throws Exception
+   *
+   * @param key 加密键byte数组
    */
   public static String encrypt(String data, String key) throws Exception {
     byte[] bt = encrypt(data.getBytes(), key.getBytes());
@@ -217,15 +217,13 @@ public class DESUtil {
 
   /**
    * Description 根据键值进行解密
-   * @param data
-   * @param key  加密键byte数组
-   * @return
-   * @throws IOException
-   * @throws Exception
+   *
+   * @param key 加密键byte数组
    */
   public static String decrypt(String data, String key) throws IOException, Exception {
-    if (data == null)
+    if (data == null) {
       return null;
+    }
     BASE64Decoder decoder = new BASE64Decoder();
     byte[] buf = decoder.decodeBuffer(data);
     byte[] bt = decrypt(buf, key.getBytes());
@@ -234,10 +232,8 @@ public class DESUtil {
 
   /**
    * Description 根据键值进行加密
-   * @param data
-   * @param key  加密键byte数组
-   * @return
-   * @throws Exception
+   *
+   * @param key 加密键byte数组
    */
   private static byte[] encrypt(byte[] data, byte[] key) throws Exception {
     // 生成一个可信任的随机数源
@@ -261,10 +257,8 @@ public class DESUtil {
 
   /**
    * Description 根据键值进行解密
-   * @param data
-   * @param key  加密键byte数组
-   * @return
-   * @throws Exception
+   *
+   * @param key 加密键byte数组
    */
   private static byte[] decrypt(byte[] data, byte[] key) throws Exception {
     // 生成一个可信任的随机数源

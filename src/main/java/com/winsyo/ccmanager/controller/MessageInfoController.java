@@ -30,8 +30,6 @@ public class MessageInfoController {
 
   /**
    * 发送公告
-   * @param map
-   * @return
    */
   @PostMapping(value = "sendAnnouncement")
   public ResponseEntity sendAnnouncement(@RequestBody Map<String, String> map) {
@@ -42,9 +40,6 @@ public class MessageInfoController {
 
   /**
    * 查询所有公告
-   * @param page
-   * @param size
-   * @return
    */
   @GetMapping(value = "listAnnouncement")
   public ResponseEntity listAnnouncement(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {

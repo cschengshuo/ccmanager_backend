@@ -122,7 +122,6 @@ public class UserService {
 
   /**
    * 创建代理用户
-   * @param dto
    */
   @Transactional
   public void createAgentUser(CreateUserDto dto) {
