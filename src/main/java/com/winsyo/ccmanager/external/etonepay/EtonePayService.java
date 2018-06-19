@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -24,27 +26,29 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class EtonePayService {
 
+  private static Logger logger = LoggerFactory.getLogger(EtonePayService.class);
+
   public static void main(String[] args) {
     EtonePayService etonePayService = new EtonePayService();
-    etonePayService.pay("100", "徐枫", "130184198504180016", "6217001630025579589", "18610601315",
-        "中国建设银行", "18610601315", "4581240211586178", "438", "2301");
   }
 
   // 请求地址
-  private static final String baseUrl = "http://58.56.23.89:7002";
-//  private static final String baseUrl = "https://cashier.etonepay.com";
-
+  private static final String baseUrl = "https://cashier.etonepay.com"; // 测试环境地址 http://58.56.23.89:7002
   // 商户编号
-  public static final String merchantId = "888888888888888";
-
-  private static DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-  private static DateTimeFormatter sdf2 = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+  public static final String merchantId = "888201711020132"; // 测试环境 888888888888888
+  // 数据秘钥
+  public static final String dataKey = "3M5tbN1q4U278cgj"; // 测试环境 8EF53C251102A4E6
+  // 时间格式化 yyyyMMddHHmmss
+  private static DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+  // 时间格式化 yyyyMMddHHmmssSSS
+  private static DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 
   /**
-   * 支付
+   * 易通支付
    *
    * @param tranAmt 交易金额(单位：分)
-   * @param userName 用户名
+   * @param fee 交易手续费(单位：分)
+   * @param userName 用户姓名
    * @param quickPayCertNo 身份证号
    * @param arrviedAcctNo 入账卡卡号
    * @param arrviedPhone 入账卡绑定手机号
@@ -54,17 +58,18 @@ public class EtonePayService {
    * @param cardCvn2 交易卡cvv2
    * @param cardExpire 有效日期 YYMM
    */
-  public void pay(String tranAmt, String userName, String quickPayCertNo, String arrviedAcctNo, String arrviedPhone, String arrviedBankName, String userPhoneHF, String userAcctNo,
-      String cardCvn2, String cardExpire) {
+  public void pay(String tranAmt, String fee, String userName, String quickPayCertNo, String arrviedAcctNo,
+      String arrviedPhone, String arrviedBankName, String userPhoneHF, String userAcctNo, String cardCvn2,
+      String cardExpire) {
     String version = "1.0.0"; // 版本号 固定
     String transCode = "8888"; // 交易代码 固定
-    String merOrderNum = "O" + sdf2.format(LocalDateTime.now()); // 商户订单号
+    String merOrderNum = "O" + dtf2.format(LocalDateTime.now()); // 商户订单号
     String bussId = "ONL0017"; // 业务代码 固定
-    String sysTraceNum = "P" + sdf2.format(LocalDateTime.now()); // 商户请求流水号
-    String tranDateTime = sdf.format(LocalDateTime.now()); // 交易时间 YYYYMMDDHHMMSS
+    String sysTraceNum = "P" + dtf2.format(LocalDateTime.now()); // 商户请求流水号
+    String tranDateTime = dtf1.format(LocalDateTime.now()); // 交易时间 YYYYMMDDHHMMSS
     String currencyType = "156"; // 货币代码 固定
     String merURL = "https://www.winsyo.com"; // 商户返回页面
-    String backURL = "http://www.winsyo.com:8080/ccmanagerOK/init/receiveResponse"; // 回调商户地址
+    String backURL = "http://www.winsyo.com:8080/ccmanagerOK/init/receiveResponse"; // 回调商户地址 TODO 实现回调
     String orderInfo = ""; // 订单信息
     String userId = ""; // 用户 ID
     String userNameHF = Hex.encodeHexString(userName.getBytes(), false); // 开户名（姓名）为Hex编码(16进制转码)后数据
@@ -73,51 +78,50 @@ public class EtonePayService {
     String stlmId = ""; // 结算规则代码
     String entryType = "1"; // 入口类型 固定
     String attach = ""; // 附加数据
-    String reserver1 = "50"; // 商户上传的手续费
     String reserver2 = ""; // 保留域 2
     String reserver3 = ""; // 保留域 3
     String reserver4 = "7"; // 保留域 4 固定
 
     // 签名
-    String txnString =
-        version + "|" + transCode + "|" + merchantId + "|" + merOrderNum + "|" + bussId + "|" + tranAmt + "|" + sysTraceNum + "|" + tranDateTime + "|" + currencyType + "|" + merURL
-            + "|" + backURL + "|" + orderInfo + "|" + userId;
-    String signValue = MD5Utils.md5(txnString + "8EF53C251102A4E6", "utf-8"); // 数字签名
+    String txnString = version + "|" + transCode + "|" + merchantId + "|" + merOrderNum + "|" + bussId + "|"
+        + tranAmt + "|" + sysTraceNum + "|" + tranDateTime + "|" + currencyType + "|" + merURL + "|" + backURL
+        + "|" + orderInfo + "|" + userId;
+    String signValue = MD5Utils.md5(txnString + dataKey, "utf-8"); // 数字签名
 
     // 封装参数
     MultiValueMap<String, String> parameter = new LinkedMultiValueMap<>();
-    parameter.add("version", version);
-    parameter.add("transCode", transCode);
-    parameter.add("merchantId", merchantId);
-    parameter.add("merOrderNum", merOrderNum);
-    parameter.add("bussId", bussId);
-    parameter.add("tranAmt", tranAmt);
-    parameter.add("sysTraceNum", sysTraceNum);
-    parameter.add("tranDateTime", tranDateTime);
-    parameter.add("currencyType", currencyType);
-    parameter.add("merURL", merURL);
-    parameter.add("backURL", backURL);
-    parameter.add("orderInfo", orderInfo);
-    parameter.add("userId", userId);
-    parameter.add("userNameHF", userNameHF);
-    parameter.add("quickPayCertNo", quickPayCertNo);
-    parameter.add("arrviedAcctNo", arrviedAcctNo);
-    parameter.add("arrviedPhone", arrviedPhone);
-    parameter.add("arrviedBankName", arrviedBankName);
-    parameter.add("userPhoneHF", userPhoneHF);
-    parameter.add("userAcctNo", userAcctNo);
-    parameter.add("cardCvn2", cardCvn2);
-    parameter.add("cardExpire", cardExpire);
-    parameter.add("userIp", userIp);
-    parameter.add("bankId", bankId);
-    parameter.add("stlmId", stlmId);
-    parameter.add("entryType", entryType);
-    parameter.add("attach", attach);
-    parameter.add("reserver1", reserver1);
-    parameter.add("reserver2", reserver2);
-    parameter.add("reserver3", reserver3);
-    parameter.add("reserver4", reserver4);
-    parameter.add("signValue", signValue);
+    parameter.add("version", version); // 版本号
+    parameter.add("transCode", transCode); // 交易代码
+    parameter.add("merchantId", merchantId); // 商户编号
+    parameter.add("merOrderNum", merOrderNum); // 商户订单号
+    parameter.add("bussId", bussId); // 业务代码
+    parameter.add("tranAmt", tranAmt); // 交易金额(单位： 分)
+    parameter.add("sysTraceNum", sysTraceNum); // 商户请求流水号
+    parameter.add("tranDateTime", tranDateTime); // 交易时间
+    parameter.add("currencyType", currencyType); // 货币代码
+    parameter.add("merURL", merURL); // 商户返回页面
+    parameter.add("backURL", backURL); // 回调商户地址
+    parameter.add("orderInfo", orderInfo); // 订单信息
+    parameter.add("userId", userId); // 用户 ID
+    parameter.add("userNameHF", userNameHF); // 开户名（姓名）
+    parameter.add("quickPayCertNo", quickPayCertNo); // 身份证号
+    parameter.add("arrviedAcctNo", arrviedAcctNo); // 入账卡卡号
+    parameter.add("arrviedPhone", arrviedPhone); // 入账卡绑定手机号
+    parameter.add("arrviedBankName", arrviedBankName); // 入账卡开户行
+    parameter.add("userPhoneHF", userPhoneHF); // 交易卡绑定手机号
+    parameter.add("userAcctNo", userAcctNo); // 交易卡卡号
+    parameter.add("cardCvn2", cardCvn2); // 交易卡cvv2
+    parameter.add("cardExpire", cardExpire); // 有效日期
+    parameter.add("userIp", userIp); // 订单用户 IP
+    parameter.add("bankId", bankId); // 支付方式代码
+    parameter.add("stlmId", stlmId); // 结算规则代码
+    parameter.add("entryType", entryType); // 入口类型
+    parameter.add("attach", attach); // 附加数据
+    parameter.add("reserver1", fee); // 保留域 1 商户上传的手续费
+    parameter.add("reserver2", reserver2); // 保留域 2
+    parameter.add("reserver3", reserver3); // 保留域 3
+    parameter.add("reserver4", reserver4); // 保留域 4
+    parameter.add("signValue", signValue); // 数字签名
 
     // 发送Post请求
     RestTemplate restTemplate = new RestTemplate();
@@ -137,56 +141,56 @@ public class EtonePayService {
    */
   private void dealResponse(String result) {
     Map<String, String> response = parseResponse(result);
-    String transCode = response.get("transCode");
-    String merchantId = response.get("merchantId");
-    String respCode = response.get("respCode");
-    String sysTraceNum = response.get("sysTraceNum");
-    String merOrderNum = response.get("merOrderNum");
-    String orderId = response.get("orderId");
-    String bussId = response.get("bussId");
-    String tranAmt = response.get("tranAmt");
-    String orderAmt = response.get("orderAmt");
-    String bankFeeAmt = response.get("bankFeeAmt");
-    String integralAmt = response.get("integralAmt");
-    String vaAmt = response.get("vaAmt");
-    String bankAmt = response.get("bankAmt");
-    String bankId = response.get("bankId");
-    String integralSeq = response.get("integralSeq");
-    String vaSeq = response.get("vaSeq");
-    String bankSeq = response.get("bankSeq");
-    String tranDateTime = response.get("tranDateTime");
-    String payMentTime = response.get("payMentTime");
-    String settleDate = response.get("settleDate");
-    String currencyType = response.get("currencyType");
-    String orderInfo = response.get("orderInfo");
-    String userId = response.get("userId");
-    String userIp = response.get("userIp");
-    String reserver1 = response.get("reserver1");
-    String reserver2 = response.get("reserver2");
-    String reserver3 = response.get("reserver3");
-    String reserver4 = response.get("reserver4");
-    String signValue = response.get("signValue");
+    String transCode = response.get("transCode"); // 交易代码
+    String merchantId = response.get("merchantId"); // 商户编号
+    String respCode = response.get("respCode"); // 返回码
+    String sysTraceNum = response.get("sysTraceNum"); // 商户请求流水号
+    String merOrderNum = response.get("merOrderNum"); // 商户订单号
+    String orderId = response.get("orderId"); // 支付网关订单号
+    String bussId = response.get("bussId"); // 业务代码
+    String tranAmt = response.get("tranAmt"); // 实际交易金额
+    String orderAmt = response.get("orderAmt"); // 订单金额
+    String bankFeeAmt = response.get("bankFeeAmt"); // 支付渠道手续费
+    String integralAmt = response.get("integralAmt"); // 积分抵扣金额
+    String vaAmt = response.get("vaAmt"); // 虚拟账户支付金额
+    String bankAmt = response.get("bankAmt"); // 支付渠道支付金额
+    String bankId = response.get("bankId"); // 支付渠道 ID
+    String integralSeq = response.get("integralSeq"); // 积分交易流水号
+    String vaSeq = response.get("vaSeq"); // 虚拟账户交易流水号
+    String bankSeq = response.get("bankSeq"); // 支付机构交易流水号
+    String tranDateTime = response.get("tranDateTime"); // 交易时间
+    String payMentTime = response.get("payMentTime"); // 支付时间
+    String settleDate = response.get("settleDate"); // 清算日
+    String currencyType = response.get("currencyType"); // 货币代码
+    String orderInfo = response.get("orderInfo"); // 订单信息
+    String userId = response.get("userId"); // 用户 ID
+    String userIp = response.get("userIp"); // 支付用户 IP
+    String reserver1 = response.get("reserver1"); // 保留域 1
+    String reserver2 = response.get("reserver2"); // 保留域 2
+    String reserver3 = response.get("reserver3"); // 保留域 3
+    String reserver4 = response.get("reserver4"); // 保留域 4
+    String signValue = response.get("signValue"); // 数字签名
 
-    String txnString =
-        transCode + "|" + merchantId + "|" + respCode + "|" + sysTraceNum + "|" + merOrderNum + "|" + orderId + "|" + bussId + "|" + tranAmt + "|" + orderAmt + "|" + bankFeeAmt
-            + "|" + integralAmt + "|" + vaAmt + "|" + bankAmt + "|" + bankId + "|" + integralSeq + "|" + vaSeq + "|" + bankSeq + "|" + tranDateTime + "|" + payMentTime + "|"
-            + settleDate + "|" + currencyType + "|" + orderInfo + "|" + userId;
-    String genSignValue = MD5Utils.md5(txnString + "8EF53C251102A4E6", "utf-8"); // 数字签名
-    boolean equals = genSignValue.equals(signValue);
-    System.out.println(genSignValue);
-    System.out.println(signValue);
-    System.out.println(equals);
+    // 生成签名
+    String txnString = transCode + "|" + merchantId + "|" + respCode + "|" + sysTraceNum + "|" + merOrderNum + "|"
+        + orderId + "|" + bussId + "|" + tranAmt + "|" + orderAmt + "|" + bankFeeAmt + "|" + integralAmt + "|"
+        + vaAmt + "|" + bankAmt + "|" + bankId + "|" + integralSeq + "|" + vaSeq + "|" + bankSeq + "|"
+        + tranDateTime + "|" + payMentTime + "|" + settleDate + "|" + currencyType + "|" + orderInfo + "|"
+        + userId;
+    String genSignValue = MD5Utils.md5(txnString + dataKey, "utf-8");
+    // 将生成的签名与收到的签名进行比较
+    boolean verify = genSignValue.equals(signValue);
+    if (!verify) {
+      logger.info("验证签名失败");
+    }
 
-    System.out.println(sysTraceNum);
-    System.out.println(merOrderNum);
-
+    logger.info("商户请求流水号 " + sysTraceNum);
+    logger.info("商户订单号 " + merOrderNum);
     try {
-      String s = parseHex(reserver3);
-      System.out.println(s);
-    } catch (DecoderException e) {
-      e.printStackTrace();
-    } catch (UnsupportedEncodingException e) {
-      e.printStackTrace();
+      reserver3 = parseHex(reserver3);
+      logger.info(reserver3);
+    } catch (Exception e) {
+      logger.info("解析返回消息失败", e);
     }
 
   }
@@ -194,7 +198,7 @@ public class EtonePayService {
   /**
    * 解析16进制字符串
    */
-  public String parseHex(String response) throws DecoderException, UnsupportedEncodingException {
+  private String parseHex(String response) throws DecoderException, UnsupportedEncodingException {
     byte[] bytes = Hex.decodeHex(response);
     return new String(bytes, "utf-8");
   }
@@ -202,7 +206,7 @@ public class EtonePayService {
   /**
    * 解析接口响应
    */
-  public Map<String, String> parseResponse(String response) {
+  private Map<String, String> parseResponse(String response) {
     String[] pairs = StringUtils.tokenizeToStringArray(response, "&");
     Map<String, String> result = new HashMap<>(pairs.length);
     for (String pair : pairs) {
